@@ -53,16 +53,6 @@ public class SeriesResponse {
         @SerializedName("image_url_banner")
         public String image_url_banner;
 
-        /**
-         * Manga Model
-         */
-        @SerializedName("total_chapters")
-        public int total_chapters;
-
-        @SerializedName("total_volume")
-        public int total_volume;
-
-
         public static final Parcelable.Creator<Anime> CREATOR = new Parcelable.Creator<Anime>() {
             public Anime createFromParcel(Parcel in) {
                 return new Anime(in);
@@ -86,9 +76,6 @@ public class SeriesResponse {
             image_url_med = in.readString();
             image_url_lge = in.readString();
             image_url_banner = in.readString();
-
-            total_chapters = in.readInt();
-            total_volume = in.readInt();
         }
 
         @Override
@@ -110,9 +97,6 @@ public class SeriesResponse {
             out.writeString(image_url_med);
             out.writeString(image_url_lge);
             out.writeString(image_url_banner);
-
-            out.writeInt(total_chapters);
-            out.writeInt(total_volume);
         }
     }
 }

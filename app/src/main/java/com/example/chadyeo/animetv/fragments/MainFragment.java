@@ -68,7 +68,7 @@ public class MainFragment extends Fragment {
     }
 
     // Anime view holder class
-    private static class AnimeViewHolder extends RecyclerView.ViewHolder {
+    public static class AnimeViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.anime_item_imageView) ImageView mAnimeImageView;
 

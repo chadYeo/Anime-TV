@@ -13,10 +13,17 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.chadyeo.animetv.R;
+import com.example.chadyeo.animetv.api.AniListService;
+import com.example.chadyeo.animetv.api.AnimeResponse;
+import com.example.chadyeo.animetv.api.RetrofitAdapter;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit.RestAdapter;
 
 public class MainFragment extends Fragment {
 
@@ -40,31 +47,64 @@ public class MainFragment extends Fragment {
         return view;
     }
 
+    // Loads Anime List
+    private void loadData() {
+        RestAdapter adapter = RetrofitAdapter.getRestAdapter();
+        AniListService service = adapter.create(AniListService.class);
+    }
+
 
     // Anime RecyclerView adapter class
     private static class AnimeAdapter extends RecyclerView.Adapter<AnimeViewHolder> {
 
-        final private Context mContet;
+        final private Context mContext;
+        private ArrayList<AnimeResponse.Anime> mItems;
+        final private ListActionListener mActionListener;
 
-        private AnimeAdapter(Context mContet) {
-            this.mContet = mContet;
+        public AnimeAdapter(Context context, ListActionListener listener) {
+            mContext = context;
+            mActionListener = listener;
+            mItems = new ArrayList<>();
         }
 
         @NonNull
         @Override
-        public AnimeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return null;
+        public AnimeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int position) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            View v = inflater.inflate(R.layout.anime_item, parent, false);
+            return new AnimeViewHolder(v);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull AnimeViewHolder holder, int position) {
-
+        public void onBindViewHolder(@NonNull AnimeViewHolder holder, final int position) {
+            Glide.with(mContext)
+                    .load(mItems.get(position).getPosterUrl())
+                    .centerCrop()
+                    .placeholder(R.drawable.movie_placeholder)
+                    .crossFade()
+                    .into(holder.mAnimeImageView);
+            holder.mAnimeImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mActionListener.onAnimeSelected(mItems.get(position));
+                }
+            });
         }
 
         @Override
         public int getItemCount() {
-            return 0;
+            return mItems.size();
         }
+
+        public void setItemCount(ArrayList<AnimeResponse.Anime> items) {
+            mItems = items;
+            notifyDataSetChanged();
+        }
+
+        public ArrayList<AnimeResponse.Anime> getItems() {
+            return mItems;
+        }
+
     }
 
     // Anime view holder class
@@ -76,5 +116,10 @@ public class MainFragment extends Fragment {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+    }
+
+    //Anime list action listener
+    public interface ListActionListener {
+        void onAnimeSelected(AnimeResponse.Anime anime);
     }
 }

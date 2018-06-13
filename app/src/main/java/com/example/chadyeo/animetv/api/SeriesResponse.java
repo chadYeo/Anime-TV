@@ -41,18 +41,6 @@ public class SeriesResponse {
         @SerializedName("popularity")
         public int popularity;
 
-        @SerializedName("image_url_sml")
-        public String image_url_sml;
-
-        @SerializedName("image_url_med")
-        public String image_url_med;
-
-        @SerializedName("image_url_lge")
-        public String image_url_lge;
-
-        @SerializedName("image_url_banner")
-        public String image_url_banner;
-
         public static final Parcelable.Creator<Anime> CREATOR = new Parcelable.Creator<Anime>() {
             public Anime createFromParcel(Parcel in) {
                 return new Anime(in);
@@ -72,10 +60,6 @@ public class SeriesResponse {
             adult = in.readByte();
             averageScore = in.readDouble();
             popularity = in.readInt();
-            image_url_sml = in.readString();
-            image_url_med = in.readString();
-            image_url_lge = in.readString();
-            image_url_banner = in.readString();
         }
 
         @Override
@@ -93,10 +77,6 @@ public class SeriesResponse {
             out.writeByte(adult);
             out.writeDouble(averageScore);
             out.writeInt(popularity);
-            out.writeString(image_url_sml);
-            out.writeString(image_url_med);
-            out.writeString(image_url_lge);
-            out.writeString(image_url_banner);
         }
     }
 }

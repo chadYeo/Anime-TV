@@ -21,7 +21,7 @@ import com.bumptech.glide.Glide;
 import com.example.chadyeo.animetv.AppController;
 import com.example.chadyeo.animetv.R;
 import com.example.chadyeo.animetv.api.AniListService;
-import com.example.chadyeo.animetv.api.AnimeResponse;
+import com.example.chadyeo.animetv.api.Anime;
 import com.example.chadyeo.animetv.api.RetrofitAdapter;
 
 import org.json.JSONException;
@@ -75,7 +75,7 @@ public class MainFragment extends Fragment {
     private static class AnimeAdapter extends RecyclerView.Adapter<AnimeViewHolder> {
 
         final private Context mContext;
-        private ArrayList<AnimeResponse.Anime> mItems;
+        private ArrayList<Anime.Anime> mItems;
         final private ListActionListener mActionListener;
 
         public AnimeAdapter(Context context, ListActionListener listener) {
@@ -113,12 +113,12 @@ public class MainFragment extends Fragment {
             return mItems.size();
         }
 
-        public void setItemCount(ArrayList<AnimeResponse.Anime> items) {
+        public void setItemCount(ArrayList<Anime.Anime> items) {
             mItems = items;
             notifyDataSetChanged();
         }
 
-        public ArrayList<AnimeResponse.Anime> getItems() {
+        public ArrayList<Anime.Anime> getItems() {
             return mItems;
         }
 
@@ -137,7 +137,7 @@ public class MainFragment extends Fragment {
 
     //Anime list action listener
     public interface ListActionListener {
-        void onAnimeSelected(AnimeResponse.Anime anime);
+        void onAnimeSelected(Anime.Anime anime);
     }
 
     private void generateAuthToken() {

@@ -11,9 +11,4 @@ public interface AniListService {
     @GET("discover/anime")
     void getAnimeList(@Query("sort_by") String sortBy, Callback<AnimeResponse> callback);
 
-    @GET("discover/manga")
-    void getMangaList(@Query("sort_by") String sortBy, Callback<MangaResponse> callback);
-
-    @GET("anime/{id}/videos")
-    void getTrailers(@Path("id") long id, Callback<AnimeResponse> callback);
 }

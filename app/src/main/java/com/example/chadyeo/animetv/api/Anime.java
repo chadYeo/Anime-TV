@@ -1,15 +1,13 @@
 package com.example.chadyeo.animetv.api;
 
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import com.google.gson.annotations.SerializedName;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Anime implements Serializable {
+
+    // Client ID: cynicalpillow-w9hsv
+    // Client Secret: C22DO04rTcSy6P2xvLNNZB0
 
     private int id;
 
@@ -23,6 +21,7 @@ public class Anime implements Serializable {
     private double average_score;
     private int popularity;
 
+    private String type; //Movie, TV Short, TV etc.
     private int season;
     private int total_episodes;
     private int total_chapters;
@@ -34,6 +33,14 @@ public class Anime implements Serializable {
     private String image_url_med;
     private String image_url_lge;
     private String image_url_banner;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public int getId() {
         return id;

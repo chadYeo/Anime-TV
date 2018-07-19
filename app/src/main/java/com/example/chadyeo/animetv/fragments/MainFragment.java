@@ -75,7 +75,7 @@ public class MainFragment extends Fragment {
     private static class AnimeAdapter extends RecyclerView.Adapter<AnimeViewHolder> {
 
         final private Context mContext;
-        private ArrayList<Anime.Anime> mItems;
+        private ArrayList<Anime> mItems;
         final private ListActionListener mActionListener;
 
         public AnimeAdapter(Context context, ListActionListener listener) {
@@ -94,6 +94,7 @@ public class MainFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull AnimeViewHolder holder, final int position) {
+            /**
             Glide.with(mContext)
                     .load(mItems.get(position).getPosterUrl())
                     .centerCrop()
@@ -106,6 +107,7 @@ public class MainFragment extends Fragment {
                     mActionListener.onAnimeSelected(mItems.get(position));
                 }
             });
+             */
         }
 
         @Override
@@ -113,12 +115,12 @@ public class MainFragment extends Fragment {
             return mItems.size();
         }
 
-        public void setItemCount(ArrayList<Anime.Anime> items) {
+        public void setItemCount(ArrayList<Anime> items) {
             mItems = items;
             notifyDataSetChanged();
         }
 
-        public ArrayList<Anime.Anime> getItems() {
+        public ArrayList<Anime> getItems() {
             return mItems;
         }
 
@@ -137,7 +139,7 @@ public class MainFragment extends Fragment {
 
     //Anime list action listener
     public interface ListActionListener {
-        void onAnimeSelected(Anime.Anime anime);
+        void onAnimeSelected(Anime anime);
     }
 
     private void generateAuthToken() {

@@ -6,6 +6,7 @@
     android:gravity="center">
 
     <android.support.v7.widget.CardView
+        android:id="@+id/anime_item_cardView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:cardElevation="4dp">

@@ -13,19 +13,10 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.bumptech.glide.Glide;
-import com.example.chadyeo.animetv.AppController;
 import com.example.chadyeo.animetv.R;
 import com.example.chadyeo.animetv.api.AniListService;
 import com.example.chadyeo.animetv.api.Anime;
-import com.example.chadyeo.animetv.api.RetrofitAdapter;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.example.chadyeo.animetv.api.AllAnimeRecyclerViewAdapter;
 
 import java.util.ArrayList;
 
@@ -53,7 +44,6 @@ public class MainFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, view);
 
-        generateAuthToken();
 
         errorTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,7 +57,7 @@ public class MainFragment extends Fragment {
 
     // Loads Anime List
     private void loadData() {
-        RestAdapter adapter = RetrofitAdapter.getRestAdapter();
+        RestAdapter adapter = AllAnimeRecyclerViewAdapter.getRestAdapter();
         AniListService service = adapter.create(AniListService.class);
     }
 
@@ -140,28 +130,5 @@ public class MainFragment extends Fragment {
     //Anime list action listener
     public interface ListActionListener {
         void onAnimeSelected(Anime anime);
-    }
-
-    private void generateAuthToken() {
-        String URL = "https://anilist.co/api/auth/access_token?grant_type=client_credentials&client_id=viveksb007-gsxam&client_secret=6BmShBiPcqnEHR2HA21ot3noG";
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            String access_token = response.getString("access_token");
-                            accessToken = access_token;
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        });
-        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
     }
 }

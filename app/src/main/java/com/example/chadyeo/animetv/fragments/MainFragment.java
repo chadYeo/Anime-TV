@@ -1,28 +1,29 @@
 package com.example.chadyeo.animetv.fragments;
 
 
+import android.app.LoaderManager;
 import android.content.Context;
+import android.content.Loader;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.chadyeo.animetv.R;
-import com.example.chadyeo.animetv.api.AniListService;
-import com.example.chadyeo.animetv.api.Anime;
 import com.example.chadyeo.animetv.api.AllAnimeRecyclerViewAdapter;
-
-import java.util.ArrayList;
+import com.example.chadyeo.animetv.api.AnimeList;
+import com.example.chadyeo.animetv.loaders.AnimeSeasonLoader;
+import com.example.chadyeo.animetv.utils.ListContent;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit.RestAdapter;
 
 public class MainFragment extends Fragment {
 
@@ -30,7 +31,13 @@ public class MainFragment extends Fragment {
     @BindView(R.id.error_text_view) TextView errorTextView;
     @BindView(R.id.anime_recyclerView) RecyclerView recyclerView;
 
-    private String accessToken;
+    private LinearLayoutManager layoutManager;
+    private AllAnimeRecyclerViewAdapter adapter;
+
+    int sort = 0;
+    int asc = -1;
+    boolean running = false;
+    boolean noInternet = false;
 
     public MainFragment() {
         // Required empty public constructor
@@ -44,91 +51,82 @@ public class MainFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, view);
 
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setItemViewCacheSize(20);
+        recyclerView.setDrawingCacheEnabled(true);
+        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
-        errorTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                errorTextView.setText(accessToken);
-            }
-        });
+        if (view instanceof RecyclerView) {
+            Context context = view.getContext();
+            layoutManager = new LinearLayoutManager(context);
+            recyclerView.setLayoutManager(layoutManager);
+            adapter = new AllAnimeRecyclerViewAdapter(ListContent.getList().getAll());
+            adapter.setHasStableIds(true);
+            recyclerView.setAdapter(adapter);
+        }
 
         return view;
     }
 
-    // Loads Anime List
-    private void loadData() {
-        RestAdapter adapter = AllAnimeRecyclerViewAdapter.getRestAdapter();
-        AniListService service = adapter.create(AniListService.class);
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getView() != null) {
+            updateList();
+        }
     }
 
-    // Anime RecyclerView adapter class
-    private static class AnimeAdapter extends RecyclerView.Adapter<AnimeViewHolder> {
+    private class InitLoader implements LoaderManager.LoaderCallbacks<AnimeList> {
 
-        final private Context mContext;
-        private ArrayList<Anime> mItems;
-        final private ListActionListener mActionListener;
+        private Context context;
+        private String season;
+        private String year;
 
-        public AnimeAdapter(Context context, ListActionListener listener) {
-            mContext = context;
-            mActionListener = listener;
-            mItems = new ArrayList<>();
-        }
-
-        @NonNull
-        @Override
-        public AnimeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int position) {
-            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View v = inflater.inflate(R.layout.anime_item, parent, false);
-            return new AnimeViewHolder(v);
+        public InitLoader(Context context, String season, String year) {
+            this.context = context;
+            this.season = season;
+            this.year = year;
         }
 
         @Override
-        public void onBindViewHolder(@NonNull AnimeViewHolder holder, final int position) {
-            /**
-            Glide.with(mContext)
-                    .load(mItems.get(position).getPosterUrl())
-                    .centerCrop()
-                    .placeholder(R.drawable.movie_placeholder)
-                    .crossFade()
-                    .into(holder.mAnimeImageView);
-            holder.mAnimeImageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mActionListener.onAnimeSelected(mItems.get(position));
+        public Loader<AnimeList> onCreateLoader(int id, Bundle args) {
+            return new AnimeSeasonLoader(context, season, year, sort, asc);
+        }
+
+        @Override
+        public void onLoadFinished(Loader<AnimeList> loader, AnimeList data) {
+            running = false;
+            if (data == null) {
+                noInternet = true;
+            } else {
+                if ((season.toLowerCase() + " " + year.toLowerCase())
+                        .equals(((AppCompatActivity)getActivity()).getSupportActionBar().getTitle().toString().toLowerCase())) {
+                    ListContent.setList(data);
+                    Log.w("Size of Data: ", String.valueOf(data.getAll().size()));
+
+                    updateList();
                 }
-            });
-             */
+            }
         }
 
         @Override
-        public int getItemCount() {
-            return mItems.size();
-        }
+        public void onLoaderReset(Loader<AnimeList> loader) {
 
-        public void setItemCount(ArrayList<Anime> items) {
-            mItems = items;
-            notifyDataSetChanged();
-        }
-
-        public ArrayList<Anime> getItems() {
-            return mItems;
-        }
-
-    }
-
-    // Anime view holder class
-    public static class AnimeViewHolder extends RecyclerView.ViewHolder {
-
-        @BindView(R.id.anime_item_imageView) ImageView mAnimeImageView;
-
-        public AnimeViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
         }
     }
 
-    //Anime list action listener
-    public interface ListActionListener {
-        void onAnimeSelected(Anime anime);
+    public void updateList() {
+        if (adapter != null) {
+            adapter.changeDataSource(ListContent.getList());
+            adapter.clearBitmapCache(this.getContext());
+            adapter.notifyDataSetChanged();
+            if (getView() != null) {
+                RecyclerView list = (RecyclerView) getView().findViewById(R.id.anime_recyclerView);
+                list.getLayoutManager().scrollToPosition(0);
+            }
+            Log.w("Size of Data: ", String.valueOf(adapter.getItemCount()));
+        } else {
+            adapter = new AllAnimeRecyclerViewAdapter(ListContent.getList().getAll());
+        }
     }
 }

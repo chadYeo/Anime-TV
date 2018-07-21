@@ -1,9 +1,11 @@
 package com.example.chadyeo.animetv.api;
 
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,10 +70,28 @@ public class AllAnimeRecyclerViewAdapter extends RecyclerView.Adapter<AllAnimeRe
             }
         });
     }
-    
+
     @Override
     public int getItemCount() {
         return mValues.size();
+    }
+
+    private synchronized void update(ArrayList<Anime> temp) {
+        mValues.clear();
+        mValues.addAll(temp);
+    }
+
+    public void changeDataSource(AnimeList newUserList) {
+        ArrayList<Anime> temp = new ArrayList<>();
+        for (int i = 0; i < Math.min(newUserList.getAll().size(), 20); i++) {
+            temp.add(newUserList.getAll().get(i));
+            update(temp);
+        }
+    }
+
+    public void clearBitmapCache(Context c) {
+        Glide.get(c).clearMemory();
+        Log.w("Memory Cleared: ", "Glid Memory is Cleared");
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.chadyeo.animetv.R;
 
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class AllAnimeRecyclerViewAdapter extends RecyclerView.Adapter<AllAnimeRe
 
         if (holder.mItem.getTotal_episodes() > 1) {
             holder.anime_episodes_textView.setText(holder.mItem.getTotal_episodes() + " eps");
-        } else if (holder.mItem.getTotal_episodes() = 1){
+        } else if (holder.mItem.getTotal_episodes() == 1){
             holder.anime_episodes_textView.setText(holder.mItem.getTotal_episodes() + " ep");
         } else {
             holder.anime_episodes_textView.setText("? eps");
@@ -55,11 +56,22 @@ public class AllAnimeRecyclerViewAdapter extends RecyclerView.Adapter<AllAnimeRe
         if (url == null) {
             url = holder.mItem.getImage_url_sml();
         }
+        Glide.with(holder.anime_item_imageView.getContext())
+                .load(url)
+                .centerCrop()
+                .placeholder(R.drawable.movie_placeholder)
+                .into(holder.anime_item_imageView);
+        holder.anime_item_imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //ToDo: Intent to Detail
+            }
+        });
     }
-
+    
     @Override
     public int getItemCount() {
-        return 0;
+        return mValues.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

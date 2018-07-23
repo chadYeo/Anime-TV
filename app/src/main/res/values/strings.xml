@@ -6,6 +6,21 @@
 
     <string name="action_settings">Settings</string>
     <string name="menu_search">Search</string>
+    <string name="search_filter">Filter</string>
+
+    <!-- Shared Preference -->
+    <string name="sort_dialog_title">SORT</string>
+    <string name="list_sort">LIST_SORT</string>
+    <string name="order_sort">ORDER_SORT</string>
+    <string-array name="sort_array">
+        <item>Popularity</item>
+        <item>Title</item>
+        <item>Avg Score</item>
+    </string-array>
+    <string-array name="order_array">
+    <item>Descending</item>
+    <item>Ascending</item>
+    </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.search_anime) {
             return true;
         } else if (id == R.id.filter_anime) {
-            new SelectSortDialogListener(this);
+            SelectSortDialogListener();
             return true;
         }
 
@@ -89,13 +89,13 @@ public class MainActivity extends AppCompatActivity {
         View dialogView = inflater.inflate(R.layout.spinner_sort_select_dialog, null);
         builder.setView(dialogView);
 
-        Spinner sortSpinner = (Spinner) dialogView.findViewById(R.id.sort_spinner);
+        final Spinner sortSpinner = (Spinner) dialogView.findViewById(R.id.sort_spinner);
         ArrayAdapter<CharSequence> sortAdapter =
                 ArrayAdapter.createFromResource(this, R.array.sort_array, R.layout.spinner_dropdown_item);
         sortAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         sortSpinner.setAdapter(sortAdapter);
 
-        Spinner orderSpinner = (Spinner) dialogView.findViewById(R.id.order_spinner);
+        final Spinner orderSpinner = (Spinner) dialogView.findViewById(R.id.order_spinner);
         ArrayAdapter<CharSequence> orderAdapter =
                 ArrayAdapter.createFromResource(this, R.array.order_array, R.layout.spinner_dropdown_item);
         orderAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
@@ -104,13 +104,22 @@ public class MainActivity extends AppCompatActivity {
         sortSpinner.setSelection(sort);
         orderSpinner.setSelection(asc == -1 ? 0 : 1);
 
-        builder.setPositiveButton("Apply", new SelectSortDialogListener(this))
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
+        builder.setPositiveButton("Apply", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (sortSpinner.getSelectedItemPosition() != sort ||
+                        (orderSpinner.getSelectedItemPosition()  == 0 ? -1 : 1) != asc) {
+                    sort = sortSpinner.getSelectedItemPosition();
+                    asc = orderSpinner.getSelectedItemPosition() == 0 ? -1 : 1;
+
+                }
+            }
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
 
         Log.e("TESTING", "SHOWING");
         Dialog dialog = builder.create();

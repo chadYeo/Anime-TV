@@ -32,9 +32,9 @@ public class SeasonUtil {
         int y = Integer.parseInt(year);
         String[] result = new String[2];
         int seasonIndex = seasons.indexOf(season);
-        if (seasonIndex = 0) {
+        if (seasonIndex == 0) {
             seasonIndex = seasons.size() - 1;
-            season--;
+            y--;
         } else {
             seasonIndex--;
         }
@@ -47,9 +47,9 @@ public class SeasonUtil {
         int y = Integer.parseInt(year);
         String[] result = new String[2];
         int seasonIndex = seasons.indexOf(season);
-        if (seasonIndex = 0) {
+        if (seasonIndex == 0) {
             seasonIndex = seasons.size() - 1;
-            season++;
+            y++;
         } else {
             seasonIndex++;
         }

@@ -2,8 +2,10 @@ package com.example.chadyeo.animetv;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.LoaderManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Loader;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
@@ -19,12 +21,17 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.chadyeo.animetv.api.AnimeList;
 import com.example.chadyeo.animetv.api.HttpClient;
+import com.example.chadyeo.animetv.loaders.AnimeSeasonLoader;
+
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
     private static HttpClient client;
 
+    boolean noInternet = false;
     int sort = 0;
     int asc = -1;
 
@@ -39,6 +46,13 @@ public class MainActivity extends AppCompatActivity {
         sort = sharedPreferences.getInt(getString(R.string.list_sort), 0);
         asc = sharedPreferences.getInt(getString(R.string.order_sort), -1);
 
+        Calendar calendar = Calendar.getInstance();
+        int y = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+
+        if (savedInstanceState == null) {
+            String year = String.valueOf(y)
+        }
     }
 
     @Override
@@ -81,6 +95,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Sort Dialog Menu
+     */
     private void SelectSortDialogListener() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -124,5 +141,41 @@ public class MainActivity extends AppCompatActivity {
         Log.e("TESTING", "SHOWING");
         Dialog dialog = builder.create();
         dialog.show();
+    }
+
+    /**
+     * Loading for season
+     */
+    private class SeasonLoad implements LoaderManager.LoaderCallbacks<AnimeList> {
+        private Context context;
+        private String season;
+        private String year;
+
+        public SeasonLoad(Context context, String season, String year) {
+            this.context = context;
+            this.season = season;
+            this.year = year;
+        }
+
+        @Override
+        public Loader<AnimeList> onCreateLoader(int i, Bundle bundle) {
+            return new AnimeSeasonLoader(context, season, year, sort, asc);
+        }
+
+        @Override
+        public void onLoadFinished(Loader<AnimeList> loader, AnimeList data) {
+            if (data == null) {
+                noInternet = true;
+            } else {
+                if (noInternet) {
+
+                }
+            }
+        }
+
+        @Override
+        public void onLoaderReset(Loader<AnimeList> loader) {
+
+        }
     }
 }

@@ -95,13 +95,6 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
             ListContent.setCurrentYear(year);
         }
 
-
-        /**
-         * getActivity().getActionBar().setTitle(season + " " + year);
-        ((MainActivity) getActivity()).setActionBarSubTitle(
-                String.valueOf(Html.fromHtml("<font color='#00BFA5'>" + SeasonUtil.getSubtitle(season) + "</font>")));
-        **/
-
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemViewCacheSize(20);
         recyclerView.setDrawingCacheEnabled(true);
@@ -139,64 +132,24 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
     }
 
     @Override
-    public void onLoadFinished(Loader<AnimeList> loader, AnimeList animeList) {
+    public void onLoadFinished(Loader<AnimeList> loader, AnimeList data) {
+        running = false;
+        if (data == null) {
+            noInternet = true;
+        } else {
+            if ((season.toLowerCase() + " " + year.toLowerCase())
+                    .equals(((AppCompatActivity)getActivity()).getSupportActionBar().getTitle().toString().toLowerCase())) {
+                ListContent.setList(data);
+                Log.w("Size of Data: ", String.valueOf(data.getAll().size()));
 
+                updateList();
+            }
+        }
     }
 
     @Override
     public void onLoaderReset(Loader<AnimeList> loader) {
 
-    }
-
-    /**
-    public void initLoadDataForList(String season, String year, boolean reinit) {
-        if (getLoaderManager().getLoader(0) == null) {
-            getLoaderManager().initLoader(0, null, new InitLoader(getContext(), season, year));
-        }
-    }
-     **/
-
-    private class InitLoader implements LoaderManager.LoaderCallbacks<AnimeList> {
-
-        private Context context;
-        private String season;
-        private String year;
-
-        public InitLoader(Context context, String season, String year) {
-            this.context = context;
-            this.season = season;
-            this.year = year;
-        }
-
-        @Override
-        public Loader<AnimeList> onCreateLoader(int id, Bundle args) {
-            return new AnimeSeasonLoader(context, season, year, sort, asc);
-        }
-
-        @Override
-        public void onLoadFinished(Loader<AnimeList> loader, AnimeList data) {
-            running = false;
-            if (data == null) {
-                noInternet = true;
-            } else {
-                if ((season.toLowerCase() + " " + year.toLowerCase())
-                        .equals(((AppCompatActivity)getActivity()).getSupportActionBar().getTitle().toString().toLowerCase())) {
-                    ListContent.setList(data);
-                    Log.w("Size of Data: ", String.valueOf(data.getAll().size()));
-
-                    updateList();
-                }
-            }
-        }
-
-        @Override
-        public void onLoaderReset(Loader<AnimeList> loader) {
-
-        }
-    }
-
-    public interface OnMainFragmentInteractionListener {
-        void onAllAnimeFragmentInteraction(Anime item);
     }
 
     public void reloadList() {

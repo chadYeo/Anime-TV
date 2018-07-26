@@ -41,11 +41,12 @@ public class MainActivity extends AppCompatActivity {
     String season;
     String year;
     ArrayList<String> years = new ArrayList<>();
+    int sort = 0;
+    int asc = -1;
 
     boolean loaded = false;
     boolean noInternet = false;
-    int sort = 0;
-    int asc = -1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
         sort = sharedPreferences.getInt(getString(R.string.list_sort), 0);
         asc = sharedPreferences.getInt(getString(R.string.order_sort), -1);
+        season = sharedPreferences.getString(getString(R.string.season_sort), season);
+        year = sharedPreferences.getString(getString(R.string.year_sort), year);
 
         Calendar calendar = Calendar.getInstance();
         int y = calendar.get(Calendar.YEAR);

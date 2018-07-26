@@ -12,6 +12,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,12 +25,18 @@ import android.widget.Toast;
 import com.example.chadyeo.animetv.api.AnimeList;
 import com.example.chadyeo.animetv.api.HttpClient;
 import com.example.chadyeo.animetv.loaders.AnimeSeasonLoader;
+import com.example.chadyeo.animetv.utils.ListContent;
+import com.example.chadyeo.animetv.utils.SeasonUtil;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
     private static HttpClient client;
+    String season;
+    String year;
+    ArrayList<String> years = new ArrayList<>();
 
     boolean noInternet = false;
     int sort = 0;
@@ -51,8 +58,29 @@ public class MainActivity extends AppCompatActivity {
         int month = calendar.get(Calendar.MONTH);
 
         if (savedInstanceState == null) {
-            String year = String.valueOf(y)
+            String season = SeasonUtil.checkMonth(month);
+            String year = String.valueOf(y);
+            ListContent.setCurrentSeason(season);
+            this.season = season;
+            ListContent.setCurrentYear(year);
+            this.year = year;
+        } else {
+            this.season = savedInstanceState.getString("SEASON");
+            this.year = savedInstanceState.getString("YEAR");
+            ListContent.setCurrentSeason(season);
+            ListContent.setCurrentYear(year);
         }
+
+        getSupportActionBar().setTitle(season + " " + year);
+        getSupportActionBar().setSubtitle(Html.fromHtml("<font color='#00BFA5'>" + SeasonUtil.getSubtitle(season) + "</font>"));
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("SEASON", season);
+        outState.putString("YEAR", year);
     }
 
     @Override
@@ -150,11 +178,13 @@ public class MainActivity extends AppCompatActivity {
         private Context context;
         private String season;
         private String year;
+        private boolean reinit;
 
-        public SeasonLoad(Context context, String season, String year) {
+        public SeasonLoad(Context context, String season, String year, boolean reinit) {
             this.context = context;
             this.season = season;
             this.year = year;
+            this.reinit = reinit;
         }
 
         @Override
@@ -168,8 +198,13 @@ public class MainActivity extends AppCompatActivity {
                 noInternet = true;
             } else {
                 if (noInternet) {
-
+                    Toast.makeText(context, "There's no Internet Connection", Toast.LENGTH_SHORT).show();
+                    noInternet = false;
                 }
+                if ((season.toLowerCase() + " "  + year.toLowerCase()).equals(getSupportActionBar().getTitle().toString().toLowerCase())) {
+                    ListContent.setList(data);
+                }
+
             }
         }
 

@@ -76,6 +76,12 @@ public class MainFragment extends Fragment {
         }
     }
 
+    public void initLoadDataForList(String season, String year, boolean reinit) {
+        if (getLoaderManager().getLoader(0) == null) {
+            getLoaderManager().initLoader(0, null, new InitLoader(getContext(), season, year));
+        }
+    }
+
     private class InitLoader implements LoaderManager.LoaderCallbacks<AnimeList> {
 
         private Context context;

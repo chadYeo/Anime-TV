@@ -37,6 +37,7 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity {
 
     private static HttpClient client;
+
     String season;
     String year;
     ArrayList<String> years = new ArrayList<>();
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -74,10 +76,12 @@ public class MainActivity extends AppCompatActivity {
             ListContent.setCurrentSeason(season);
             ListContent.setCurrentYear(year);
         }
+        for (int i = 1951; i <= y+1; i++) {
+            years.add(String.valueOf(i));
+        }
 
         getSupportActionBar().setTitle(season + " " + year);
         getSupportActionBar().setSubtitle(Html.fromHtml("<font color='#00BFA5'>" + SeasonUtil.getSubtitle(season) + "</font>"));
-
     }
 
     @Override
@@ -86,17 +90,6 @@ public class MainActivity extends AppCompatActivity {
         outState.putString("SEASON", season);
         outState.putString("YEAR", year);
     }
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
@@ -112,26 +105,7 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.preArrow_season) {
-            if (loaded && !(season.toLowerCase().equals("winter") && (Integer.valueOf(year) == 1951))) {
-                String[] a = SeasonUtil.prevSeason(season, year);
-                //loadDataForSeasonList(a[0], a[1]);
-                season = a[0];
-                year = a[1];
-                ListContent.setCurrentSeason(season);
-                ListContent.setCurrentYear(year);
-            }
-            return true;
-        } else if (id == R.id.nextArrow_season) {
-            if (loaded && !(season.toLowerCase().equals("fall") && (Integer.valueOf(year) == Calendar.getInstance().get(Calendar.YEAR)+1))) {
-                String[] a = SeasonUtil.nextSeason(season, year);
-                //loadDataForSeasonList(a[0], a[1]);
-                season = a[0];
-                year = a[1];
-                ListContent.setCurrentSeason(season);
-                ListContent.setCurrentYear(year);
-            }
-        } else if (id == R.id.search_anime) {
+        if (id == R.id.search_anime) {
             return true;
         } else if (id == R.id.filter_anime) {
             SelectSortDialogListener();
@@ -140,58 +114,18 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
 
     public static HttpClient getClient() {
         return client;
-    }
-
-
-    /**
-     * Sort Dialog Menu
-     */
-    private void SelectSortDialogListener() {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = getLayoutInflater();
-        builder.setTitle(getString(R.string.sort_dialog_title));
-        View dialogView = inflater.inflate(R.layout.spinner_sort_select_dialog, null);
-        builder.setView(dialogView);
-
-        final Spinner sortSpinner = (Spinner) dialogView.findViewById(R.id.sort_spinner);
-        ArrayAdapter<CharSequence> sortAdapter =
-                ArrayAdapter.createFromResource(this, R.array.sort_array, R.layout.spinner_dropdown_item);
-        sortAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        sortSpinner.setAdapter(sortAdapter);
-
-        final Spinner orderSpinner = (Spinner) dialogView.findViewById(R.id.order_spinner);
-        ArrayAdapter<CharSequence> orderAdapter =
-                ArrayAdapter.createFromResource(this, R.array.order_array, R.layout.spinner_dropdown_item);
-        orderAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        orderSpinner.setAdapter(orderAdapter);
-
-        sortSpinner.setSelection(sort);
-        orderSpinner.setSelection(asc == -1 ? 0 : 1);
-
-        builder.setPositiveButton("Apply", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                if (sortSpinner.getSelectedItemPosition() != sort ||
-                        (orderSpinner.getSelectedItemPosition()  == 0 ? -1 : 1) != asc) {
-                    sort = sortSpinner.getSelectedItemPosition();
-                    asc = orderSpinner.getSelectedItemPosition() == 0 ? -1 : 1;
-
-                }
-            }
-        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
-            }
-        });
-
-        Log.e("TESTING", "SHOWING");
-        Dialog dialog = builder.create();
-        dialog.show();
     }
 
     /**
@@ -277,5 +211,73 @@ public class MainActivity extends AppCompatActivity {
         public void onLoaderReset(Loader<AnimeList> loader) {
 
         }
+    }
+
+    /**
+     * Sort Dialog Menu
+     */
+    private void SelectSortDialogListener() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        builder.setTitle(getString(R.string.sort_dialog_title));
+        View dialogView = inflater.inflate(R.layout.spinner_sort_select_dialog, null);
+        builder.setView(dialogView);
+
+        final Spinner seasonSpinner = (Spinner) dialogView.findViewById(R.id.sort_season_spinner);
+        ArrayAdapter<CharSequence> seasonAdapter =
+                ArrayAdapter.createFromResource(this, R.array.season_array, R.layout.spinner_dropdown_item);
+        seasonAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        seasonSpinner.setAdapter(seasonAdapter);
+
+        int idx = 0;
+        if (season.toLowerCase().equals("spring")) idx = 1;
+        else if (season.toLowerCase().equals("summer")) idx = 2;
+        else if (season.toLowerCase().equals("fall")) idx = 3;
+        seasonSpinner.setSelection(idx);
+
+        Spinner yearSpinner = (Spinner) dialogView.findViewById(R.id.sort_year_spinner);
+        ArrayAdapter<CharSequence> yearAdapter =
+                new ArrayAdapter<CharSequence>(this, R.layout.spinner_dropdown_item, years.toArray(new String[years.size()]));
+        yearAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        yearSpinner.setAdapter(yearAdapter);
+
+        yearSpinner.setSelection(years.indexOf(year));
+
+        final Spinner sortSpinner = (Spinner) dialogView.findViewById(R.id.sort_spinner);
+        ArrayAdapter<CharSequence> sortAdapter =
+                ArrayAdapter.createFromResource(this, R.array.sort_array, R.layout.spinner_dropdown_item);
+        sortAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        sortSpinner.setAdapter(sortAdapter);
+
+        final Spinner orderSpinner = (Spinner) dialogView.findViewById(R.id.order_spinner);
+        ArrayAdapter<CharSequence> orderAdapter =
+                ArrayAdapter.createFromResource(this, R.array.order_array, R.layout.spinner_dropdown_item);
+        orderAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        orderSpinner.setAdapter(orderAdapter);
+
+        sortSpinner.setSelection(sort);
+        orderSpinner.setSelection(asc == -1 ? 0 : 1);
+
+        builder.setPositiveButton("Apply", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (sortSpinner.getSelectedItemPosition() != sort ||
+                        (orderSpinner.getSelectedItemPosition()  == 0 ? -1 : 1) != asc) {
+                    sort = sortSpinner.getSelectedItemPosition();
+                    asc = orderSpinner.getSelectedItemPosition() == 0 ? -1 : 1;
+
+                }
+            }
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        Log.e("TESTING", "SHOWING");
+        Dialog dialog = builder.create();
+        dialog.show();
     }
 }

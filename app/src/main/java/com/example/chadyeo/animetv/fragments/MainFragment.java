@@ -1,32 +1,49 @@
 package com.example.chadyeo.animetv.fragments;
 
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.LoaderManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.chadyeo.animetv.MainActivity;
 import com.example.chadyeo.animetv.R;
 import com.example.chadyeo.animetv.api.AllAnimeRecyclerViewAdapter;
 import com.example.chadyeo.animetv.api.Anime;
 import com.example.chadyeo.animetv.api.AnimeList;
 import com.example.chadyeo.animetv.loaders.AnimeSeasonLoader;
 import com.example.chadyeo.animetv.utils.ListContent;
+import com.example.chadyeo.animetv.utils.SeasonUtil;
+
+import java.util.ArrayList;
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements LoaderManager.LoaderCallbacks<AnimeList> {
 
     @BindView(R.id.main_frag_progressBar) ProgressBar progressBar;
     @BindView(R.id.error_text_view) TextView errorTextView;
@@ -38,7 +55,11 @@ public class MainFragment extends Fragment {
     int sort = 0;
     int asc = -1;
 
-    private boolean loading = false;
+    String season;
+    String year;
+    ArrayList<String> years = new ArrayList<>();
+
+    private boolean loaded = false;
     boolean running = false;
     boolean noInternet = false;
 
@@ -51,6 +72,35 @@ public class MainFragment extends Fragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, view);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        sort = sharedPreferences.getInt(getString(R.string.list_sort), 0);
+        asc = sharedPreferences.getInt(getString(R.string.order_sort), -1);
+
+        Calendar calendar = Calendar.getInstance();
+        int y = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+
+        if (savedInstanceState == null) {
+            String season = SeasonUtil.checkMonth(month);
+            String year = String.valueOf(y);
+            ListContent.setCurrentSeason(season);
+            this.season = season;
+            ListContent.setCurrentYear(year);
+            this.year = year;
+        } else {
+            this.season = savedInstanceState.getString("SEASON");
+            this.year = savedInstanceState.getString("YEAR");
+            ListContent.setCurrentSeason(season);
+            ListContent.setCurrentYear(year);
+        }
+
+
+        /**
+         * getActivity().getActionBar().setTitle(season + " " + year);
+        ((MainActivity) getActivity()).setActionBarSubTitle(
+                String.valueOf(Html.fromHtml("<font color='#00BFA5'>" + SeasonUtil.getSubtitle(season) + "</font>")));
+        **/
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemViewCacheSize(20);
@@ -70,12 +120,32 @@ public class MainFragment extends Fragment {
     }
 
     @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-        adapter.notifyDataSetChanged();
+        //adapter.notifyDataSetChanged();
         if (getView() != null) {
             updateList();
         }
+    }
+
+    @Override
+    public Loader<AnimeList> onCreateLoader(int i, Bundle bundle) {
+        return new AnimeSeasonLoader(getContext(), season, year, sort, asc);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<AnimeList> loader, AnimeList animeList) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<AnimeList> loader) {
+
     }
 
     /**

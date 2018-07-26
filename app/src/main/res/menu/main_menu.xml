@@ -1,17 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/preArrow_season"
-        android:icon="@drawable/ic_arrow_left"
-        app:showAsAction="always"
-        android:title="@string/preArrow_season" />
-
-    <item
-        android:id="@+id/nextArrow_season"
-        android:icon="@drawable/ic_arrow_right"
-        app:showAsAction="always"
-        android:title="@string/nextArrow_season" />
 
     <item
         android:id="@+id/search_anime"

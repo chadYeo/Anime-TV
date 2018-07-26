@@ -10,13 +10,24 @@
 
     <!-- Shared Preference -->
     <string name="sort_dialog_title">SORT</string>
+    <string name="season_sort">Season</string>
+    <string name="year_sort">Year</string>
     <string name="list_sort">LIST_SORT</string>
     <string name="order_sort">ORDER_SORT</string>
+
+    <string-array name="season_array">
+        <item>Winter</item>
+        <item>Spring</item>
+        <item>Summer</item>
+        <item>Fall</item>
+    </string-array>
+
     <string-array name="sort_array">
         <item>Popularity</item>
         <item>Title</item>
         <item>Avg Score</item>
     </string-array>
+
     <string-array name="order_array">
     <item>Descending</item>
     <item>Ascending</item>

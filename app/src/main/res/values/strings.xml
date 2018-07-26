@@ -25,4 +25,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="loading_error">Error: Couldn\'t Load the Page</string>
+    <string name="preArrow_season">Previous Season</string>
+    <string name="nextArrow_season">Next Season</string>
 </resources>

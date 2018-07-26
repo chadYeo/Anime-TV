@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.example.chadyeo.animetv.R;
 import com.example.chadyeo.animetv.api.AllAnimeRecyclerViewAdapter;
+import com.example.chadyeo.animetv.api.Anime;
 import com.example.chadyeo.animetv.api.AnimeList;
 import com.example.chadyeo.animetv.loaders.AnimeSeasonLoader;
 import com.example.chadyeo.animetv.utils.ListContent;
@@ -31,18 +32,18 @@ public class MainFragment extends Fragment {
     @BindView(R.id.error_text_view) TextView errorTextView;
     @BindView(R.id.anime_recyclerView) RecyclerView recyclerView;
 
-    private LinearLayoutManager layoutManager;
+    private LinearLayoutManager manager;
     private AllAnimeRecyclerViewAdapter adapter;
 
     int sort = 0;
     int asc = -1;
+
+    private boolean loading = false;
     boolean running = false;
     boolean noInternet = false;
 
     public MainFragment() {
-        // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,8 +59,8 @@ public class MainFragment extends Fragment {
 
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            layoutManager = new LinearLayoutManager(context);
-            recyclerView.setLayoutManager(layoutManager);
+            manager = new LinearLayoutManager(context);
+            recyclerView.setLayoutManager(manager);
             adapter = new AllAnimeRecyclerViewAdapter(ListContent.getList().getAll());
             adapter.setHasStableIds(true);
             recyclerView.setAdapter(adapter);
@@ -71,16 +72,19 @@ public class MainFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        adapter.notifyDataSetChanged();
         if (getView() != null) {
             updateList();
         }
     }
 
+    /**
     public void initLoadDataForList(String season, String year, boolean reinit) {
         if (getLoaderManager().getLoader(0) == null) {
             getLoaderManager().initLoader(0, null, new InitLoader(getContext(), season, year));
         }
     }
+     **/
 
     private class InitLoader implements LoaderManager.LoaderCallbacks<AnimeList> {
 
@@ -118,6 +122,23 @@ public class MainFragment extends Fragment {
         @Override
         public void onLoaderReset(Loader<AnimeList> loader) {
 
+        }
+    }
+
+    public interface OnMainFragmentInteractionListener {
+        void onAllAnimeFragmentInteraction(Anime item);
+    }
+
+    public void reloadList() {
+        if (adapter != null) {
+            adapter.changeDataSource(ListContent.getList());
+            adapter.clearBitmapCache(this.getContext());
+            adapter.notifyDataSetChanged();
+            if (getView() != null) {
+                recyclerView.getLayoutManager().scrollToPosition(0);
+            }
+        } else {
+            adapter = new AllAnimeRecyclerViewAdapter(ListContent.getList().getAll());
         }
     }
 

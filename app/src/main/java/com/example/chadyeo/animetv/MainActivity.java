@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -22,8 +23,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.chadyeo.animetv.api.Anime;
 import com.example.chadyeo.animetv.api.AnimeList;
 import com.example.chadyeo.animetv.api.HttpClient;
+import com.example.chadyeo.animetv.fragments.MainFragment;
 import com.example.chadyeo.animetv.loaders.AnimeSeasonLoader;
 import com.example.chadyeo.animetv.utils.ListContent;
 import com.example.chadyeo.animetv.utils.SeasonUtil;
@@ -38,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     String year;
     ArrayList<String> years = new ArrayList<>();
 
+    boolean loaded = false;
     boolean noInternet = false;
     int sort = 0;
     int asc = -1;
@@ -108,7 +112,26 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.search_anime) {
+        if (id == R.id.preArrow_season) {
+            if (loaded && !(season.toLowerCase().equals("winter") && (Integer.valueOf(year) == 1951))) {
+                String[] a = SeasonUtil.prevSeason(season, year);
+                //loadDataForSeasonList(a[0], a[1]);
+                season = a[0];
+                year = a[1];
+                ListContent.setCurrentSeason(season);
+                ListContent.setCurrentYear(year);
+            }
+            return true;
+        } else if (id == R.id.nextArrow_season) {
+            if (loaded && !(season.toLowerCase().equals("fall") && (Integer.valueOf(year) == Calendar.getInstance().get(Calendar.YEAR)+1))) {
+                String[] a = SeasonUtil.nextSeason(season, year);
+                //loadDataForSeasonList(a[0], a[1]);
+                season = a[0];
+                year = a[1];
+                ListContent.setCurrentSeason(season);
+                ListContent.setCurrentYear(year);
+            }
+        } else if (id == R.id.search_anime) {
             return true;
         } else if (id == R.id.filter_anime) {
             SelectSortDialogListener();
@@ -169,6 +192,48 @@ public class MainActivity extends AppCompatActivity {
         Log.e("TESTING", "SHOWING");
         Dialog dialog = builder.create();
         dialog.show();
+    }
+
+    /**
+     * Loading for all
+     */
+    private class InitLoad implements LoaderManager.LoaderCallbacks<AnimeList> {
+
+        private Context context;
+        private String season;
+        private String year;
+        private boolean reInit;
+
+        public InitLoad(Context context, String season, String year, boolean reInit) {
+            this.context = context;
+            this.season = season;
+            this.year = year;
+            this.reInit = reInit;
+        }
+
+        @Override
+        public Loader<AnimeList> onCreateLoader(int id, Bundle args) {
+            return new AnimeSeasonLoader(context, season, year, sort, asc);
+        }
+
+        @Override
+        public void onLoadFinished(Loader<AnimeList> loader, AnimeList data) {
+            if (data == null) {
+                noInternet = true;
+            } else {
+                if (noInternet) {
+                    noInternet = false;
+                }
+                if ((season.toLowerCase() + " " + year.toLowerCase()).equals(getSupportActionBar().getTitle().toString().toLowerCase())) {
+                    ListContent.setList(data);
+                }
+            }
+        }
+
+        @Override
+        public void onLoaderReset(Loader<AnimeList> loader) {
+
+        }
     }
 
     /**

@@ -27,8 +27,8 @@ public class HttpClient {
     private OAuth2Client oAuth2Client;
 
     private static final String LOG_TAG = HttpClient.class.getSimpleName();
-    private static final String CLIENT_ID = "viveksb007-gsxam";
-    private static final String CLIENT_SECRET = "6BmShBiPcqnEHR2HA21ot3noG";
+    private static final String CLIENT_ID = "cynicalpillow-w9hsv";
+    private static final String CLIENT_SECRET = "C22DO04rTcSy6P2xvLNNZB0";
 
     private static String ACCESS_TOKEN;
     private static String REFRESH_TOKEN;

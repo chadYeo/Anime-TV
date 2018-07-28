@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.example.chadyeo.animetv.fragments.MainFragment">
 
+    <!--
     <ProgressBar
         android:id="@+id/main_frag_progressBar"
         style="?android:attr/progressBarStyle"
@@ -30,6 +31,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/main_frag_progressBar" />
+    -->
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/anime_recyclerView"

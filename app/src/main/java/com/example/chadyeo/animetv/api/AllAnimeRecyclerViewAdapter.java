@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.chadyeo.animetv.R;
+import com.example.chadyeo.animetv.fragments.MainFragment;
 
 import java.util.ArrayList;
 
@@ -23,9 +24,11 @@ import butterknife.ButterKnife;
 public class AllAnimeRecyclerViewAdapter extends RecyclerView.Adapter<AllAnimeRecyclerViewAdapter.ViewHolder> {
 
     private ArrayList<Anime> mValues = new ArrayList<>();
+    private MainFragment.OnAllAnimeFragmentInteractionListener mListener;
 
-    public AllAnimeRecyclerViewAdapter(ArrayList<Anime> items) {
+    public AllAnimeRecyclerViewAdapter(ArrayList<Anime> items, MainFragment.OnAllAnimeFragmentInteractionListener listener) {
         mValues.addAll(items);
+        mListener = listener;
     }
 
     @NonNull
@@ -36,7 +39,7 @@ public class AllAnimeRecyclerViewAdapter extends RecyclerView.Adapter<AllAnimeRe
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.anime_title_textView.setText(holder.mItem.getTitle_romaji());
         holder.anime_episodes_textView.setText(holder.mItem.getTotal_episodes());
@@ -61,12 +64,12 @@ public class AllAnimeRecyclerViewAdapter extends RecyclerView.Adapter<AllAnimeRe
         Glide.with(holder.anime_item_imageView.getContext())
                 .load(url)
                 .centerCrop()
-                .placeholder(R.drawable.movie_placeholder)
                 .into(holder.anime_item_imageView);
         holder.anime_item_imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //ToDo: Intent to Detail
+                mListener.onAllAnimeFragmentInteraction(holder.mItem);
             }
         });
     }
@@ -79,6 +82,10 @@ public class AllAnimeRecyclerViewAdapter extends RecyclerView.Adapter<AllAnimeRe
     private synchronized void update(ArrayList<Anime> temp) {
         mValues.clear();
         mValues.addAll(temp);
+    }
+
+    public void reloadDataSource(AnimeList newUserList) {
+        update(newUserList.getAll());
     }
 
     public void changeDataSource(AnimeList newUserList) {

@@ -45,23 +45,15 @@ import butterknife.ButterKnife;
 
 public class MainFragment extends Fragment {
 
-    @BindView(R.id.main_frag_progressBar) ProgressBar progressBar;
-    @BindView(R.id.error_text_view) TextView errorTextView;
+    private static final String LOG_TAG = MainFragment.class.getSimpleName();
+
+    //@BindView(R.id.main_frag_progressBar) ProgressBar progressBar;
+    //@BindView(R.id.error_text_view) TextView errorTextView;
     @BindView(R.id.anime_recyclerView) RecyclerView recyclerView;
 
+    private OnAllAnimeFragmentInteractionListener mListener;
     private LinearLayoutManager manager;
     private AllAnimeRecyclerViewAdapter adapter;
-
-    int sort = 0;
-    int asc = -1;
-
-    String season;
-    String year;
-    ArrayList<String> years = new ArrayList<>();
-
-    private boolean loaded = false;
-    boolean running = false;
-    boolean noInternet = false;
 
     public MainFragment() {
     }
@@ -73,28 +65,6 @@ public class MainFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, view);
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        sort = sharedPreferences.getInt(getString(R.string.list_sort), 0);
-        asc = sharedPreferences.getInt(getString(R.string.order_sort), -1);
-
-        Calendar calendar = Calendar.getInstance();
-        int y = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-
-        if (savedInstanceState == null) {
-            String season = SeasonUtil.checkMonth(month);
-            String year = String.valueOf(y);
-            ListContent.setCurrentSeason(season);
-            this.season = season;
-            ListContent.setCurrentYear(year);
-            this.year = year;
-        } else {
-            this.season = savedInstanceState.getString("SEASON");
-            this.year = savedInstanceState.getString("YEAR");
-            ListContent.setCurrentSeason(season);
-            ListContent.setCurrentYear(year);
-        }
-
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemViewCacheSize(20);
         recyclerView.setDrawingCacheEnabled(true);
@@ -104,12 +74,22 @@ public class MainFragment extends Fragment {
             Context context = view.getContext();
             manager = new LinearLayoutManager(context);
             recyclerView.setLayoutManager(manager);
-            adapter = new AllAnimeRecyclerViewAdapter(ListContent.getList().getAll());
+            adapter = new AllAnimeRecyclerViewAdapter(ListContent.getList().getAll(), mListener);
             adapter.setHasStableIds(true);
             recyclerView.setAdapter(adapter);
         }
 
+        Log.d(LOG_TAG, "ListContent GetList Get All Info: " + String.valueOf(ListContent.getList().getAll()));
+
         return view;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnAllAnimeFragmentInteractionListener) {
+            mListener = (OnAllAnimeFragmentInteractionListener) context;
+        }
     }
 
     @Override
@@ -126,16 +106,17 @@ public class MainFragment extends Fragment {
         }
     }
 
+    public interface OnAllAnimeFragmentInteractionListener {
+        void onAllAnimeFragmentInteraction(Anime item);
+    }
+
     public void reloadList() {
         if (adapter != null) {
-            adapter.changeDataSource(ListContent.getList());
+            adapter.reloadDataSource(ListContent.getList());
             adapter.clearBitmapCache(this.getContext());
             adapter.notifyDataSetChanged();
-            if (getView() != null) {
-                recyclerView.getLayoutManager().scrollToPosition(0);
-            }
         } else {
-            adapter = new AllAnimeRecyclerViewAdapter(ListContent.getList().getAll());
+            adapter = new AllAnimeRecyclerViewAdapter(ListContent.getList().getAll(), mListener);
         }
     }
 
@@ -148,9 +129,10 @@ public class MainFragment extends Fragment {
                 RecyclerView list = (RecyclerView) getView().findViewById(R.id.anime_recyclerView);
                 list.getLayoutManager().scrollToPosition(0);
             }
-            Log.w("Size of Data: ", String.valueOf(adapter.getItemCount()));
+            Log.d(LOG_TAG, "Size of Data: " + String.valueOf(adapter.getItemCount()));
         } else {
-            adapter = new AllAnimeRecyclerViewAdapter(ListContent.getList().getAll());
+            adapter = new AllAnimeRecyclerViewAdapter(ListContent.getList().getAll(), mListener);
+            Log.d(LOG_TAG, "Size of Data: " + String.valueOf(adapter.getItemCount()));
         }
     }
 }

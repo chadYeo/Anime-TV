@@ -1,58 +1,31 @@
 package com.example.chadyeo.animetv.fragments;
 
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.LoaderManager;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Loader;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ProgressBar;
-import android.widget.Spinner;
-import android.widget.TextView;
 
-import com.example.chadyeo.animetv.MainActivity;
 import com.example.chadyeo.animetv.R;
 import com.example.chadyeo.animetv.api.AllAnimeRecyclerViewAdapter;
 import com.example.chadyeo.animetv.api.Anime;
-import com.example.chadyeo.animetv.api.AnimeList;
-import com.example.chadyeo.animetv.loaders.AnimeSeasonLoader;
 import com.example.chadyeo.animetv.utils.ListContent;
-import com.example.chadyeo.animetv.utils.SeasonUtil;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainFragment extends Fragment {
 
     private static final String LOG_TAG = MainFragment.class.getSimpleName();
 
-    //@BindView(R.id.main_frag_progressBar) ProgressBar progressBar;
-    //@BindView(R.id.error_text_view) TextView errorTextView;
-    @BindView(R.id.anime_recyclerView) RecyclerView recyclerView;
-
     private OnAllAnimeFragmentInteractionListener mListener;
-    private LinearLayoutManager manager;
+    private GridLayoutManager gridLayoutManager;
     private AllAnimeRecyclerViewAdapter adapter;
 
     public MainFragment() {
@@ -63,17 +36,19 @@ public class MainFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_main, container, false);
-        ButterKnife.bind(this, view);
+        final RecyclerView list = (RecyclerView)view;
 
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setItemViewCacheSize(20);
-        recyclerView.setDrawingCacheEnabled(true);
-        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        list.setHasFixedSize(true);
+        list.setItemViewCacheSize(20);
+        list.setDrawingCacheEnabled(true);
+        list.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            manager = new LinearLayoutManager(context);
-            recyclerView.setLayoutManager(manager);
+            RecyclerView recyclerView = (RecyclerView) view;
+            recyclerView.setHasFixedSize(true);
+            gridLayoutManager = new GridLayoutManager(context, 2);
+            recyclerView.setLayoutManager(gridLayoutManager);
             adapter = new AllAnimeRecyclerViewAdapter(ListContent.getList().getAll(), mListener);
             adapter.setHasStableIds(true);
             recyclerView.setAdapter(adapter);
@@ -102,7 +77,7 @@ public class MainFragment extends Fragment {
         super.onResume();
         //adapter.notifyDataSetChanged();
         if (getView() != null) {
-            updateList();
+            //updateList();
         }
     }
 

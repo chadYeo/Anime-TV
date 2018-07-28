@@ -104,16 +104,29 @@ public class AllAnimeRecyclerViewAdapter extends RecyclerView.Adapter<AllAnimeRe
     public class ViewHolder extends RecyclerView.ViewHolder {
         public View mView;
         public Anime mItem;
-        @BindView(R.id.anime_item_cardView)CardView anime_item_cardView;
-        @BindView(R.id.anime_item_imageView) ImageView anime_item_imageView;
-        @BindView(R.id.anime_title_textView) TextView anime_title_textView;
-        @BindView(R.id.anime_episodes_textView) TextView anime_episodes_textView;
-        @BindView(R.id.anime_type_textView) TextView anime_type_textView;
+
+        public CardView anime_item_cardView;
+        public ImageView anime_item_imageView;
+        public TextView anime_title_textView;
+        public TextView anime_episodes_textView;
+        public TextView anime_type_textView;
+
+        //@BindView(R.id.anime_item_cardView)CardView anime_item_cardView;
+        //@BindView(R.id.anime_item_imageView) ImageView anime_item_imageView;
+        //@BindView(R.id.anime_title_textView) TextView anime_title_textView;
+        //@BindView(R.id.anime_episodes_textView) TextView anime_episodes_textView;
+        //@BindView(R.id.anime_type_textView) TextView anime_type_textView;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            ButterKnife.bind(this, view);
+            anime_item_cardView = (CardView) view.findViewById(R.id.anime_item_cardView);
+            anime_item_imageView = (ImageView) view.findViewById(R.id.anime_item_imageView);
+            anime_title_textView = (TextView) view.findViewById(R.id.anime_title_textView);
+            anime_episodes_textView = (TextView) view.findViewById(R.id.anime_episodes_textView);
+            anime_type_textView = (TextView) view.findViewById(R.id.anime_type_textView);
+
+            //ButterKnife.bind(this, view);
         }
     }
 }

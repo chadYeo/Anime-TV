@@ -21,6 +21,8 @@ import okhttp3.Response;
  */
 public class AnimeListBuilder {
 
+    private static final String LOG_TAG = AnimeListBuilder.class.getSimpleName();
+
     private AnimeListBuilder() {
     }
 
@@ -51,18 +53,19 @@ public class AnimeListBuilder {
             Response response = MainActivity.getClient().getOkHttpClient().newCall(request).execute();
             ArrayList<Anime> animeArrayList = JSONParse.parseJsonForList(new InputStreamReader(response.body().byteStream()));
             response.body().close();
-            Log.d("Network: ", "Getting Season List");
+            Log.d(LOG_TAG, "Network: Getting Season List: " + response);
 
             String catchResponse = "null";
             if (response.cacheResponse() != null) {
                 catchResponse = response.cacheResponse().toString();
-                Log.d("Cache Response: ", catchResponse);
-                Log.d("Network Response: ", response.networkResponse().toString());
+                Log.d(LOG_TAG, "Cache Response: " + catchResponse);
+                Log.d(LOG_TAG, "Network Response: " + response.networkResponse().toString());
             }
             Collections.sort(animeArrayList, new AnimeComparator(sort, asc));
-
+            Log.d(LOG_TAG, animeArrayList.toString());
+            return animeArrayList;
         } catch (Exception e) {
-            Log.e("Request Season List: ", e.toString());
+            Log.e(LOG_TAG, "Request Season List: " + e.toString());
         }
         return null;
     }
@@ -97,6 +100,7 @@ public class AnimeListBuilder {
         result.setTV(tv);
         result.setMovie(movie);
         result.setOVAONASpecial(ova);
+        result.setSeason(season);
 
         return result;
     }

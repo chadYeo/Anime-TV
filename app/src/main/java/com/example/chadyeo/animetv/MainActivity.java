@@ -2,13 +2,14 @@ package com.example.chadyeo.animetv;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.LoaderManager;
+
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.Loader;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -23,10 +24,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.chadyeo.animetv.api.Anime;
 import com.example.chadyeo.animetv.api.AnimeList;
 import com.example.chadyeo.animetv.api.HttpClient;
-import com.example.chadyeo.animetv.fragments.MainFragment;
 import com.example.chadyeo.animetv.loaders.AnimeSeasonLoader;
 import com.example.chadyeo.animetv.utils.ListContent;
 import com.example.chadyeo.animetv.utils.SeasonUtil;
@@ -36,6 +35,7 @@ import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static HttpClient client;
 
     String season;
@@ -82,9 +82,14 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 1951; i <= y+1; i++) {
             years.add(String.valueOf(i));
         }
+        client = new HttpClient(this);
 
         getSupportActionBar().setTitle(season + " " + year);
         getSupportActionBar().setSubtitle(Html.fromHtml("<font color='#00BFA5'>" + SeasonUtil.getSubtitle(season) + "</font>"));
+
+        boolean reinit = (savedInstanceState != null);
+        Log.d(LOG_TAG, "Reinit: " + reinit);
+        initLoadDataForList(season, year, reinit);
     }
 
     @Override
@@ -131,6 +136,16 @@ public class MainActivity extends AppCompatActivity {
         return client;
     }
 
+    public void initLoadDataForList(String season, String year, boolean reinit) {
+        if (getSupportLoaderManager().getLoader(0) == null) {
+            getSupportLoaderManager().initLoader(0, null, new InitLoad(this, season, year, reinit));
+            Log.d(LOG_TAG, "InitLoadDataForList Activated");
+        } else {
+            getSupportLoaderManager().restartLoader(0, null, new InitLoad(this, season, year, reinit));
+            Log.d(LOG_TAG, "InitLoadDataForList Re-Initiated");
+        }
+    }
+
     /**
      * Loading for all
      */
@@ -150,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Loader<AnimeList> onCreateLoader(int id, Bundle args) {
+            Log.d(LOG_TAG, "On CreateLoader with " + "Season: " + season + " Year: " + year);
             return new AnimeSeasonLoader(context, season, year, sort, asc);
         }
 
@@ -157,12 +173,14 @@ public class MainActivity extends AppCompatActivity {
         public void onLoadFinished(Loader<AnimeList> loader, AnimeList data) {
             if (data == null) {
                 noInternet = true;
+                Log.d(LOG_TAG, "There is no data onLoadFinished");
             } else {
                 if (noInternet) {
                     noInternet = false;
                 }
                 if ((season.toLowerCase() + " " + year.toLowerCase()).equals(getSupportActionBar().getTitle().toString().toLowerCase())) {
                     ListContent.setList(data);
+                    Log.d(LOG_TAG, "AnimeList Data is: " + data);
                 }
             }
         }

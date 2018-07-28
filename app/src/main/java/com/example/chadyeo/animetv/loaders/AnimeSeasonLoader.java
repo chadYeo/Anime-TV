@@ -1,13 +1,17 @@
 package com.example.chadyeo.animetv.loaders;
 
 
-import android.content.AsyncTaskLoader;
+
 import android.content.Context;
+import android.support.v4.content.AsyncTaskLoader;
+import android.util.Log;
 
 import com.example.chadyeo.animetv.api.AnimeList;
 import com.example.chadyeo.animetv.utils.AnimeListBuilder;
 
 public class AnimeSeasonLoader extends AsyncTaskLoader<AnimeList> {
+
+    private static final String LOG_TAG = AnimeSeasonLoader.class.getSimpleName();
 
     private AnimeList mAnimeList;
     private String season;
@@ -27,6 +31,9 @@ public class AnimeSeasonLoader extends AsyncTaskLoader<AnimeList> {
     public AnimeList loadInBackground() {
         AnimeList result = AnimeListBuilder.buildSeasonList(season + " " + year, sort, asc);
         mAnimeList = result;
+
+        Log.d(LOG_TAG, "loadInbackground with result: " + result);
+
         return mAnimeList;
     }
 

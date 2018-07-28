@@ -39,7 +39,6 @@ public class HttpClient {
         mContext = context;
         okHttpClient = new OkHttpClient.Builder()
                 .authenticator(new Authenticator() {
-                    @Nullable
                     @Override
                     public Request authenticate(Route route, Response response) throws IOException {
                         if (responseCount(response) >= 3) {
@@ -59,7 +58,7 @@ public class HttpClient {
                             }
                         } else {
                             OAuthResponse oAuthResponse = oAuth2Client.requestAccessToken();
-                            if (response.isSuccessful()) {
+                            if (oAuthResponse.isSuccessful()) {
                                 ACCESS_TOKEN = oAuthResponse.getAccessToken();
                                 okHttpClient.cache().evictAll();
                                 try {

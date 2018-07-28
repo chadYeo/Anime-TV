@@ -43,7 +43,7 @@ import java.util.Calendar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainFragment extends Fragment implements LoaderManager.LoaderCallbacks<AnimeList> {
+public class MainFragment extends Fragment {
 
     @BindView(R.id.main_frag_progressBar) ProgressBar progressBar;
     @BindView(R.id.error_text_view) TextView errorTextView;
@@ -124,32 +124,6 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
         if (getView() != null) {
             updateList();
         }
-    }
-
-    @Override
-    public Loader<AnimeList> onCreateLoader(int i, Bundle bundle) {
-        return new AnimeSeasonLoader(getContext(), season, year, sort, asc);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<AnimeList> loader, AnimeList data) {
-        running = false;
-        if (data == null) {
-            noInternet = true;
-        } else {
-            if ((season.toLowerCase() + " " + year.toLowerCase())
-                    .equals(((AppCompatActivity)getActivity()).getSupportActionBar().getTitle().toString().toLowerCase())) {
-                ListContent.setList(data);
-                Log.w("Size of Data: ", String.valueOf(data.getAll().size()));
-
-                updateList();
-            }
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<AnimeList> loader) {
-
     }
 
     public void reloadList() {

@@ -16,16 +16,24 @@ import com.example.chadyeo.animetv.R;
 import com.example.chadyeo.animetv.adapters.AllAnimeRecyclerViewAdapter;
 import com.example.chadyeo.animetv.api.Anime;
 import com.example.chadyeo.animetv.utils.ListContent;
+import com.example.chadyeo.animetv.utils.ListOptions;
 
-public class MainFragment extends Fragment {
+public class AllAnimeFragment extends Fragment {
 
-    private static final String LOG_TAG = MainFragment.class.getSimpleName();
+    private static final String LOG_TAG = AllAnimeFragment.class.getSimpleName();
 
     private OnAllAnimeFragmentInteractionListener mListener;
     private GridLayoutManager gridLayoutManager;
     private AllAnimeRecyclerViewAdapter adapter;
 
-    public MainFragment() {
+    public AllAnimeFragment() {}
+
+    public static AllAnimeFragment newInstance(int columnCount) {
+        AllAnimeFragment fragment = new AllAnimeFragment();
+        Bundle args = new Bundle();
+        args.putInt(ListOptions.ARG_COLUMN_COUNT, columnCount);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override

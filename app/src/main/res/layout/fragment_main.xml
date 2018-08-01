@@ -7,5 +7,5 @@
     android:layout_height="match_parent"
     app:layoutManager="LinearLayoutManager"
     android:scrollbars="vertical"
-    tools:context="com.example.chadyeo.animetv.fragments.MainFragment"
+    tools:context="com.example.chadyeo.animetv.fragments.AllAnimeFragment"
     tools:listitem="@layout/anime_item" />

@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -30,7 +29,7 @@ import android.widget.Toast;
 import com.example.chadyeo.animetv.api.Anime;
 import com.example.chadyeo.animetv.api.AnimeList;
 import com.example.chadyeo.animetv.api.HttpClient;
-import com.example.chadyeo.animetv.fragments.MainFragment;
+import com.example.chadyeo.animetv.fragments.AllAnimeFragment;
 import com.example.chadyeo.animetv.loaders.AnimeSeasonLoader;
 import com.example.chadyeo.animetv.utils.ListContent;
 import com.example.chadyeo.animetv.utils.SeasonUtil;
@@ -39,7 +38,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity
-        implements MainFragment.OnAllAnimeFragmentInteractionListener {
+        implements AllAnimeFragment.OnAllAnimeFragmentInteractionListener {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static HttpClient client;
@@ -196,8 +195,8 @@ public class MainActivity extends AppCompatActivity
                 if ((season.toLowerCase() + " " + year.toLowerCase()).equals(getSupportActionBar().getTitle().toString().toLowerCase())) {
                     ListContent.setList(data);
                     Log.d(LOG_TAG, "AnimeList Data is: " + data);
-                    MainFragment mainFragment = new MainFragment();
-                    mainFragment.updateList();
+                    AllAnimeFragment allAnimeFragment = new AllAnimeFragment();
+                    allAnimeFragment.updateList();
                 }
             }
         }

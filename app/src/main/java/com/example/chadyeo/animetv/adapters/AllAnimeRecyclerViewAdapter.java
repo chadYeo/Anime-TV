@@ -16,16 +16,16 @@ import com.bumptech.glide.Glide;
 import com.example.chadyeo.animetv.R;
 import com.example.chadyeo.animetv.api.Anime;
 import com.example.chadyeo.animetv.api.AnimeList;
-import com.example.chadyeo.animetv.fragments.MainFragment;
+import com.example.chadyeo.animetv.fragments.AllAnimeFragment;
 
 import java.util.ArrayList;
 
 public class AllAnimeRecyclerViewAdapter extends RecyclerView.Adapter<AllAnimeRecyclerViewAdapter.ViewHolder> {
 
     private ArrayList<Anime> mValues = new ArrayList<>();
-    private MainFragment.OnAllAnimeFragmentInteractionListener mListener;
+    private AllAnimeFragment.OnAllAnimeFragmentInteractionListener mListener;
 
-    public AllAnimeRecyclerViewAdapter(ArrayList<Anime> items, MainFragment.OnAllAnimeFragmentInteractionListener listener) {
+    public AllAnimeRecyclerViewAdapter(ArrayList<Anime> items, AllAnimeFragment.OnAllAnimeFragmentInteractionListener listener) {
         mValues.addAll(items);
         mListener = listener;
     }

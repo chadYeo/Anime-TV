@@ -1,4 +1,4 @@
-package com.example.chadyeo.animetv.api;
+package com.example.chadyeo.animetv.adapters;
 
 
 import android.content.Context;
@@ -14,12 +14,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.chadyeo.animetv.R;
+import com.example.chadyeo.animetv.api.Anime;
+import com.example.chadyeo.animetv.api.AnimeList;
 import com.example.chadyeo.animetv.fragments.MainFragment;
 
 import java.util.ArrayList;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class AllAnimeRecyclerViewAdapter extends RecyclerView.Adapter<AllAnimeRecyclerViewAdapter.ViewHolder> {
 

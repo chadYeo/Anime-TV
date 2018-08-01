@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,11 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.chadyeo.animetv.R;
-import com.example.chadyeo.animetv.api.AllAnimeRecyclerViewAdapter;
+import com.example.chadyeo.animetv.adapters.AllAnimeRecyclerViewAdapter;
 import com.example.chadyeo.animetv.api.Anime;
 import com.example.chadyeo.animetv.utils.ListContent;
-
-import butterknife.ButterKnife;
 
 public class MainFragment extends Fragment {
 

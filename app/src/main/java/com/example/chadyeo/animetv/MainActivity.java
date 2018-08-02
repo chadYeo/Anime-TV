@@ -6,7 +6,10 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.LoaderManager;
@@ -26,12 +29,15 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.chadyeo.animetv.adapters.SeasonPagerStateAdapter;
 import com.example.chadyeo.animetv.api.Anime;
 import com.example.chadyeo.animetv.api.AnimeList;
 import com.example.chadyeo.animetv.api.HttpClient;
 import com.example.chadyeo.animetv.fragments.AllAnimeFragment;
 import com.example.chadyeo.animetv.loaders.AnimeSeasonLoader;
+import com.example.chadyeo.animetv.utils.ColumnUtil;
 import com.example.chadyeo.animetv.utils.ListContent;
+import com.example.chadyeo.animetv.utils.ListOptions;
 import com.example.chadyeo.animetv.utils.SeasonUtil;
 
 import java.util.ArrayList;
@@ -49,9 +55,12 @@ public class MainActivity extends AppCompatActivity
 
     String season;
     String year;
+    SeasonPagerStateAdapter adapter;
+
     ArrayList<String> years = new ArrayList<>();
     int sort = 0;
     int asc = -1;
+    int currentSelectedTab = 0;
 
     boolean loaded = false;
     boolean noInternet = false;
@@ -93,6 +102,12 @@ public class MainActivity extends AppCompatActivity
         }
         client = new HttpClient(this);
 
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        setUpViewPager(viewPager);
+
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+
         getSupportActionBar().setTitle(season + " " + year);
         getSupportActionBar().setSubtitle(Html.fromHtml("<font color='#00BFA5'>" + SeasonUtil.getSubtitle(season) + "</font>"));
 
@@ -101,12 +116,34 @@ public class MainActivity extends AppCompatActivity
         initLoadDataForList(season, year, reinit);
     }
 
+    private void setUpViewPager(ViewPager viewPager) {
+        adapter = new SeasonPagerStateAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(adapter);
+        viewPager.setOnPageChangeListener(new ViewPagerSwiperListener());
+        viewPager.setOffscreenPageLimit(1);
+    }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("SEASON", season);
         outState.putString("YEAR", year);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        int orientation = getResources().getConfiguration().orientation;
+        if (orientation != ListOptions.SCREEN_ORIENTATION) {
+            ListOptions.COLUMN_COUNT = ColumnUtil.calculateNoOfColumns(this);
+            setUpViewPager(viewPager);
+            ListOptions.SCREEN_ORIENTATION = orientation;
+            if (tabLayout.getSelectedTabPosition() != currentSelectedTab) {
+                tabLayout.getTabAt(currentSelectedTab).select();
+            }
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
@@ -141,6 +178,11 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    public void onAllAnimeFragmentInteraction(Anime item) {
+
+    }
+
     public static HttpClient getClient() {
         return client;
     }
@@ -153,11 +195,6 @@ public class MainActivity extends AppCompatActivity
             getSupportLoaderManager().restartLoader(0, null, new InitLoad(this, season, year, reinit));
             Log.d(LOG_TAG, "InitLoadDataForList Re-Initiated");
         }
-    }
-
-    @Override
-    public void onAllAnimeFragmentInteraction(Anime item) {
-
     }
 
     /**
@@ -316,5 +353,22 @@ public class MainActivity extends AppCompatActivity
         Log.e("TESTING", "SHOWING");
         Dialog dialog = builder.create();
         dialog.show();
+    }
+
+    private class ViewPagerSwiperListener implements ViewPager.OnPageChangeListener {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            currentSelectedTab = position;
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+        }
     }
 }

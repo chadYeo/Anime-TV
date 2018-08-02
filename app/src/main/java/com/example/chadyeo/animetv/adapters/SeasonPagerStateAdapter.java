@@ -1,6 +1,7 @@
 package com.example.chadyeo.animetv.adapters;
 
 
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
@@ -24,6 +25,17 @@ public class SeasonPagerStateAdapter extends SmartFragmentStatePagerAdapter {
             default:
                 return null;
         }
+    }
+
+    @Nullable
+    @Override
+    public CharSequence getPageTitle(int position) {
+        switch (position) {
+            case 0:
+                return "ALL";
+
+        }
+        return null;
     }
 
     @Override

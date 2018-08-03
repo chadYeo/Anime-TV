@@ -3,7 +3,6 @@ package com.example.chadyeo.animetv.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.chadyeo.animetv.R;
+import com.example.chadyeo.animetv.adapters.MovieAnimeItemRecyclerViewAdapter;
 import com.example.chadyeo.animetv.api.Anime;
+import com.example.chadyeo.animetv.utils.ListContent;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,11 +42,12 @@ public class MovieAnimeFragment extends Fragment {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setHasFixedSize(true);
-            gridLayoutManager = new GridLayoutManager(context);
+            gridLayoutManager = new GridLayoutManager(context, 2);
             recyclerView.setLayoutManager(gridLayoutManager);
-            adapter = new
+            adapter = new MovieAnimeItemRecyclerViewAdapter(ListContent.getList().getMovie(), mListener);
+            adapter.setHasStableIds(true);
+            recyclerView.setAdapter(adapter);
         }
-
         return view;
     }
 

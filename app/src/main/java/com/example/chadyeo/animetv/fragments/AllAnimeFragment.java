@@ -95,6 +95,7 @@ public class AllAnimeFragment extends Fragment {
             adapter.reloadDataSource(ListContent.getList());
             adapter.clearBitmapCache(this.getContext());
             adapter.notifyDataSetChanged();
+            Log.d(LOG_TAG, "reloadList - Size of Data: " + String.valueOf(adapter.getItemCount()));
         } else {
             adapter = new AllAnimeRecyclerViewAdapter(ListContent.getList().getAll(), mListener);
         }

@@ -34,6 +34,7 @@ import com.example.chadyeo.animetv.api.Anime;
 import com.example.chadyeo.animetv.api.AnimeList;
 import com.example.chadyeo.animetv.api.HttpClient;
 import com.example.chadyeo.animetv.fragments.AllAnimeFragment;
+import com.example.chadyeo.animetv.fragments.MovieAnimeFragment;
 import com.example.chadyeo.animetv.loaders.AnimeSeasonLoader;
 import com.example.chadyeo.animetv.utils.ColumnUtil;
 import com.example.chadyeo.animetv.utils.ListContent;
@@ -44,14 +45,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity
-        implements AllAnimeFragment.OnAllAnimeFragmentInteractionListener {
+        implements AllAnimeFragment.OnAllAnimeFragmentInteractionListener,
+        MovieAnimeFragment.OnMovieAnimeFragmentInteractionListener {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static HttpClient client;
 
     ViewPager viewPager;
     TabLayout tabLayout;
-
 
     String season;
     String year;
@@ -131,6 +132,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         int orientation = getResources().getConfiguration().orientation;
@@ -142,6 +148,20 @@ public class MainActivity extends AppCompatActivity
                 tabLayout.getTabAt(currentSelectedTab).select();
             }
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        writeSettings();
+    }
+
+    private void writeSettings() {
+        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(getString(R.string.list_sort), sort);
+        editor.putInt(getString(R.string.order_sort), asc);
+        editor.apply();
     }
 
     @Override
@@ -197,6 +217,10 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    public void onMovieAnimeFragmentInteraction(Anime item) {
+    }
+
     /**
      * Loading for all
      */
@@ -222,6 +246,7 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public void onLoadFinished(Loader<AnimeList> loader, AnimeList data) {
+            ViewPager view = (ViewPager) findViewById(R.id.viewPager);
             if (data == null) {
                 noInternet = true;
                 Log.d(LOG_TAG, "There is no data onLoadFinished");
@@ -232,15 +257,21 @@ public class MainActivity extends AppCompatActivity
                 if ((season.toLowerCase() + " " + year.toLowerCase()).equals(getSupportActionBar().getTitle().toString().toLowerCase())) {
                     ListContent.setList(data);
                     Log.d(LOG_TAG, "AnimeList Data is: " + data);
-                    AllAnimeFragment allAnimeFragment = new AllAnimeFragment();
-                    allAnimeFragment.updateList();
+
+                    if (adapter.getRegisteredFragment(0) != null) {
+                        AllAnimeFragment all = (AllAnimeFragment) adapter.getRegisteredFragment(0);
+                        all.updateList();
+                    }
+                    if (adapter.getRegisteredFragment(1) != null) {
+                        MovieAnimeFragment movie = (MovieAnimeFragment) adapter.getRegisteredFragment(1);
+                        movie.updateList();
+                    }
                 }
             }
         }
 
         @Override
         public void onLoaderReset(Loader<AnimeList> loader) {
-
         }
     }
 
@@ -358,7 +389,6 @@ public class MainActivity extends AppCompatActivity
     private class ViewPagerSwiperListener implements ViewPager.OnPageChangeListener {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
         }
 
         @Override
@@ -368,7 +398,6 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public void onPageScrollStateChanged(int state) {
-
         }
     }
 }

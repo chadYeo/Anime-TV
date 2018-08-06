@@ -35,6 +35,7 @@ import com.example.chadyeo.animetv.api.AnimeList;
 import com.example.chadyeo.animetv.api.HttpClient;
 import com.example.chadyeo.animetv.fragments.AllAnimeFragment;
 import com.example.chadyeo.animetv.fragments.MovieAnimeFragment;
+import com.example.chadyeo.animetv.fragments.TVAnimeFragment;
 import com.example.chadyeo.animetv.loaders.AnimeSeasonLoader;
 import com.example.chadyeo.animetv.utils.ColumnUtil;
 import com.example.chadyeo.animetv.utils.ListContent;
@@ -217,6 +218,16 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    public void initLoadDataForSeasonList(String season, String year) {
+        getSupportActionBar().setTitle(season + " " + year);
+        getSupportActionBar().setSubtitle("<font color='#00BFA5'>"+SeasonUtil.getSubtitle(season)+"</font>");
+        if (getSupportLoaderManager().getLoader(1) == null) {
+            getSupportLoaderManager().initLoader(1, null, new SeasonLoad(this, season, year));
+        } else {
+            getSupportLoaderManager().restartLoader(1, null, new SeasonLoad(this, season, year));
+        }
+    }
+
     @Override
     public void onMovieAnimeFragmentInteraction(Anime item) {
     }
@@ -282,13 +293,11 @@ public class MainActivity extends AppCompatActivity
         private Context context;
         private String season;
         private String year;
-        private boolean reinit;
 
-        public SeasonLoad(Context context, String season, String year, boolean reinit) {
+        public SeasonLoad(Context context, String season, String year) {
             this.context = context;
             this.season = season;
             this.year = year;
-            this.reinit = reinit;
         }
 
         @Override
@@ -307,6 +316,18 @@ public class MainActivity extends AppCompatActivity
                 }
                 if ((season.toLowerCase() + " "  + year.toLowerCase()).equals(getSupportActionBar().getTitle().toString().toLowerCase())) {
                     ListContent.setList(data);
+                    if (adapter.getRegisteredFragment(0) != null) {
+                        AllAnimeFragment all = (AllAnimeFragment) adapter.getRegisteredFragment(0);
+                        all.updateList();
+                    }
+                    if (adapter.getRegisteredFragment(1) != null) {
+                        MovieAnimeFragment movie = (MovieAnimeFragment) adapter.getRegisteredFragment(1);
+                        movie.updateList();
+                    }
+                    if (adapter.getRegisteredFragment(2) != null) {
+                        TVAnimeFragment tv = (TVAnimeFragment) adapter.getRegisteredFragment(2);
+                        tv.updateList();
+                    }
                 }
 
             }
@@ -330,7 +351,7 @@ public class MainActivity extends AppCompatActivity
         builder.setView(dialogView);
 
         final Spinner seasonSpinner = (Spinner) dialogView.findViewById(R.id.sort_season_spinner);
-        ArrayAdapter<CharSequence> seasonAdapter =
+        final ArrayAdapter<CharSequence> seasonAdapter =
                 ArrayAdapter.createFromResource(this, R.array.season_array, R.layout.spinner_dropdown_item);
         seasonAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         seasonSpinner.setAdapter(seasonAdapter);
@@ -341,7 +362,7 @@ public class MainActivity extends AppCompatActivity
         else if (season.toLowerCase().equals("fall")) idx = 3;
         seasonSpinner.setSelection(idx);
 
-        Spinner yearSpinner = (Spinner) dialogView.findViewById(R.id.sort_year_spinner);
+        final Spinner yearSpinner = (Spinner) dialogView.findViewById(R.id.sort_year_spinner);
         ArrayAdapter<CharSequence> yearAdapter =
                 new ArrayAdapter<CharSequence>(this, R.layout.spinner_dropdown_item, years.toArray(new String[years.size()]));
         yearAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
@@ -371,7 +392,11 @@ public class MainActivity extends AppCompatActivity
                         (orderSpinner.getSelectedItemPosition()  == 0 ? -1 : 1) != asc) {
                     sort = sortSpinner.getSelectedItemPosition();
                     asc = orderSpinner.getSelectedItemPosition() == 0 ? -1 : 1;
-
+                    initLoadDataForSeasonList(seasonSpinner.getSelectedItem().toString(), yearSpinner.getSelectedItem().toString());
+                    year = yearSpinner.getSelectedItem().toString();
+                    season = yearSpinner.getSelectedItem().toString();
+                    ListContent.setCurrentYear(year);
+                    ListContent.setCurrentSeason(season);
                 }
             }
         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

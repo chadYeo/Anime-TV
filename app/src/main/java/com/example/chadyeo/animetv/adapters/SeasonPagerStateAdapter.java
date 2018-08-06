@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 
 import com.example.chadyeo.animetv.fragments.AllAnimeFragment;
 import com.example.chadyeo.animetv.fragments.MovieAnimeFragment;
+import com.example.chadyeo.animetv.fragments.TVAnimeFragment;
 import com.example.chadyeo.animetv.utils.ListOptions;
 
 public class SeasonPagerStateAdapter extends SmartFragmentStatePagerAdapter {
@@ -25,6 +26,8 @@ public class SeasonPagerStateAdapter extends SmartFragmentStatePagerAdapter {
                 return AllAnimeFragment.newInstance(ListOptions.COLUMN_COUNT);
             case 1:
                 return MovieAnimeFragment.newInstance(ListOptions.COLUMN_COUNT);
+            case 2:
+                return TVAnimeFragment.newInstance(ListOptions.COLUMN_COUNT);
             default:
                 return null;
         }
@@ -38,6 +41,8 @@ public class SeasonPagerStateAdapter extends SmartFragmentStatePagerAdapter {
                 return "ALL";
             case 1:
                 return "MOVIE";
+            case 2:
+                return "TV";
         }
         return null;
     }

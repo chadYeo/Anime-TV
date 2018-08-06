@@ -11,6 +11,8 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -37,6 +39,7 @@ import com.example.chadyeo.animetv.fragments.AllAnimeFragment;
 import com.example.chadyeo.animetv.fragments.MovieAnimeFragment;
 import com.example.chadyeo.animetv.fragments.TVAnimeFragment;
 import com.example.chadyeo.animetv.loaders.AnimeSeasonLoader;
+import com.example.chadyeo.animetv.loaders.AnimeSeasonReload;
 import com.example.chadyeo.animetv.utils.ColumnUtil;
 import com.example.chadyeo.animetv.utils.ListContent;
 import com.example.chadyeo.animetv.utils.ListOptions;
@@ -335,6 +338,56 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public void onLoaderReset(Loader<AnimeList> loader) {
+
+        }
+    }
+
+    /**
+     * Re-Loading list
+     */
+    private class ReloadList implements LoaderManager.LoaderCallbacks<AnimeList> {
+
+        private Context context;
+        private String season;
+        private String year;
+
+        public ReloadList(Context context, String season, String year) {
+            this.context = context;
+            this.season = season;
+            this.year = year;
+        }
+
+        @NonNull
+        @Override
+        public Loader<AnimeList> onCreateLoader(int id, @Nullable Bundle args) {
+            return new AnimeSeasonReload(context, season, year, sort, asc);
+        }
+
+        @Override
+        public void onLoadFinished(@NonNull Loader<AnimeList> loader, AnimeList data) {
+            if (data == null) {
+                noInternet = true;
+                Toast.makeText(context, "There's no interent connection", Toast.LENGTH_SHORT).show();
+            }
+            if ((season.toLowerCase() + " " + year.toLowerCase()).equals(getSupportActionBar().getTitle().toString().toLowerCase())) {
+                ListContent.setList(data);
+                if (adapter.getRegisteredFragment(0) != null) {
+                    AllAnimeFragment all = (AllAnimeFragment) adapter.getRegisteredFragment(0);
+                    all.reloadList();
+                }
+                if (adapter.getRegisteredFragment(1) != null) {
+                    MovieAnimeFragment movie = (MovieAnimeFragment) adapter.getRegisteredFragment(1);
+                    movie.reloadList();
+                }
+                if (adapter.getRegisteredFragment(2) != null) {
+                    TVAnimeFragment tv = (TVAnimeFragment) adapter.getRegisteredFragment(2);
+                    tv.reloadList();
+                }
+            }
+        }
+
+        @Override
+        public void onLoaderReset(@NonNull Loader<AnimeList> loader) {
 
         }
     }

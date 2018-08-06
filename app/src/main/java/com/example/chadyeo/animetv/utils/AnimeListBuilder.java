@@ -105,6 +105,30 @@ public class AnimeListBuilder {
         return result;
     }
 
+    public static AnimeList reloadSeasonList(String season, int sort, int asc) {
+        ArrayList<Anime> all = getSeasonList(season, sort, asc);
+        if (all == null) {
+            return null;
+        }
+        AnimeList result = new AnimeList();
+        result.setAll(all);
+
+        ArrayList<Anime> movie = new ArrayList<>();
+        ArrayList<Anime> tv = new ArrayList<>();
+        for (Anime anime : all) {
+            if (anime.getType().toLowerCase().equals("movie")) {
+                movie.add(anime);
+            } else if (anime.getType().toLowerCase().equals("tv")) {
+                tv.add(anime);
+            }
+        }
+        result.setMovie(movie);
+        result.setTV(tv);
+        result.setSeason(season);
+
+        return result;
+    }
+
     /*
      * Check with ListContent if the season/query is the same.
      */

@@ -43,7 +43,7 @@ public class TVAnimeItemRecyclerViewAdapter
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.anime_title_textView.setText(holder.mItem.getTitle_romaji());
-        holder.anime_episodes_textView.setText(holder.mItem.getTotal_episodes());
+        holder.anime_episodes_textView.setText(String.valueOf(holder.mItem.getTotal_episodes()));
         holder.anime_type_textView.setText(holder.mItem.getType());
 
 

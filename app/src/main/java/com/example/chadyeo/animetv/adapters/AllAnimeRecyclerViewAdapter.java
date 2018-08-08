@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -17,6 +18,7 @@ import com.example.chadyeo.animetv.R;
 import com.example.chadyeo.animetv.api.Anime;
 import com.example.chadyeo.animetv.api.AnimeList;
 import com.example.chadyeo.animetv.fragments.AllAnimeFragment;
+import com.example.chadyeo.animetv.utils.ListOptions;
 
 import java.util.ArrayList;
 
@@ -126,6 +128,12 @@ public class AllAnimeRecyclerViewAdapter extends RecyclerView.Adapter<AllAnimeRe
             anime_type_textView = (TextView) view.findViewById(R.id.anime_type_textView);
 
             //ButterKnife.bind(this, view);
+
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) anime_item_cardView.getLayoutParams();
+            anime_item_imageView.requestLayout();
+            anime_item_imageView.getLayoutParams().width = (int) (view.getContext().getResources()
+            .getDisplayMetrics().widthPixels * (1.0/2.0) - (layoutParams.leftMargin + layoutParams.rightMargin));
+            anime_item_imageView.getLayoutParams().height = (int) (anime_item_imageView.getLayoutParams().width * 1.44);
         }
     }
 }

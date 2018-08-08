@@ -2,19 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:paddingLeft="?dialogPreferredPadding"
+    android:paddingRight="?dialogPreferredPadding"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_marginTop="20dp">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp"
             android:layout_weight="0.5">
 
             <TextView
@@ -22,20 +24,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:text="Season" />
+                android:text="Season"
+                android:textSize="16sp"/>
 
             <Spinner
                 android:id="@+id/sort_season_spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="right"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
                 android:layout_weight="0.5" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_weight="0.5">
 
             <TextView
@@ -43,12 +48,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:text="Year" />
+                android:text="Year"
+                android:textSize="16sp"/>
 
             <Spinner
                 android:id="@+id/sort_year_spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="right"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
                 android:layout_weight="0.5" />
 
         </LinearLayout>
@@ -58,26 +66,30 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
         android:background="@android:color/darker_gray" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginBottom="12dp">
 
         <TextView
             android:id="@+id/dialog_sort_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:text="Order by"/>
+            android:text="Sort by"
+            android:textSize="16sp"/>
 
         <Spinner
             android:id="@+id/sort_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="right"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
             android:layout_weight="0.5" />
 
     </LinearLayout>
@@ -93,12 +105,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:text="Order by"/>
+            android:text="Order by"
+            android:textSize="16sp"/>
 
         <Spinner
             android:id="@+id/order_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="right"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
             android:layout_weight="0.5" />
 
     </LinearLayout>

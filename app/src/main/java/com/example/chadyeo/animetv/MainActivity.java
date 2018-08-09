@@ -66,7 +66,6 @@ public class MainActivity extends AppCompatActivity
     int asc = -1;
     int currentSelectedTab = 0;
 
-    boolean loaded = false;
     boolean noInternet = false;
 
 
@@ -87,6 +86,10 @@ public class MainActivity extends AppCompatActivity
         Calendar calendar = Calendar.getInstance();
         int y = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
+
+        if (ListContent.getList() != null) {
+            ListContent.setList(new AnimeList());
+        }
 
         if (savedInstanceState == null) {
             String season = SeasonUtil.checkMonth(month);
@@ -113,7 +116,7 @@ public class MainActivity extends AppCompatActivity
         tabLayout.setupWithViewPager(viewPager);
 
         getSupportActionBar().setTitle(season + " " + year);
-        getSupportActionBar().setSubtitle(Html.fromHtml("<font color='#00BFA5'>" + SeasonUtil.getSubtitle(season) + "</font>"));
+        getSupportActionBar().setSubtitle(Html.fromHtml(SeasonUtil.getSubtitle(season)));
 
         boolean reinit = (savedInstanceState != null);
         Log.d(LOG_TAG, "Reinit: " + reinit);
@@ -507,7 +510,9 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (sortSpinner.getSelectedItemPosition() != sort ||
-                        (orderSpinner.getSelectedItemPosition()  == 0 ? -1 : 1) != asc) {
+                        (orderSpinner.getSelectedItemPosition()  == 0 ? -1 : 1) != asc ||
+                        !seasonSpinner.getSelectedItem().toString().toLowerCase().equals(season.toLowerCase()) ||
+                        !yearSpinner.getSelectedItem().toString().toLowerCase().equals(year.toLowerCase())) {
                     sort = sortSpinner.getSelectedItemPosition();
                     asc = orderSpinner.getSelectedItemPosition() == 0 ? -1 : 1;
                     initLoadDataForSeasonList(seasonSpinner.getSelectedItem().toString(), yearSpinner.getSelectedItem().toString());

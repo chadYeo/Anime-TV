@@ -129,6 +129,27 @@ public class AnimeListBuilder {
         return result;
     }
 
+    public static AnimeList sortAnimeList(int sort, int ad, AnimeList animeList) {
+        ArrayList<Anime> all = new ArrayList<>();
+        ArrayList<Anime> movie = new ArrayList<>();
+        ArrayList<Anime> tv = new ArrayList<>();
+
+        all.addAll(animeList.getAll());
+        movie.addAll(animeList.getMovie());
+        tv.addAll(animeList.getTV());
+
+        Collections.sort(all, new AnimeComparator(sort, ad));
+        Collections.sort(movie, new AnimeComparator(sort, ad));
+        Collections.sort(tv, new AnimeComparator(sort, ad));
+
+        AnimeList xAnimeList = new AnimeList();
+        xAnimeList.setAll(all);
+        xAnimeList.setMovie(all);
+        xAnimeList.setTV(tv);
+
+        return xAnimeList;
+    }
+
     /*
      * Check with ListContent if the season/query is the same.
      */

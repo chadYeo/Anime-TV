@@ -31,11 +31,11 @@ class AnimeComparator implements Comparator<Anime> {
     @Override
     public int compare(Anime o1, Anime o2) {
         if (type == 0) {
-            return (o1.getPopularity() - o2.getPopularity()) * type;
+            return (o1.getPopularity() - o2.getPopularity()) * sort;
         } else if (type == 1) {
-            return o1.getTitle_romaji().compareToIgnoreCase(o2.getTitle_romaji()) * type;
+            return o1.getTitle_romaji().compareToIgnoreCase(o2.getTitle_romaji()) * sort;
         } else {
-            return  (int)((o1.getAverage_score() - o2.getAverage_score())) * type;
+            return  (int)((o1.getAverage_score() - o2.getAverage_score())) * sort;
         }
     }
 }

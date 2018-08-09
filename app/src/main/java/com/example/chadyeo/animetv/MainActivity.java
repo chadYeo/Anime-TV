@@ -6,10 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -40,6 +37,7 @@ import com.example.chadyeo.animetv.fragments.MovieAnimeFragment;
 import com.example.chadyeo.animetv.fragments.TVAnimeFragment;
 import com.example.chadyeo.animetv.loaders.AnimeSeasonLoader;
 import com.example.chadyeo.animetv.loaders.AnimeSeasonReload;
+import com.example.chadyeo.animetv.loaders.AnimeSortLoader;
 import com.example.chadyeo.animetv.utils.ColumnUtil;
 import com.example.chadyeo.animetv.utils.ListContent;
 import com.example.chadyeo.animetv.utils.ListOptions;
@@ -50,7 +48,8 @@ import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity
         implements AllAnimeFragment.OnAllAnimeFragmentInteractionListener,
-        MovieAnimeFragment.OnMovieAnimeFragmentInteractionListener {
+        MovieAnimeFragment.OnMovieAnimeFragmentInteractionListener,
+        TVAnimeFragment.OnTVAnimeFragmentInteractionListener {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static HttpClient client;
@@ -231,8 +230,28 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    public void reloadDataForSeasonList(String season, String year) {
+        if (getSupportLoaderManager().getLoader(3) == null) {
+            getSupportLoaderManager().initLoader(3, null, new ReloadList(this, season, year)).forceLoad();
+        } else {
+            getSupportLoaderManager().restartLoader(3, null, new ReloadList(this, season, year)).forceLoad();
+        }
+    }
+
+    public void reloadDataForSeasonListSorted() {
+        if (getSupportLoaderManager().getLoader(4) == null) {
+            getSupportLoaderManager().initLoader(4, null, new SortList(this)).forceLoad();
+        } else {
+            getSupportLoaderManager().restartLoader(4, null, new SortList(this)).forceLoad();
+        }
+    }
+
     @Override
     public void onMovieAnimeFragmentInteraction(Anime item) {
+    }
+
+    @Override
+    public void onTVAnimeFragmentInteraction(Anime item) {
     }
 
     /**
@@ -393,6 +412,52 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
+     * Sort list and reloads
+     */
+    private class SortList implements LoaderManager.LoaderCallbacks<AnimeList> {
+
+        private Context context;
+
+        public SortList(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        public Loader<AnimeList> onCreateLoader(int id, Bundle args) {
+            return new AnimeSortLoader(context, sort, asc);
+        }
+
+        @Override
+        public void onLoadFinished(@NonNull Loader<AnimeList> loader, AnimeList data) {
+            if (data != null) {
+                if (noInternet) {
+                    Toast.makeText(context, "There's no interent connection", Toast.LENGTH_SHORT).show();
+                }
+                if ((season.toLowerCase() + " " + year.toLowerCase()).equals(getSupportActionBar().getTitle().toString().toLowerCase())) {
+                    ListContent.setList(data);
+                    if (adapter.getRegisteredFragment(0) != null) {
+                        AllAnimeFragment all = (AllAnimeFragment) adapter.getRegisteredFragment(0);
+                        all.reloadList();
+                    }
+                    if (adapter.getRegisteredFragment(1) != null) {
+                        MovieAnimeFragment movie = (MovieAnimeFragment) adapter.getRegisteredFragment(1);
+                        movie.reloadList();
+                    }
+                    if (adapter.getRegisteredFragment(2) != null) {
+                        TVAnimeFragment tv = (TVAnimeFragment) adapter.getRegisteredFragment(2);
+                        tv.reloadList();
+                    }
+                }
+            }
+        }
+
+        @Override
+        public void onLoaderReset(@NonNull Loader<AnimeList> loader) {
+
+        }
+    }
+
+    /**
      * Sort Dialog Menu
      */
     private void SelectSortDialogListener() {
@@ -450,6 +515,7 @@ public class MainActivity extends AppCompatActivity
                     season = yearSpinner.getSelectedItem().toString();
                     ListContent.setCurrentYear(year);
                     ListContent.setCurrentSeason(season);
+                    reloadDataForSeasonListSorted();
                 }
             }
         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

@@ -111,12 +111,6 @@ public class AllAnimeRecyclerViewAdapter extends RecyclerView.Adapter<AllAnimeRe
         public TextView anime_episodes_textView;
         public TextView anime_type_textView;
 
-        //@BindView(R.id.anime_item_cardView)CardView anime_item_cardView;
-        //@BindView(R.id.anime_item_imageView) ImageView anime_item_imageView;
-        //@BindView(R.id.anime_title_textView) TextView anime_title_textView;
-        //@BindView(R.id.anime_episodes_textView) TextView anime_episodes_textView;
-        //@BindView(R.id.anime_type_textView) TextView anime_type_textView;
-
         public ViewHolder(View view) {
             super(view);
             mView = view;
@@ -126,7 +120,6 @@ public class AllAnimeRecyclerViewAdapter extends RecyclerView.Adapter<AllAnimeRe
             anime_episodes_textView = (TextView) view.findViewById(R.id.anime_episodes_textView);
             anime_type_textView = (TextView) view.findViewById(R.id.anime_type_textView);
 
-            //ButterKnife.bind(this, view);
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) anime_item_cardView.getLayoutParams();
             anime_item_imageView.requestLayout();
             anime_item_imageView.getLayoutParams().width = (int) (view.getContext().getResources()

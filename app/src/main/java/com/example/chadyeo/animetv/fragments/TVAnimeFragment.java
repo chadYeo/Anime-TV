@@ -104,7 +104,7 @@ public class TVAnimeFragment extends Fragment {
             adapter.notifyDataSetChanged();
             Log.d(LOG_TAG, "reloadList - Size of Data: " + String.valueOf(adapter.getItemCount()));
         } else {
-            adapter = new TVAnimeItemRecyclerViewAdapter(ListContent.getList().getAll(), mListener);
+            adapter = new TVAnimeItemRecyclerViewAdapter(ListContent.getList().getTV(), mListener);
         }
     }
 
@@ -119,7 +119,7 @@ public class TVAnimeFragment extends Fragment {
             }
             Log.d(LOG_TAG, "Size of Data: " + String.valueOf(adapter.getItemCount()));
         } else {
-            adapter = new TVAnimeItemRecyclerViewAdapter(ListContent.getList().getAll(), mListener);
+            adapter = new TVAnimeItemRecyclerViewAdapter(ListContent.getList().getTV(), mListener);
             Log.d(LOG_TAG, "Size of Data: " + String.valueOf(adapter.getItemCount()));
         }
     }

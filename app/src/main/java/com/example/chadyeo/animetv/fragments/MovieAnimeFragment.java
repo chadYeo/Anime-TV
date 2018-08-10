@@ -106,7 +106,7 @@ public class MovieAnimeFragment extends Fragment {
             adapter.notifyDataSetChanged();
             Log.d(LOG_TAG, "reloadList - Size of Data: " + String.valueOf(adapter.getItemCount()));
         } else {
-            adapter = new MovieAnimeItemRecyclerViewAdapter(ListContent.getList().getAll(), mListener);
+            adapter = new MovieAnimeItemRecyclerViewAdapter(ListContent.getList().getMovie(), mListener);
         }
     }
 
@@ -121,7 +121,7 @@ public class MovieAnimeFragment extends Fragment {
             }
             Log.d(LOG_TAG, "Size of Data: " + String.valueOf(adapter.getItemCount()));
         } else {
-            adapter = new MovieAnimeItemRecyclerViewAdapter(ListContent.getList().getAll(), mListener);
+            adapter = new MovieAnimeItemRecyclerViewAdapter(ListContent.getList().getMovie(), mListener);
             Log.d(LOG_TAG, "Size of Data: " + String.valueOf(adapter.getItemCount()));
         }
     }

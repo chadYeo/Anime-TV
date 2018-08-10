@@ -92,13 +92,13 @@ public class TVAnimeItemRecyclerViewAdapter
     }
 
     public void reloadDataSource(AnimeList newUserList) {
-        update(newUserList.getAll());
+        update(newUserList.getTV());
     }
 
     public void changeDataSource(AnimeList newUserList) {
         ArrayList<Anime> temp = new ArrayList<>();
-        for (int i = 0; i < Math.min(newUserList.getAll().size(), 20); i++) {
-            temp.add(newUserList.getAll().get(i));
+        for (int i = 0; i < Math.min(newUserList.getTV().size(), 20); i++) {
+            temp.add(newUserList.getTV().get(i));
             update(temp);
         }
     }
@@ -118,12 +118,6 @@ public class TVAnimeItemRecyclerViewAdapter
         public TextView anime_episodes_textView;
         public TextView anime_type_textView;
 
-        //@BindView(R.id.anime_item_cardView)CardView anime_item_cardView;
-        //@BindView(R.id.anime_item_imageView) ImageView anime_item_imageView;
-        //@BindView(R.id.anime_title_textView) TextView anime_title_textView;
-        //@BindView(R.id.anime_episodes_textView) TextView anime_episodes_textView;
-        //@BindView(R.id.anime_type_textView) TextView anime_type_textView;
-
         public ViewHolder(View view) {
             super(view);
             mView = view;
@@ -132,8 +126,6 @@ public class TVAnimeItemRecyclerViewAdapter
             anime_title_textView = (TextView) view.findViewById(R.id.anime_title_textView);
             anime_episodes_textView = (TextView) view.findViewById(R.id.anime_episodes_textView);
             anime_type_textView = (TextView) view.findViewById(R.id.anime_type_textView);
-
-            //ButterKnife.bind(this, view);
 
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) anime_item_cardView.getLayoutParams();
             anime_item_imageView.requestLayout();

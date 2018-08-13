@@ -204,11 +204,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public void onAllAnimeFragmentInteraction(Anime item) {
-
-    }
-
     public static HttpClient getClient() {
         return client;
     }
@@ -225,7 +220,7 @@ public class MainActivity extends AppCompatActivity
 
     public void initLoadDataForSeasonList(String season, String year) {
         getSupportActionBar().setTitle(season + " " + year);
-        getSupportActionBar().setSubtitle("<font color='#00BFA5'>"+SeasonUtil.getSubtitle(season)+"</font>");
+        getSupportActionBar().setSubtitle(SeasonUtil.getSubtitle(season));
         if (getSupportLoaderManager().getLoader(1) == null) {
             getSupportLoaderManager().initLoader(1, null, new SeasonLoad(this, season, year));
         } else {
@@ -247,6 +242,10 @@ public class MainActivity extends AppCompatActivity
         } else {
             getSupportLoaderManager().restartLoader(4, null, new SortList(this)).forceLoad();
         }
+    }
+
+    @Override
+    public void onAllAnimeFragmentInteraction(Anime item) {
     }
 
     @Override
@@ -513,11 +512,13 @@ public class MainActivity extends AppCompatActivity
                         (orderSpinner.getSelectedItemPosition()  == 0 ? -1 : 1) != asc ||
                         !seasonSpinner.getSelectedItem().toString().toLowerCase().equals(season.toLowerCase()) ||
                         !yearSpinner.getSelectedItem().toString().toLowerCase().equals(year.toLowerCase())) {
-                    sort = sortSpinner.getSelectedItemPosition();
-                    asc = orderSpinner.getSelectedItemPosition() == 0 ? -1 : 1;
-                    initLoadDataForSeasonList(seasonSpinner.getSelectedItem().toString(), yearSpinner.getSelectedItem().toString());
                     year = yearSpinner.getSelectedItem().toString();
                     season = yearSpinner.getSelectedItem().toString();
+                    sort = sortSpinner.getSelectedItemPosition();
+                    asc = orderSpinner.getSelectedItemPosition() == 0 ? -1 : 1;
+
+                    initLoadDataForSeasonList(seasonSpinner.getSelectedItem().toString(), yearSpinner.getSelectedItem().toString());
+
                     ListContent.setCurrentYear(year);
                     ListContent.setCurrentSeason(season);
                     reloadDataForSeasonListSorted();

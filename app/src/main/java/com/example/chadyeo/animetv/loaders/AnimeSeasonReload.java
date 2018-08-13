@@ -17,7 +17,7 @@ public class AnimeSeasonReload extends AsyncTaskLoader<AnimeList> {
     private int sort;
     private int asc;
 
-    public AnimeSeasonReload(@NonNull Context context, String season, String year, int sort, int asc) {
+    public AnimeSeasonReload(Context context, String season, String year, int sort, int asc) {
         super(context);
         this.season = season;
         this.year = year;
@@ -35,6 +35,9 @@ public class AnimeSeasonReload extends AsyncTaskLoader<AnimeList> {
 
     @Override
     public void deliverResult(@Nullable AnimeList data) {
+        if (isReset()) {
+            return;
+        }
         AnimeList oldData = mData;
         mData = data;
         if (isStarted()) {

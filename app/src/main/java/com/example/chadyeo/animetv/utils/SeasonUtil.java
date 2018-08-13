@@ -28,36 +28,6 @@ public class SeasonUtil {
         return result;
     }
 
-    public static String[] prevSeason(String season, String year) {
-        int y = Integer.parseInt(year);
-        String[] result = new String[2];
-        int seasonIndex = seasons.indexOf(season);
-        if (seasonIndex == 0) {
-            seasonIndex = seasons.size() - 1;
-            y--;
-        } else {
-            seasonIndex--;
-        }
-        result[0] = seasons.get(seasonIndex);
-        result[1] = String.valueOf(y);
-        return result;
-    }
-
-    public static String[] nextSeason(String season, String year) {
-        int y = Integer.parseInt(year);
-        String[] result = new String[2];
-        int seasonIndex = seasons.indexOf(season);
-        if (seasonIndex == 0) {
-            seasonIndex = seasons.size() - 1;
-            y++;
-        } else {
-            seasonIndex++;
-        }
-        result[0] = seasons.get(seasonIndex);
-        result[1] = String.valueOf(y);
-        return result;
-    }
-
     public static String getSubtitle(String season) {
         if (season.toLowerCase().equals("winter")) {
             return "December - February";

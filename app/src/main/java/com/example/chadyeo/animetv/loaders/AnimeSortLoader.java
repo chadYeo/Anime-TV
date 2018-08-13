@@ -29,6 +29,9 @@ public class AnimeSortLoader extends AsyncTaskLoader<AnimeList> {
 
     @Override
     public void deliverResult(AnimeList data) {
+        if (isReset()) {
+            return;
+        }
         AnimeList oldData = mData;
         mData = data;
         if (isStarted()) {
@@ -49,6 +52,11 @@ public class AnimeSortLoader extends AsyncTaskLoader<AnimeList> {
     @Override
     protected void onStopLoading() {
         cancelLoad();
+    }
+
+    @Override
+    protected void onReset() {
+        super.onReset();
     }
 
     @Override

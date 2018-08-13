@@ -188,7 +188,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.search_anime) {
             return true;
         } else if (id == R.id.filter_anime) {
-            SelectSortDialogListener();
+            SelectSortDialog();
             return true;
         }
 
@@ -218,29 +218,27 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    //Todo: to merge with
     public void initLoadDataForSeasonList(String season, String year) {
         getSupportActionBar().setTitle(season + " " + year);
         getSupportActionBar().setSubtitle(SeasonUtil.getSubtitle(season));
         if (getSupportLoaderManager().getLoader(1) == null) {
             getSupportLoaderManager().initLoader(1, null, new SeasonLoad(this, season, year));
+            Log.d(LOG_TAG, "initLoadDataForSeasonList Activated");
         } else {
             getSupportLoaderManager().restartLoader(1, null, new SeasonLoad(this, season, year));
+            Log.d(LOG_TAG, "initLoadDataForSeasonList Re-Initiated");
         }
     }
 
-    public void reloadDataForSeasonList(String season, String year) {
-        if (getSupportLoaderManager().getLoader(3) == null) {
-            getSupportLoaderManager().initLoader(3, null, new ReloadList(this, season, year)).forceLoad();
-        } else {
-            getSupportLoaderManager().restartLoader(3, null, new ReloadList(this, season, year)).forceLoad();
-        }
-    }
-
+    //Todo: to merge with
     public void reloadDataForSeasonListSorted() {
         if (getSupportLoaderManager().getLoader(4) == null) {
             getSupportLoaderManager().initLoader(4, null, new SortList(this)).forceLoad();
+            Log.d(LOG_TAG, "reloadDataForSeasonListSorted Activated");
         } else {
             getSupportLoaderManager().restartLoader(4, null, new SortList(this)).forceLoad();
+            Log.d(LOG_TAG, "reloadDataForSeasonListSorted Re-Initiated");
         }
     }
 
@@ -364,56 +362,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     * Re-Loading list
-     */
-    private class ReloadList implements LoaderManager.LoaderCallbacks<AnimeList> {
-
-        private Context context;
-        private String season;
-        private String year;
-
-        public ReloadList(Context context, String season, String year) {
-            this.context = context;
-            this.season = season;
-            this.year = year;
-        }
-
-        @NonNull
-        @Override
-        public Loader<AnimeList> onCreateLoader(int id, @Nullable Bundle args) {
-            return new AnimeSeasonReload(context, season, year, sort, asc);
-        }
-
-        @Override
-        public void onLoadFinished(@NonNull Loader<AnimeList> loader, AnimeList data) {
-            if (data == null) {
-                noInternet = true;
-                Toast.makeText(context, "There's no interent connection", Toast.LENGTH_SHORT).show();
-            }
-            if ((season.toLowerCase() + " " + year.toLowerCase()).equals(getSupportActionBar().getTitle().toString().toLowerCase())) {
-                ListContent.setList(data);
-                if (adapter.getRegisteredFragment(0) != null) {
-                    AllAnimeFragment all = (AllAnimeFragment) adapter.getRegisteredFragment(0);
-                    all.reloadList();
-                }
-                if (adapter.getRegisteredFragment(1) != null) {
-                    MovieAnimeFragment movie = (MovieAnimeFragment) adapter.getRegisteredFragment(1);
-                    movie.reloadList();
-                }
-                if (adapter.getRegisteredFragment(2) != null) {
-                    TVAnimeFragment tv = (TVAnimeFragment) adapter.getRegisteredFragment(2);
-                    tv.reloadList();
-                }
-            }
-        }
-
-        @Override
-        public void onLoaderReset(@NonNull Loader<AnimeList> loader) {
-
-        }
-    }
-
-    /**
      * Sort list and reloads
      */
     private class SortList implements LoaderManager.LoaderCallbacks<AnimeList> {
@@ -433,7 +381,7 @@ public class MainActivity extends AppCompatActivity
         public void onLoadFinished(@NonNull Loader<AnimeList> loader, AnimeList data) {
             if (data != null) {
                 if (noInternet) {
-                    Toast.makeText(context, "There's no interent connection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "There's no interenet connection", Toast.LENGTH_SHORT).show();
                 }
                 if ((season.toLowerCase() + " " + year.toLowerCase()).equals(getSupportActionBar().getTitle().toString().toLowerCase())) {
                     ListContent.setList(data);
@@ -462,8 +410,7 @@ public class MainActivity extends AppCompatActivity
     /**
      * Sort Dialog Menu
      */
-    private void SelectSortDialogListener() {
-
+    private void SelectSortDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
         builder.setTitle(getString(R.string.sort_dialog_title));
@@ -505,35 +452,49 @@ public class MainActivity extends AppCompatActivity
         sortSpinner.setSelection(sort);
         orderSpinner.setSelection(asc == -1 ? 0 : 1);
 
-        builder.setPositiveButton("Apply", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                if (sortSpinner.getSelectedItemPosition() != sort ||
-                        (orderSpinner.getSelectedItemPosition()  == 0 ? -1 : 1) != asc ||
-                        !seasonSpinner.getSelectedItem().toString().toLowerCase().equals(season.toLowerCase()) ||
-                        !yearSpinner.getSelectedItem().toString().toLowerCase().equals(year.toLowerCase())) {
-                    year = yearSpinner.getSelectedItem().toString();
-                    season = yearSpinner.getSelectedItem().toString();
-                    sort = sortSpinner.getSelectedItemPosition();
-                    asc = orderSpinner.getSelectedItemPosition() == 0 ? -1 : 1;
+        builder.setPositiveButton("Apply", new SelectSortDialogListener(dialogView))
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
 
-                    initLoadDataForSeasonList(seasonSpinner.getSelectedItem().toString(), yearSpinner.getSelectedItem().toString());
-
-                    ListContent.setCurrentYear(year);
-                    ListContent.setCurrentSeason(season);
-                    reloadDataForSeasonListSorted();
-                }
-            }
-        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
-            }
-        });
-
-        Log.e("TESTING", "SHOWING");
         Dialog dialog = builder.create();
         dialog.show();
+    }
+
+    private class SelectSortDialogListener implements DialogInterface.OnClickListener {
+
+        View dialogView;
+
+        public  SelectSortDialogListener(View v) {
+            dialogView = v;
+        }
+
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+            Spinner seasonSpinner = (Spinner) dialogView.findViewById(R.id.sort_season_spinner);
+            Spinner yearSpinner = (Spinner) dialogView.findViewById(R.id.sort_year_spinner);
+            Spinner sortSpinner = (Spinner) dialogView.findViewById(R.id.sort_spinner);
+            Spinner orderSpinner = (Spinner) dialogView.findViewById(R.id.order_spinner);
+
+            if (sortSpinner.getSelectedItemPosition() != sort ||
+                    (orderSpinner.getSelectedItemPosition()  == 0 ? -1 : 1) != asc) {
+                sort = sortSpinner.getSelectedItemPosition();
+                asc = orderSpinner.getSelectedItemPosition() == 0 ? -1 : 1;
+                reloadDataForSeasonListSorted();
+                Log.d(LOG_TAG, "SelectSortDialogListener activated for sort & asc changes");
+            } else if (!seasonSpinner.getSelectedItem().toString().toLowerCase().equals(season.toLowerCase()) ||
+                    !yearSpinner.getSelectedItem().toString().toLowerCase().equals(year.toLowerCase())) {
+                year = yearSpinner.getSelectedItem().toString();
+                season = yearSpinner.getSelectedItem().toString();
+                ListContent.setCurrentYear(year);
+                ListContent.setCurrentSeason(season);
+                initLoadDataForSeasonList(seasonSpinner.getSelectedItem().toString(), yearSpinner.getSelectedItem().toString());
+                Log.d(LOG_TAG, "SelectSortDialogListener activated for season & year changes");
+            }
+        }
     }
 
     private class ViewPagerSwiperListener implements ViewPager.OnPageChangeListener {

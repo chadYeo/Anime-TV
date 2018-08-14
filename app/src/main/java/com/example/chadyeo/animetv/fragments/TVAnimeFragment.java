@@ -57,6 +57,21 @@ public class TVAnimeFragment extends Fragment {
             adapter = new TVAnimeItemRecyclerViewAdapter(ListContent.getList().getMovie(), mListener);
             adapter.setHasStableIds(true);
             recyclerView.setAdapter(adapter);
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    if (dy > 0) {
+                        int totalItemCount = adapter.getItemCount();
+                        int loadedItems = ListContent.getList().getAll().size();
+                        int visibleItemCount = gridLayoutManager.getChildCount();
+                        int lastVisibleItemCount = gridLayoutManager.findFirstVisibleItemPosition();
+                        if (totalItemCount < loadedItems && (lastVisibleItemCount + visibleItemCount) >= totalItemCount) {
+                            endlessScrollUpdate();
+                        }
+                    }
+                }
+            });
         }
         return view;
     }
@@ -95,6 +110,24 @@ public class TVAnimeFragment extends Fragment {
 
     public interface OnTVAnimeFragmentInteractionListener {
         void onTVAnimeFragmentInteraction(Anime item);
+    }
+
+    public void endlessScrollUpdate() {
+        if (adapter != null) {
+            adapter.endlessScrollReload(ListContent.getList());
+            adapter.clearBitmapCache(this.getContext());
+            if (getView() != null) {
+                RecyclerView list = (RecyclerView) getView().findViewById(R.id.anime_recyclerView);
+                list.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+            } else {
+                adapter = new TVAnimeItemRecyclerViewAdapter(ListContent.getList().getTV(), mListener);
+            }
+        }
     }
 
     public void reloadList() {

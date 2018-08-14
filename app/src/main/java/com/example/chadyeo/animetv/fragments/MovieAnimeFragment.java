@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.example.chadyeo.animetv.R;
 import com.example.chadyeo.animetv.adapters.AllAnimeRecyclerViewAdapter;
 import com.example.chadyeo.animetv.adapters.MovieAnimeItemRecyclerViewAdapter;
+import com.example.chadyeo.animetv.adapters.TVAnimeItemRecyclerViewAdapter;
 import com.example.chadyeo.animetv.api.Anime;
 import com.example.chadyeo.animetv.utils.ListContent;
 import com.example.chadyeo.animetv.utils.ListOptions;
@@ -59,6 +60,21 @@ public class MovieAnimeFragment extends Fragment {
             adapter = new MovieAnimeItemRecyclerViewAdapter(ListContent.getList().getMovie(), mListener);
             adapter.setHasStableIds(true);
             recyclerView.setAdapter(adapter);
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    if (dy > 0) {
+                        int totalItemCount = adapter.getItemCount();
+                        int loadedItems = ListContent.getList().getAll().size();
+                        int visibleItemCount = gridLayoutManager.getChildCount();
+                        int lastVisibleItemCount = gridLayoutManager.findFirstVisibleItemPosition();
+                        if (totalItemCount < loadedItems && (lastVisibleItemCount + visibleItemCount) >= totalItemCount) {
+                            endlessScrollUpdate();
+                        }
+                    }
+                }
+            });
         }
         return view;
     }
@@ -97,6 +113,24 @@ public class MovieAnimeFragment extends Fragment {
 
     public interface OnMovieAnimeFragmentInteractionListener {
         void onMovieAnimeFragmentInteraction(Anime item);
+    }
+
+    public void endlessScrollUpdate() {
+        if (adapter != null) {
+            adapter.endlessScrollReload(ListContent.getList());
+            adapter.clearBitmapCache(this.getContext());
+            if (getView() != null) {
+                RecyclerView list = (RecyclerView) getView().findViewById(R.id.anime_recyclerView);
+                list.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+            } else {
+                adapter = new MovieAnimeItemRecyclerViewAdapter(ListContent.getList().getMovie(), mListener);
+            }
+        }
     }
 
     public void reloadList() {

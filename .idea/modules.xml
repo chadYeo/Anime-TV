@@ -3,10 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Anime-TV.iml" filepath="$PROJECT_DIR$/Anime-TV.iml" />
-      <module fileurl="file://C:\Users\chad.yeo\Desktop\Anime-TV\Anime-TV.iml" filepath="C:\Users\chad.yeo\Desktop\Anime-TV\Anime-TV.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Anime-TV.iml" filepath="$PROJECT_DIR$/Anime-TV.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://C:\Users\chad.yeo\Desktop\Anime-TV\app\app.iml" filepath="C:\Users\chad.yeo\Desktop\Anime-TV\app\app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

@@ -103,6 +103,16 @@ public class TVAnimeItemRecyclerViewAdapter
         update(temp);
     }
 
+    public void endlessScrollReload(AnimeList newAnimeList) {
+        ArrayList<Anime> temp = new ArrayList<>();
+        temp.addAll(mValues);
+        int updateSize = temp.size() + 20;
+        for (int i = Math.min(newAnimeList.getTV().size(), temp.size()); i < Math.min(newAnimeList.getTV().size(), updateSize); i++) {
+            temp.add(newAnimeList.getTV().get(i));
+        }
+        update(temp);
+    }
+
     public void clearBitmapCache(Context c) {
         Glide.get(c).clearMemory();
         Log.w("Memory Cleared: ", "Glid Memory is Cleared");

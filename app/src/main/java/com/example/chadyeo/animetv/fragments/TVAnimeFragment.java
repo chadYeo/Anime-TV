@@ -54,7 +54,7 @@ public class TVAnimeFragment extends Fragment {
             recyclerView.setHasFixedSize(true);
             gridLayoutManager = new GridLayoutManager(context, 2);
             recyclerView.setLayoutManager(gridLayoutManager);
-            adapter = new TVAnimeItemRecyclerViewAdapter(ListContent.getList().getMovie(), mListener);
+            adapter = new TVAnimeItemRecyclerViewAdapter(ListContent.getList().getTV(), mListener);
             adapter.setHasStableIds(true);
             recyclerView.setAdapter(adapter);
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -63,7 +63,7 @@ public class TVAnimeFragment extends Fragment {
                     super.onScrolled(recyclerView, dx, dy);
                     if (dy > 0) {
                         int totalItemCount = adapter.getItemCount();
-                        int loadedItems = ListContent.getList().getAll().size();
+                        int loadedItems = ListContent.getList().getTV().size();
                         int visibleItemCount = gridLayoutManager.getChildCount();
                         int lastVisibleItemCount = gridLayoutManager.findFirstVisibleItemPosition();
                         if (totalItemCount < loadedItems && (lastVisibleItemCount + visibleItemCount) >= totalItemCount) {

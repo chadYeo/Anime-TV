@@ -50,6 +50,7 @@ public class MovieAnimeFragment extends Fragment {
         list.setItemViewCacheSize(20);
         list.setDrawingCacheEnabled(true);
         list.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -66,7 +67,7 @@ public class MovieAnimeFragment extends Fragment {
                     super.onScrolled(recyclerView, dx, dy);
                     if (dy > 0) {
                         int totalItemCount = adapter.getItemCount();
-                        int loadedItems = ListContent.getList().getAll().size();
+                        int loadedItems = ListContent.getList().getMovie().size();
                         int visibleItemCount = gridLayoutManager.getChildCount();
                         int lastVisibleItemCount = gridLayoutManager.findFirstVisibleItemPosition();
                         if (totalItemCount < loadedItems && (lastVisibleItemCount + visibleItemCount) >= totalItemCount) {

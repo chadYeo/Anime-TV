@@ -88,17 +88,20 @@ public class AllAnimeFragment extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
+    public void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
+        if (getView() != null) {
+            RecyclerView list = (RecyclerView) getView().findViewById(R.id.anime_recyclerView);
+            list.getLayoutManager().scrollToPosition(0);
+            updateList();
+        }
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        //adapter.notifyDataSetChanged();
-        if (getView() != null) {
-            //updateList();
-        }
+    public void onPause() {
+        super.onPause();
+        adapter.clearBitmapCache(this.getContext());
     }
 
     public interface OnAllAnimeFragmentInteractionListener {

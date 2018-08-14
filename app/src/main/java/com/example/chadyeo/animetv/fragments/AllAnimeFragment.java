@@ -57,6 +57,21 @@ public class AllAnimeFragment extends Fragment {
             adapter = new AllAnimeRecyclerViewAdapter(ListContent.getList().getAll(), mListener);
             adapter.setHasStableIds(true);
             recyclerView.setAdapter(adapter);
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    if (dy > 0) {
+                        int totalItemCount = adapter.getItemCount();
+                        int loadedItems = ListContent.getList().getAll().size();
+                        int visibleItemCount = gridLayoutManager.getChildCount();
+                        int lastVisibleItemCount = gridLayoutManager.findFirstVisibleItemPosition();
+                        if (totalItemCount < loadedItems && (lastVisibleItemCount + visibleItemCount) >= totalItemCount) {
+                            endlessScrollUpdate();
+                        }
+                    }
+                }
+            });
         }
 
         Log.d(LOG_TAG, "ListContent GetList Get All Info: " + String.valueOf(ListContent.getList().getAll()));
@@ -88,6 +103,24 @@ public class AllAnimeFragment extends Fragment {
 
     public interface OnAllAnimeFragmentInteractionListener {
         void onAllAnimeFragmentInteraction(Anime item);
+    }
+
+    private void endlessScrollUpdate() {
+        if (adapter != null) {
+            adapter.endlessScrollReload(ListContent.getList());
+            adapter.clearBitmapCache(this.getContext());
+            if (getView() != null) {
+                RecyclerView list = (RecyclerView) getView().findViewById(R.id.anime_recyclerView);
+                list.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+            } else {
+                adapter = new AllAnimeRecyclerViewAdapter(ListContent.getList().getAll(), mListener);
+            }
+        }
     }
 
     public void reloadList() {

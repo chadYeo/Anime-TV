@@ -96,6 +96,16 @@ public class AllAnimeRecyclerViewAdapter extends RecyclerView.Adapter<AllAnimeRe
         }
     }
 
+    public void endlessScrollReload(AnimeList newAnimeList) {
+        ArrayList<Anime> temp = new ArrayList<>();
+        temp.addAll(mValues);
+        int updateSize = temp.size() + 20;
+        for (int i = Math.min(newAnimeList.getAll().size(), temp.size()); i < Math.min(newAnimeList.getAll().size(), updateSize); i++) {
+            temp.add(newAnimeList.getAll().get(i));
+        }
+        update(temp);
+    }
+
     public void clearBitmapCache(Context c) {
         Glide.get(c).clearMemory();
         Log.w("Memory Cleared: ", "Glid Memory is Cleared");

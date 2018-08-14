@@ -105,7 +105,7 @@ public class AllAnimeFragment extends Fragment {
         void onAllAnimeFragmentInteraction(Anime item);
     }
 
-    private void endlessScrollUpdate() {
+    public void endlessScrollUpdate() {
         if (adapter != null) {
             adapter.endlessScrollReload(ListContent.getList());
             adapter.clearBitmapCache(this.getContext());

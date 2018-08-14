@@ -99,8 +99,8 @@ public class TVAnimeItemRecyclerViewAdapter
         ArrayList<Anime> temp = new ArrayList<>();
         for (int i = 0; i < Math.min(newUserList.getTV().size(), 20); i++) {
             temp.add(newUserList.getTV().get(i));
-            update(temp);
         }
+        update(temp);
     }
 
     public void clearBitmapCache(Context c) {

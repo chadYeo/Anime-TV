@@ -95,8 +95,8 @@ public class MovieAnimeItemRecyclerViewAdapter
         ArrayList<Anime> temp = new ArrayList<>();
         for (int i = 0; i < Math.min(newUserList.getMovie().size(), 20); i++) {
             temp.add(newUserList.getMovie().get(i));
-            update(temp);
         }
+        update(temp);
     }
 
     public void clearBitmapCache(Context c) {

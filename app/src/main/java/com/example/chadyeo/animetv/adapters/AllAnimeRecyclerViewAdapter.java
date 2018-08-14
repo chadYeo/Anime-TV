@@ -92,8 +92,8 @@ public class AllAnimeRecyclerViewAdapter extends RecyclerView.Adapter<AllAnimeRe
         ArrayList<Anime> temp = new ArrayList<>();
         for (int i = 0; i < Math.min(newUserList.getAll().size(), 20); i++) {
             temp.add(newUserList.getAll().get(i));
-            update(temp);
         }
+        update(temp);
     }
 
     public void endlessScrollReload(AnimeList newAnimeList) {

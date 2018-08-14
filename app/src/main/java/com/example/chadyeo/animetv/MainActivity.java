@@ -2,14 +2,11 @@ package com.example.chadyeo.animetv;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-
 import android.content.Context;
 import android.content.DialogInterface;
-
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -18,7 +15,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -36,7 +32,6 @@ import com.example.chadyeo.animetv.fragments.AllAnimeFragment;
 import com.example.chadyeo.animetv.fragments.MovieAnimeFragment;
 import com.example.chadyeo.animetv.fragments.TVAnimeFragment;
 import com.example.chadyeo.animetv.loaders.AnimeSeasonLoader;
-import com.example.chadyeo.animetv.loaders.AnimeSeasonReload;
 import com.example.chadyeo.animetv.loaders.AnimeSortLoader;
 import com.example.chadyeo.animetv.utils.ColumnUtil;
 import com.example.chadyeo.animetv.utils.ListContent;
@@ -56,18 +51,15 @@ public class MainActivity extends AppCompatActivity
 
     ViewPager viewPager;
     TabLayout tabLayout;
+    SeasonPagerStateAdapter adapter;
 
     String season;
     String year;
-    SeasonPagerStateAdapter adapter;
-
     ArrayList<String> years = new ArrayList<>();
     int sort = 0;
     int asc = -1;
     int currentSelectedTab = 0;
-
     boolean noInternet = false;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,8 +91,8 @@ public class MainActivity extends AppCompatActivity
             ListContent.setCurrentYear(year);
             this.year = year;
         } else {
-            this.season = savedInstanceState.getString("SEASON");
-            this.year = savedInstanceState.getString("YEAR");
+            this.season = savedInstanceState.getString(getString(R.string.season_sort));
+            this.year = savedInstanceState.getString(getString(R.string.year_sort));
             ListContent.setCurrentSeason(season);
             ListContent.setCurrentYear(year);
         }
@@ -116,7 +108,7 @@ public class MainActivity extends AppCompatActivity
         tabLayout.setupWithViewPager(viewPager);
 
         getSupportActionBar().setTitle(season + " " + year);
-        getSupportActionBar().setSubtitle(Html.fromHtml(SeasonUtil.getSubtitle(season)));
+        getSupportActionBar().setSubtitle(SeasonUtil.getSubtitle(season));
 
         boolean reinit = (savedInstanceState != null);
         Log.d(LOG_TAG, "Reinit: " + reinit);
@@ -133,8 +125,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("SEASON", season);
-        outState.putString("YEAR", year);
+        outState.putString(getString(R.string.season_sort), season);
+        outState.putString(getString(R.string.year_sort), year);
+        outState.putInt(getString(R.string.list_sort), sort);
+        outState.putInt(getString(R.string.order_sort), asc);
     }
 
     @Override
@@ -180,20 +174,71 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         if (id == R.id.search_anime) {
             return true;
         } else if (id == R.id.filter_anime) {
-            SelectSortDialog();
-            return true;
-        }
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            LayoutInflater inflater = getLayoutInflater();
+            builder.setTitle(getString(R.string.sort_dialog_title));
+            View dialogView = inflater.inflate(R.layout.spinner_sort_select_dialog, null);
+            builder.setView(dialogView);
 
+            Spinner seasonSpinner = (Spinner) dialogView.findViewById(R.id.sort_season_spinner);
+            ArrayAdapter<CharSequence> seasonAdapter =
+                    ArrayAdapter.createFromResource(this, R.array.season_array, R.layout.spinner_dropdown_item);
+            seasonAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+            seasonSpinner.setAdapter(seasonAdapter);
+
+            int idx = 0;
+            if (season.toLowerCase().equals("spring")) {
+                idx = 1;
+            } else if (season.toLowerCase().equals("summer")) {
+                idx = 2;
+            } else if (season.toLowerCase().equals("fall")) {
+                idx = 3;
+            }
+            seasonSpinner.setSelection(idx);
+            Log.d(LOG_TAG, "SelectSortDialog's SeasonSpinner idx: " + idx + "SEASON IS : " + season);
+
+            Spinner yearSpinner = (Spinner) dialogView.findViewById(R.id.sort_year_spinner);
+            ArrayAdapter<CharSequence> yearAdapter =
+                    new ArrayAdapter<CharSequence>(this, R.layout.spinner_dropdown_item, years.toArray(new String[years.size()]));
+            yearAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+            yearSpinner.setAdapter(yearAdapter);
+
+            yearSpinner.setSelection(years.indexOf(year));
+
+            Spinner sortSpinner = (Spinner) dialogView.findViewById(R.id.sort_spinner);
+            ArrayAdapter<CharSequence> sortAdapter =
+                    ArrayAdapter.createFromResource(this, R.array.sort_array, R.layout.spinner_dropdown_item);
+            sortAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+            sortSpinner.setAdapter(sortAdapter);
+
+            Spinner orderSpinner = (Spinner) dialogView.findViewById(R.id.order_spinner);
+            ArrayAdapter<CharSequence> orderAdapter =
+                    ArrayAdapter.createFromResource(this, R.array.order_array, R.layout.spinner_dropdown_item);
+            orderAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+            orderSpinner.setAdapter(orderAdapter);
+
+            sortSpinner.setSelection(sort);
+            orderSpinner.setSelection(asc == -1 ? 0 : 1);
+
+            builder.setPositiveButton("Apply", new SelectSortDialogListener(dialogView))
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
+
+            final Dialog dialog = builder.create();
+            dialog.show();
+        }
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -381,7 +426,7 @@ public class MainActivity extends AppCompatActivity
         public void onLoadFinished(@NonNull Loader<AnimeList> loader, AnimeList data) {
             if (data != null) {
                 if (noInternet) {
-                    Toast.makeText(context, "There's no interenet connection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "There's no internet connection", Toast.LENGTH_SHORT).show();
                 }
                 if ((season.toLowerCase() + " " + year.toLowerCase()).equals(getSupportActionBar().getTitle().toString().toLowerCase())) {
                     ListContent.setList(data);
@@ -407,63 +452,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    /**
-     * Sort Dialog Menu
-     */
-    private void SelectSortDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = getLayoutInflater();
-        builder.setTitle(getString(R.string.sort_dialog_title));
-        View dialogView = inflater.inflate(R.layout.spinner_sort_select_dialog, null);
-        builder.setView(dialogView);
-
-        final Spinner seasonSpinner = (Spinner) dialogView.findViewById(R.id.sort_season_spinner);
-        final ArrayAdapter<CharSequence> seasonAdapter =
-                ArrayAdapter.createFromResource(this, R.array.season_array, R.layout.spinner_dropdown_item);
-        seasonAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        seasonSpinner.setAdapter(seasonAdapter);
-
-        int idx = 0;
-        if (season.toLowerCase().equals("spring")) idx = 1;
-        else if (season.toLowerCase().equals("summer")) idx = 2;
-        else if (season.toLowerCase().equals("fall")) idx = 3;
-        seasonSpinner.setSelection(idx);
-
-        final Spinner yearSpinner = (Spinner) dialogView.findViewById(R.id.sort_year_spinner);
-        ArrayAdapter<CharSequence> yearAdapter =
-                new ArrayAdapter<CharSequence>(this, R.layout.spinner_dropdown_item, years.toArray(new String[years.size()]));
-        yearAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        yearSpinner.setAdapter(yearAdapter);
-
-        yearSpinner.setSelection(years.indexOf(year));
-
-        final Spinner sortSpinner = (Spinner) dialogView.findViewById(R.id.sort_spinner);
-        ArrayAdapter<CharSequence> sortAdapter =
-                ArrayAdapter.createFromResource(this, R.array.sort_array, R.layout.spinner_dropdown_item);
-        sortAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        sortSpinner.setAdapter(sortAdapter);
-
-        final Spinner orderSpinner = (Spinner) dialogView.findViewById(R.id.order_spinner);
-        ArrayAdapter<CharSequence> orderAdapter =
-                ArrayAdapter.createFromResource(this, R.array.order_array, R.layout.spinner_dropdown_item);
-        orderAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        orderSpinner.setAdapter(orderAdapter);
-
-        sortSpinner.setSelection(sort);
-        orderSpinner.setSelection(asc == -1 ? 0 : 1);
-
-        builder.setPositiveButton("Apply", new SelectSortDialogListener(dialogView))
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                });
-
-        Dialog dialog = builder.create();
-        dialog.show();
-    }
-
     private class SelectSortDialogListener implements DialogInterface.OnClickListener {
 
         View dialogView;
@@ -487,11 +475,11 @@ public class MainActivity extends AppCompatActivity
                 Log.d(LOG_TAG, "SelectSortDialogListener activated for sort & asc changes");
             } else if (!seasonSpinner.getSelectedItem().toString().toLowerCase().equals(season.toLowerCase()) ||
                     !yearSpinner.getSelectedItem().toString().toLowerCase().equals(year.toLowerCase())) {
-                year = yearSpinner.getSelectedItem().toString();
-                season = yearSpinner.getSelectedItem().toString();
+                initLoadDataForSeasonList(seasonSpinner.getSelectedItem().toString(), yearSpinner.getSelectedItem().toString());
                 ListContent.setCurrentYear(year);
                 ListContent.setCurrentSeason(season);
-                initLoadDataForSeasonList(seasonSpinner.getSelectedItem().toString(), yearSpinner.getSelectedItem().toString());
+                year = yearSpinner.getSelectedItem().toString();
+                season = seasonSpinner.getSelectedItem().toString();
                 Log.d(LOG_TAG, "SelectSortDialogListener activated for season & year changes");
             }
         }

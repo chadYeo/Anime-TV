@@ -324,18 +324,18 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public void onLoadFinished(Loader<AnimeList> loader, AnimeList data) {
-            ViewPager view = (ViewPager) findViewById(R.id.viewPager);
             if (data == null) {
                 noInternet = true;
                 Log.d(LOG_TAG, "There is no data onLoadFinished");
             } else {
+                Log.d(LOG_TAG, "InitLoad Initiated in MainActivity");
                 if (noInternet) {
                     noInternet = false;
                 }
-                if ((season.toLowerCase() + " " + year.toLowerCase()).equals(getSupportActionBar().getTitle().toString().toLowerCase())) {
+                if ((season.toLowerCase() + " " + year.toLowerCase())
+                        .equals(getSupportActionBar().getTitle().toString().toLowerCase())) {
                     ListContent.setList(data);
                     Log.d(LOG_TAG, "AnimeList Data is: " + data);
-
                     if (adapter.getRegisteredFragment(0) != null) {
                         AllAnimeFragment all = (AllAnimeFragment) adapter.getRegisteredFragment(0);
                         all.updateList();
@@ -343,6 +343,10 @@ public class MainActivity extends AppCompatActivity
                     if (adapter.getRegisteredFragment(1) != null) {
                         MovieAnimeFragment movie = (MovieAnimeFragment) adapter.getRegisteredFragment(1);
                         movie.updateList();
+                    }
+                    if (adapter.getRegisteredFragment(2) != null) {
+                        TVAnimeFragment tv = (TVAnimeFragment) adapter.getRegisteredFragment(2);
+                        tv.updateList();
                     }
                 }
             }
@@ -377,6 +381,7 @@ public class MainActivity extends AppCompatActivity
             if (data == null) {
                 noInternet = true;
             } else {
+                Log.d(LOG_TAG, "SeasonLoad Initiated in MainActivity");
                 if (noInternet) {
                     Toast.makeText(context, "There's no Internet Connection", Toast.LENGTH_SHORT).show();
                     noInternet = false;
@@ -428,6 +433,7 @@ public class MainActivity extends AppCompatActivity
                 if (noInternet) {
                     Toast.makeText(context, "There's no internet connection", Toast.LENGTH_SHORT).show();
                 }
+                Log.d(LOG_TAG, "SortList Initiated in MainActivity");
                 if ((season.toLowerCase() + " " + year.toLowerCase()).equals(getSupportActionBar().getTitle().toString().toLowerCase())) {
                     ListContent.setList(data);
                     if (adapter.getRegisteredFragment(0) != null) {

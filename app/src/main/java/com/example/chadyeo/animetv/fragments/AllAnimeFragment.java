@@ -88,6 +88,12 @@ public class AllAnimeFragment extends Fragment {
     }
 
     @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         adapter.notifyDataSetChanged();
@@ -95,6 +101,7 @@ public class AllAnimeFragment extends Fragment {
             RecyclerView list = (RecyclerView) getView().findViewById(R.id.anime_recyclerView);
             list.getLayoutManager().scrollToPosition(0);
             updateList();
+            Log.d(LOG_TAG, "onResume: Size of Data: " + String.valueOf(adapter.getItemCount()));
         }
     }
 

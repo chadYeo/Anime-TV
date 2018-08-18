@@ -35,7 +35,7 @@ public class AllAnimeRecyclerViewAdapter extends RecyclerView.Adapter<AllAnimeRe
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.anime_item, parent, false);
-        return new ViewHolder(view);
+        return new AllAnimeRecyclerViewAdapter.ViewHolder(view);
     }
 
     @Override

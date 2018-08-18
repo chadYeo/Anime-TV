@@ -73,6 +73,8 @@ public class TVAnimeFragment extends Fragment {
                 }
             });
         }
+
+        Log.d(LOG_TAG, "ListContent GetList Get TV Info: " + String.valueOf(ListContent.getList().getTV()));
         return view;
     }
 

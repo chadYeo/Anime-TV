@@ -77,6 +77,7 @@ public class MovieAnimeFragment extends Fragment {
                 }
             });
         }
+        Log.d(LOG_TAG, "ListContent GetList Get Movie Info: " + String.valueOf(ListContent.getList().getMovie()));
         return view;
     }
 

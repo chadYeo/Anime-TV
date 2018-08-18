@@ -32,7 +32,7 @@ public class AnimeSeasonLoader extends AsyncTaskLoader<AnimeList> {
         AnimeList result = AnimeListBuilder.buildSeasonList(season + " " + year, sort, asc);
         mAnimeList = result;
 
-        Log.d(LOG_TAG, "loadInbackground with result: " + result);
+        Log.d(LOG_TAG, "loadInBackground with result: " + result);
 
         return mAnimeList;
     }

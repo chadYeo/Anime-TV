@@ -159,7 +159,7 @@ public class HttpClient {
         return code;
     }
 
-    private String getStoredRefresh() throws IOException {
+    private String getStoredRefresh() throws Exception {
         FileInputStream fileInputStream = mContext.openFileInput("REFRESH");
         int storedNumber;
         String code = "";

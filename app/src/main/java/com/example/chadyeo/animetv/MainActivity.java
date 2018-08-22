@@ -344,10 +344,10 @@ public class MainActivity extends AppCompatActivity
                         MovieAnimeFragment movie = (MovieAnimeFragment) adapter.getRegisteredFragment(1);
                         movie.updateList();
                     }
-                    if (adapter.getRegisteredFragment(2) != null) {
-                        TVAnimeFragment tv = (TVAnimeFragment) adapter.getRegisteredFragment(2);
-                        tv.updateList();
-                    }
+                    //if (adapter.getRegisteredFragment(2) != null) {
+                    //    TVAnimeFragment tv = (TVAnimeFragment) adapter.getRegisteredFragment(2);
+                    //    tv.updateList();
+                    //}
                 }
             }
         }

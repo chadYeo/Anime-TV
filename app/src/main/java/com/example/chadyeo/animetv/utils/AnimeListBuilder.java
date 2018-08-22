@@ -144,7 +144,7 @@ public class AnimeListBuilder {
 
         AnimeList xAnimeList = new AnimeList();
         xAnimeList.setAll(all);
-        xAnimeList.setMovie(all);
+        xAnimeList.setMovie(movie);
         xAnimeList.setTV(tv);
 
         return xAnimeList;

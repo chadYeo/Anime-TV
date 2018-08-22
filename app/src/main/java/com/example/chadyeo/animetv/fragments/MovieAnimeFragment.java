@@ -12,9 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.chadyeo.animetv.R;
-import com.example.chadyeo.animetv.adapters.AllAnimeRecyclerViewAdapter;
 import com.example.chadyeo.animetv.adapters.MovieAnimeItemRecyclerViewAdapter;
-import com.example.chadyeo.animetv.adapters.TVAnimeItemRecyclerViewAdapter;
 import com.example.chadyeo.animetv.api.Anime;
 import com.example.chadyeo.animetv.utils.ListContent;
 import com.example.chadyeo.animetv.utils.ListOptions;
@@ -26,9 +24,9 @@ public class MovieAnimeFragment extends Fragment {
 
     private static final String LOG_TAG = MovieAnimeFragment.class.getSimpleName();
 
-    private OnMovieAnimeFragmentInteractionListener mListener;
-    private MovieAnimeItemRecyclerViewAdapter adapter;
     private GridLayoutManager gridLayoutManager;
+    private MovieAnimeItemRecyclerViewAdapter adapter;
+    private OnMovieAnimeFragmentInteractionListener mListener;
 
     public MovieAnimeFragment() {
     }

@@ -223,7 +223,7 @@ public class MainActivity extends AppCompatActivity
             orderSpinner.setAdapter(orderAdapter);
 
             sortSpinner.setSelection(sort);
-            orderSpinner.setSelection(asc == -1 ? 0 : 1);
+            orderSpinner.setSelection(asc == -1 ? 1 : 0);
 
             builder.setPositiveButton("Apply", new SelectSortDialogListener(dialogView))
                     .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -344,10 +344,10 @@ public class MainActivity extends AppCompatActivity
                         MovieAnimeFragment movie = (MovieAnimeFragment) adapter.getRegisteredFragment(1);
                         movie.updateList();
                     }
-                    //if (adapter.getRegisteredFragment(2) != null) {
-                    //    TVAnimeFragment tv = (TVAnimeFragment) adapter.getRegisteredFragment(2);
-                    //    tv.updateList();
-                    //}
+                    if (adapter.getRegisteredFragment(2) != null) {
+                        TVAnimeFragment tv = (TVAnimeFragment) adapter.getRegisteredFragment(2);
+                        tv.updateList();
+                    }
                 }
             }
         }
@@ -474,9 +474,9 @@ public class MainActivity extends AppCompatActivity
             Spinner orderSpinner = (Spinner) dialogView.findViewById(R.id.order_spinner);
 
             if (sortSpinner.getSelectedItemPosition() != sort ||
-                    (orderSpinner.getSelectedItemPosition()  == 0 ? -1 : 1) != asc) {
+                    (orderSpinner.getSelectedItemPosition()  == 0 ? 1 : -1) != asc) {
                 sort = sortSpinner.getSelectedItemPosition();
-                asc = orderSpinner.getSelectedItemPosition() == 0 ? -1 : 1;
+                asc = orderSpinner.getSelectedItemPosition() == 0 ? 1 : -1;
                 reloadDataForSeasonListSorted();
                 Log.d(LOG_TAG, "SelectSortDialogListener activated for sort & asc changes");
             } else if (!seasonSpinner.getSelectedItem().toString().toLowerCase().equals(season.toLowerCase()) ||

@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity
     String year;
     ArrayList<String> years = new ArrayList<>();
     int sort = 0;
-    int asc = -1;
+    int asc = 1;
     int currentSelectedTab = 0;
     boolean noInternet = false;
 
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity
 
         SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
         sort = sharedPreferences.getInt(getString(R.string.list_sort), 0);
-        asc = sharedPreferences.getInt(getString(R.string.order_sort), -1);
+        asc = sharedPreferences.getInt(getString(R.string.order_sort), 1);
         season = sharedPreferences.getString(getString(R.string.season_sort), season);
         year = sharedPreferences.getString(getString(R.string.year_sort), year);
 

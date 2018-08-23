@@ -20,7 +20,6 @@ import com.example.chadyeo.animetv.api.AnimeList;
 import com.example.chadyeo.animetv.fragments.MovieAnimeFragment;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MovieAnimeItemRecyclerViewAdapter
         extends RecyclerView.Adapter<MovieAnimeItemRecyclerViewAdapter.ViewHolder> {
@@ -33,9 +32,8 @@ public class MovieAnimeItemRecyclerViewAdapter
         mListener = listener;
     }
 
-    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.anime_item, parent, false);
         return new MovieAnimeItemRecyclerViewAdapter.ViewHolder(view);
@@ -80,6 +78,11 @@ public class MovieAnimeItemRecyclerViewAdapter
     @Override
     public int getItemCount() {
         return mValues.size();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
     }
 
     private synchronized void update(ArrayList<Anime> temp) {

@@ -1,6 +1,5 @@
 package com.example.chadyeo.animetv.adapters;
 
-
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
@@ -21,7 +20,8 @@ import com.example.chadyeo.animetv.fragments.AllAnimeFragment;
 
 import java.util.ArrayList;
 
-public class AllAnimeRecyclerViewAdapter extends RecyclerView.Adapter<AllAnimeRecyclerViewAdapter.ViewHolder> {
+public class AllAnimeRecyclerViewAdapter
+        extends RecyclerView.Adapter<AllAnimeRecyclerViewAdapter.ViewHolder> {
 
     private ArrayList<Anime> mValues = new ArrayList<>();
     private AllAnimeFragment.OnAllAnimeFragmentInteractionListener mListener;
@@ -34,7 +34,8 @@ public class AllAnimeRecyclerViewAdapter extends RecyclerView.Adapter<AllAnimeRe
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.anime_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.anime_item, parent, false);
         return new AllAnimeRecyclerViewAdapter.ViewHolder(view);
     }
 
@@ -77,6 +78,11 @@ public class AllAnimeRecyclerViewAdapter extends RecyclerView.Adapter<AllAnimeRe
     @Override
     public int getItemCount() {
         return mValues.size();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
     }
 
     private synchronized void update(ArrayList<Anime> temp) {

@@ -8,6 +8,7 @@ import com.example.chadyeo.animetv.api.Anime;
 import com.example.chadyeo.animetv.api.AnimeList;
 import com.example.chadyeo.animetv.api.HttpClient;
 
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -103,6 +104,64 @@ public class AnimeListBuilder {
         result.setSeason(season);
 
         return result;
+    }
+
+    public static AnimeList buildSearchList(String query, int page, int sort, int asc) {
+        if (checkQuery(query)) {
+            ArrayList<Anime> animeArrayList = getSearchList(query, page);
+            if (animeArrayList == null) {
+                return null;
+            }
+            ArrayList<Anime> result = new ArrayList<>();
+            result.addAll(ListContent.getList().getAll());
+            result.addAll(animeArrayList);
+            AnimeList animeList = new AnimeList();
+            Collections.sort(result, new AnimeComparator(sort, asc));
+            animeList.setAll(result);
+            return animeList;
+        } else {
+            ArrayList<Anime> res = getSearchList(query, page);
+            if (res == null) {
+                return null;
+            }
+            ArrayList<Anime> result = new ArrayList<>();
+            result.addAll(res);
+            AnimeList animeList = new AnimeList();
+            Collections.sort(result, new AnimeComparator(sort, asc));
+            animeList.setAll(result);
+            return animeList;
+        }
+    }
+
+    private static ArrayList<Anime> getSearchList(String query, int page) {
+        try {
+            HttpUrl url = new HttpUrl.Builder()
+                    .scheme("https")
+                    .host("www.anilist.co")
+                    .addPathSegment("api")
+                    .addPathSegment("anime")
+                    .addPathSegment("search")
+                    .addPathSegment(query)
+                    .addQueryParameter("access_token", HttpClient.getAccessToken())
+                    .addQueryParameter("page", String.valueOf(page))
+                    .build();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .addHeader("Cache-Control", "max-stale=3600000")
+                    .build();
+            Response response = MainActivity.getClient().getOkHttpClient().newCall(request).execute();
+            ArrayList<Anime> a = JSONParse.parseJsonForList(new InputStreamReader(response.body().byteStream()));
+            response.body().close();
+            Log.d("Network: ", "Getting search list");
+            String cr = "null";
+            if (response.cacheResponse() != null) cr = response.cacheResponse().toString();
+            Log.w("Cache response:", cr);
+            Log.w("Network response:", response.networkResponse().toString());
+            return a;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static AnimeList reloadSeasonList(String season, int sort, int asc) {

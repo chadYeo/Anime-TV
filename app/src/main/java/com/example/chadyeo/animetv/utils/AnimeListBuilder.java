@@ -133,6 +133,11 @@ public class AnimeListBuilder {
         }
     }
 
+    public static Anime buildAnimePage(String id) {
+        Anime anime = getAnimePage(id);
+        return anime;
+    }
+
     private static ArrayList<Anime> getSearchList(String query, int page) {
         try {
             HttpUrl url = new HttpUrl.Builder()
@@ -160,6 +165,32 @@ public class AnimeListBuilder {
             return a;
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        return null;
+    }
+
+    private static Anime getAnimePage(String id){
+        try {
+            HttpUrl url = new HttpUrl.Builder()
+                    .scheme("https")
+                    .host("www.anilist.co")
+                    .addPathSegment("api")
+                    .addPathSegment("anime")
+                    .addPathSegment(id)
+                    .addPathSegment("page")
+                    .addQueryParameter("access_token", HttpClient.getAccessToken())
+                    .build();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .addHeader("Cache-Control", "max-stale=3600000")
+                    .tag("page")
+                    .build();
+            Response response = MainActivity.getClient().getOkHttpClient().newCall(request).execute();
+            Anime a = JSONParse.parseJsonFromAnimePage(new InputStreamReader(response.body().byteStream()));
+            response.body().close();
+            return a;
+        } catch (Exception e){
+            Log.d("Request Anime page: ", e.toString());
         }
         return null;
     }

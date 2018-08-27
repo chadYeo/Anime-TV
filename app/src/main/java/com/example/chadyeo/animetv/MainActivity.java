@@ -2,6 +2,7 @@ package com.example.chadyeo.animetv;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -61,6 +63,8 @@ public class MainActivity extends AppCompatActivity
     int asc = 1;
     int currentSelectedTab = 0;
     boolean noInternet = false;
+
+    Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,9 +171,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         getMenuInflater().inflate(R.menu.main_menu, menu);
 
-        MenuItem searchAnime = menu.findItem(R.id.search_anime);
+        this.menu = menu;
         return true;
     }
 
@@ -178,6 +183,25 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.search_anime) {
+
+            SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+            final SearchView searchView = (SearchView) menu.findItem(R.id.search_anime).getActionView();
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String s) {
+                    searchView.clearFocus();
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String s) {
+                    return false;
+                }
+            });
+
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+            searchView.setIconifiedByDefault(false);
+
             Intent searchIntent = new Intent(this, SearchActivity.class);
             searchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(searchIntent);

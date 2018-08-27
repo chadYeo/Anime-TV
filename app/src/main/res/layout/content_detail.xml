@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/activity_anime_detail">
+
+    <ProgressBar
+        android:id="@+id/anime_page_loading"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:elevation="5dp"
+        android:layout_centerVertical="true" />
+
+    <TextView
+        android:id="@+id/page_connect_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Unable to connect to server"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/page_retry_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Retry"
+        android:layout_below="@id/page_connect_text"
+        android:textColor="@color/colorAccent"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:visibility="gone"
+        android:id="@+id/page">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <android.support.v7.widget.CardView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                card_view:cardBackgroundColor="@android:color/white"
+                card_view:cardCornerRadius="1dp"
+                card_view:cardElevation="3dp"
+                android:focusable="true"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:id="@+id/cardView2">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/anime_page_image"
+                            android:layout_width="113dp"
+                            android:layout_height="161.5dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="20dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true" />
+
+                        <TextView
+                            android:id="@+id/anime_name_page"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="8"
+                            android:scrollHorizontally="true"
+                            android:fontFamily="sans-serif"
+                            android:textColor="#000000"
+                            android:textSize="20sp"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_toRightOf="@+id/anime_page_image"
+                            android:layout_toEndOf="@+id/anime_page_image" />
+                        <TextView
+                            android:id="@+id/anime_synonyms_page"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif"
+                            android:ellipsize="end"
+                            android:maxLines="4"
+                            android:scrollHorizontally="true"
+                            android:layout_marginTop="6dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_below="@+id/anime_name_page"
+                            android:layout_alignLeft="@+id/anime_name_page"
+                            android:layout_alignStart="@+id/anime_name_page" />
+
+                    </RelativeLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                card_view:cardBackgroundColor="@android:color/white"
+                card_view:cardCornerRadius="1dp"
+                card_view:cardElevation="4dp"
+                android:layout_marginTop="8dp"
+                android:focusable="true"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:layout_below="@+id/cardView2"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:id="@+id/type_layout">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.4"
+                            android:fontFamily="sans-serif"
+                            android:textColor="#000000"
+                            android:text="Type"
+                            android:textSize="15sp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginLeft="20dp"/>
+
+                        <TextView
+                            android:id="@+id/anime_type_page"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:layout_weight="0.6"
+                            android:fontFamily="sans-serif"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="15sp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginLeft="40dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/episodes_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/type_layout"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/episodes_page"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_weight="0.4"
+                            android:fontFamily="sans-serif"
+                            android:text="Episodes"
+                            android:textColor="#000000"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/anime_episodes_page"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginTop="8dp"
+                            android:gravity="right"
+                            android:layout_weight="0.6"
+                            android:fontFamily="sans-serif"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/duration_layout"
+                        android:layout_below="@id/episodes_layout"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/duration_page"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif"
+                            android:textColor="#000000"
+                            android:layout_weight="0.4"
+                            android:textSize="15sp"
+                            android:text="Duration"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginLeft="20dp" />
+
+                        <TextView
+                            android:id="@+id/anime_duration_page"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginTop="8dp"
+                            android:gravity="right"
+                            android:layout_weight="0.6"
+                            android:layout_marginLeft="40dp"
+                            android:fontFamily="sans-serif"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/studios_layout"
+                        android:layout_below="@id/duration_layout"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/studios_page"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif"
+                            android:textColor="#000000"
+                            android:textSize="15sp"
+                            android:layout_weight="0.4"
+                            android:text="Studios"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginLeft="20dp" />
+
+                        <TextView
+                            android:id="@+id/anime_studios_page"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="15sp"
+                            android:gravity="right"
+                            android:layout_weight="0.6"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginLeft="40dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/genres_layout"
+                        android:layout_below="@id/studios_layout"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/genres_page"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif"
+                            android:textColor="#000000"
+                            android:textSize="15sp"
+                            android:layout_weight="0.4"
+                            android:text="Genres"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginLeft="20dp" />
+
+                        <TextView
+                            android:id="@+id/anime_genres_page"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="15sp"
+                            android:gravity="right"
+                            android:layout_weight="0.6"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginLeft="40dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:id="@+id/description_layout"
+                        android:layout_below="@+id/genres_layout">
+                        <TextView
+                            android:id="@+id/anime_description_page"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif"
+                            android:textColor="#595959"
+                            android:textSize="15sp"
+                            android:layout_marginTop="25dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:id="@+id/source_premiere_layout"
+                        android:layout_below="@+id/description_layout"
+                        android:orientation="horizontal">
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_weight="0.5">
+                            <TextView
+                                android:id="@+id/source_page"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif"
+                                android:textColor="#737373"
+                                android:textSize="12sp"
+                                android:text="Source"
+                                android:gravity="center"
+                                android:layout_marginTop="10dp" />
+                            <TextView
+                                android:id="@+id/anime_source_page"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif"
+                                android:textColor="#000000"
+                                android:textSize="15sp"
+                                android:gravity="center"
+                                android:layout_marginTop="3dp"
+                                android:layout_marginBottom="8dp"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_weight="0.5">
+                            <TextView
+                                android:id="@+id/premiered_page"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif"
+                                android:textColor="#737373"
+                                android:textSize="12sp"
+                                android:text="Premiered"
+                                android:gravity="center"
+                                android:layout_marginTop="10dp" />
+                            <TextView
+                                android:id="@+id/anime_premiered_page"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif"
+                                android:textColor="#000000"
+                                android:textSize="15sp"
+                                android:gravity="center"
+                                android:layout_marginTop="3dp"
+                                android:layout_marginBottom="8dp"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

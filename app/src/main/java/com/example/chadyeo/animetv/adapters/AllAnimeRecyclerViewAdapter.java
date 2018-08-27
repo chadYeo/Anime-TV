@@ -69,7 +69,6 @@ public class AllAnimeRecyclerViewAdapter
         holder.anime_item_imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //ToDo: Intent to Detail
                 mListener.onAllAnimeFragmentInteraction(holder.mItem);
             }
         });

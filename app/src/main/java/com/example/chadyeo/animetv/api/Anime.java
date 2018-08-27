@@ -17,6 +17,11 @@ public class Anime implements Serializable {
     private String description;
     private String source; // Source (Manga, Light novel etc.)
     private ArrayList<String> genres;
+    private ArrayList<String> synonyms;
+    private int start_date_fuzzy;
+    private int end_date_fuzzy;
+
+    private ArrayList<Studio> studio;
 
     private double average_score;
     private int popularity;
@@ -192,5 +197,37 @@ public class Anime implements Serializable {
 
     public void setImage_url_banner(String image_url_banner) {
         this.image_url_banner = image_url_banner;
+    }
+
+    public ArrayList<String> getSynonyms() {
+        return synonyms;
+    }
+
+    public void setSynonyms(ArrayList<String> synonyms) {
+        this.synonyms = synonyms;
+    }
+
+    public ArrayList<Studio> getStudio() {
+        return studio;
+    }
+
+    public void setStudio(ArrayList<Studio> studio) {
+        this.studio = studio;
+    }
+
+    public int getStart_date_fuzzy() {
+        return start_date_fuzzy;
+    }
+
+    public void setStart_date_fuzzy(int start_date_fuzzy) {
+        this.start_date_fuzzy = start_date_fuzzy;
+    }
+
+    public int getEnd_date_fuzzy() {
+        return end_date_fuzzy;
+    }
+
+    public void setEnd_date_fuzzy(int end_date_fuzzy) {
+        this.end_date_fuzzy = end_date_fuzzy;
     }
 }

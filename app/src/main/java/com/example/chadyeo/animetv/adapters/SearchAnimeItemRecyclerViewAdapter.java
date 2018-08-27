@@ -70,7 +70,7 @@ public class SearchAnimeItemRecyclerViewAdapter extends RecyclerView.Adapter<Sea
             @Override
             public void onClick(View v) {
                 //ToDo: Intent to Detail
-                mListener.onFragmentInteraction(holder.mItem);
+                mListener.onSearchAnimeFragmentInteraction(holder.mItem);
             }
         });
     }

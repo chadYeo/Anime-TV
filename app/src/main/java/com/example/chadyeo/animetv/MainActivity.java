@@ -2,12 +2,16 @@ package com.example.chadyeo.animetv;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -15,6 +19,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,7 +27,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chadyeo.animetv.adapters.SeasonPagerStateAdapter;
@@ -31,7 +38,9 @@ import com.example.chadyeo.animetv.api.AnimeList;
 import com.example.chadyeo.animetv.api.HttpClient;
 import com.example.chadyeo.animetv.fragments.AllAnimeFragment;
 import com.example.chadyeo.animetv.fragments.MovieAnimeFragment;
+import com.example.chadyeo.animetv.fragments.SearchAnimeFragment;
 import com.example.chadyeo.animetv.fragments.TVAnimeFragment;
+import com.example.chadyeo.animetv.loaders.AnimeSearchLoader;
 import com.example.chadyeo.animetv.loaders.AnimeSeasonLoader;
 import com.example.chadyeo.animetv.loaders.AnimeSortLoader;
 import com.example.chadyeo.animetv.utils.ColumnUtil;
@@ -45,7 +54,8 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity
         implements AllAnimeFragment.OnAllAnimeFragmentInteractionListener,
         MovieAnimeFragment.OnMovieAnimeFragmentInteractionListener,
-        TVAnimeFragment.OnTVAnimeFragmentInteractionListener {
+        TVAnimeFragment.OnTVAnimeFragmentInteractionListener,
+        SearchAnimeFragment.OnSearchAnimeFragmentInteractionListener {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static HttpClient client;
@@ -57,10 +67,16 @@ public class MainActivity extends AppCompatActivity
     String season;
     String year;
     ArrayList<String> years = new ArrayList<>();
+
+    String query;
+
     int sort = 0;
     int asc = 1;
+    int page =1;
     int currentSelectedTab = 0;
     boolean noInternet = false;
+    boolean atEnd = false;
+    boolean loaded = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,8 +185,23 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
 
-        MenuItem searchAnime = menu.findItem(R.id.search_anime);
-        return true;
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        final SearchView searchView = (SearchView) menu.findItem(R.id.search_anime).getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchView.clearFocus();
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -181,6 +212,7 @@ public class MainActivity extends AppCompatActivity
             Intent searchIntent = new Intent(this, SearchActivity.class);
             searchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(searchIntent);
+            Toast.makeText(this, "TESTING", Toast.LENGTH_SHORT).show();
             return true;
         } else if (id == R.id.filter_anime) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -310,6 +342,13 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(this, AnimeDetailActivity.class);
         intent.putExtra("ID", String.valueOf(item.getId()));
         startActivity(intent);
+    }
+
+    @Override
+    public void onSearchAnimeFragmentInteraction(Anime item) {
+        Intent searchIntent = new Intent(this, AnimeDetailActivity.class);
+        searchIntent.putExtra("ID", String.valueOf(item.getId()));
+        startActivity(searchIntent);
     }
 
     /**
@@ -468,6 +507,99 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onLoaderReset(@NonNull Loader<AnimeList> loader) {
 
+        }
+    }
+
+    /**
+     * Search Query Loading
+     */
+    private class QueryLoad implements LoaderManager.LoaderCallbacks<AnimeList> {
+
+        private Context context;
+        private String query;
+        private int page;
+
+        public QueryLoad(Context context, String query, int page) {
+            this.context = context;
+            this.query = query;
+            this.page = page;
+        }
+
+        @NonNull
+        @Override
+        public Loader<AnimeList> onCreateLoader(int id, @Nullable Bundle args) {
+            return new AnimeSearchLoader(context, query, page, sort, asc);
+        }
+
+        @Override
+        public void onLoadFinished(@NonNull Loader<AnimeList> loader, AnimeList data) {
+
+            LinearLayout view = (LinearLayout) findViewById(R.id.search_list);
+            View progress = findViewById(R.id.progress_bar);
+            TextView connect = (TextView) findViewById(R.id.connect_text);
+            TextView retry = (TextView) findViewById(R.id.retry_text);
+            TextView noResults = (TextView) findViewById(R.id.no_results_text);
+
+            if (data == null && !isNetworkAvailable(context)) {
+                noInternet = true;
+                if (progress != null) {
+                    progress.setVisibility(View.GONE);
+                }
+                view.setVisibility(View.GONE);
+                connect.setVisibility(View.VISIBLE);
+                retry.setVisibility(View.VISIBLE);
+                Log.d(LOG_TAG, "There is no data onLoadFinished");
+            } else if (data == null && page == 1) {
+                if (progress != null) {
+                    progress.setVisibility(View.GONE);
+                }
+                view.setVisibility(View.GONE);
+                noResults.setVisibility(View.VISIBLE);
+            } else if (data == null) {
+                atEnd = true;
+                if (progress != null) {
+                    progress.setVisibility(View.GONE);
+                }
+            } else {
+                Log.d(LOG_TAG, "InitLoad Initiated in MainActivity");
+                if (noInternet) {
+                    noInternet = false;
+                    connect.setVisibility(View.GONE);
+                    retry.setVisibility(View.GONE);
+                    view.setVisibility(View.VISIBLE);
+                }
+                if (view.getVisibility() == View.GONE) {
+                    view.setVisibility(View.VISIBLE);
+                }
+
+                ListContent.setList(data);
+
+                if (progress != null) {
+                    progress.setVisibility(View.GONE);
+                }
+
+                SearchAnimeFragment fragment = (SearchAnimeFragment) getSupportFragmentManager().findFragmentByTag("search");
+                if (page == 1) {
+                    fragment.updateList();
+                } else {
+                    fragment.reloadList();
+                }
+            }
+        }
+
+        @Override
+        public void onLoaderReset(@NonNull Loader<AnimeList> loader) {
+
+        }
+
+        public boolean isNetworkAvailable(Context context) {
+            try {
+                ConnectivityManager cm = (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
+                NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+                return (networkInfo != null && networkInfo.isConnected());
+            } catch (Exception e) {
+                return false;
+            }
         }
     }
 

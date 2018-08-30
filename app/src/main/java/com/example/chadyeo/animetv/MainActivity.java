@@ -119,6 +119,8 @@ public class MainActivity extends AppCompatActivity
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher_anime);
         getSupportActionBar().setTitle(season + " " + year);
         getSupportActionBar().setSubtitle(SeasonUtil.getSubtitle(season));
 

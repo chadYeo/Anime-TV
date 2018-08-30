@@ -27,9 +27,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chadyeo.animetv.adapters.SeasonPagerStateAdapter;
@@ -38,7 +36,6 @@ import com.example.chadyeo.animetv.api.AnimeList;
 import com.example.chadyeo.animetv.api.HttpClient;
 import com.example.chadyeo.animetv.fragments.AllAnimeFragment;
 import com.example.chadyeo.animetv.fragments.MovieAnimeFragment;
-import com.example.chadyeo.animetv.fragments.SearchAnimeFragment;
 import com.example.chadyeo.animetv.fragments.TVAnimeFragment;
 import com.example.chadyeo.animetv.loaders.AnimeSearchLoader;
 import com.example.chadyeo.animetv.loaders.AnimeSeasonLoader;
@@ -54,8 +51,7 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity
         implements AllAnimeFragment.OnAllAnimeFragmentInteractionListener,
         MovieAnimeFragment.OnMovieAnimeFragmentInteractionListener,
-        TVAnimeFragment.OnTVAnimeFragmentInteractionListener,
-        SearchAnimeFragment.OnSearchAnimeFragmentInteractionListener {
+        TVAnimeFragment.OnTVAnimeFragmentInteractionListener {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static HttpClient client;
@@ -194,6 +190,7 @@ public class MainActivity extends AppCompatActivity
                 Log.d(LOG_TAG, "query is: " + query);
                 queryLoadDataForList(query, 1);
                 searchView.clearFocus();
+
                 return true;
             }
 
@@ -217,6 +214,7 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(this, "TESTING", Toast.LENGTH_SHORT).show();
             return true;
         } else if (id == R.id.filter_anime) {
+
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             LayoutInflater inflater = getLayoutInflater();
             builder.setTitle(getString(R.string.sort_dialog_title));
@@ -350,13 +348,6 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(this, AnimeDetailActivity.class);
         intent.putExtra("ID", String.valueOf(item.getId()));
         startActivity(intent);
-    }
-
-    @Override
-    public void onSearchAnimeFragmentInteraction(Anime item) {
-        Intent searchIntent = new Intent(this, AnimeDetailActivity.class);
-        searchIntent.putExtra("ID", String.valueOf(item.getId()));
-        startActivity(searchIntent);
     }
 
     /**

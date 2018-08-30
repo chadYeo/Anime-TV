@@ -108,28 +108,51 @@ public class AnimeListBuilder {
 
     public static AnimeList buildSearchList(String query, int page, int sort, int asc) {
         if (checkQuery(query)) {
-            ArrayList<Anime> animeArrayList = getSearchList(query, page);
-            if (animeArrayList == null) {
+            ArrayList<Anime> all = getSearchList(query, page);
+            if (all == null) {
                 return null;
             }
-            ArrayList<Anime> result = new ArrayList<>();
-            result.addAll(ListContent.getList().getAll());
-            result.addAll(animeArrayList);
-            AnimeList animeList = new AnimeList();
-            Collections.sort(result, new AnimeComparator(sort, asc));
-            animeList.setAll(result);
-            return animeList;
+
+            AnimeList result = new AnimeList();
+            Collections.sort(all, new AnimeComparator(sort, asc));
+            result.setAll(all);
+
+            ArrayList<Anime> tv = new ArrayList<>();
+            ArrayList<Anime> movie = new ArrayList<>();
+            for (Anime anime : all) {
+                if (anime.getType().toLowerCase().equals("tv") || anime.getType().toLowerCase().equals("tv short")) {
+                    tv.add(anime);
+                } else if (anime.getType().toLowerCase().equals("movie")) {
+                    movie.add(anime);
+                }
+            }
+            result.setTV(tv);
+            result.setMovie(movie);
+
+            return result;
         } else {
-            ArrayList<Anime> res = getSearchList(query, page);
-            if (res == null) {
+            ArrayList<Anime> all = getSearchList(query, page);
+            if (all == null) {
                 return null;
             }
-            ArrayList<Anime> result = new ArrayList<>();
-            result.addAll(res);
-            AnimeList animeList = new AnimeList();
-            Collections.sort(result, new AnimeComparator(sort, asc));
-            animeList.setAll(result);
-            return animeList;
+
+            AnimeList results = new AnimeList();
+            Collections.sort(all, new AnimeComparator(sort, asc));
+            results.setAll(all);
+
+            ArrayList<Anime> tv = new ArrayList<>();
+            ArrayList<Anime> movie = new ArrayList<>();
+            for (Anime anime : all) {
+                if (anime.getType().toLowerCase().equals("tv") || anime.getType().toLowerCase().equals("tv short")) {
+                    tv.add(anime);
+                } else if (anime.getType().toLowerCase().equals("movie")) {
+                    movie.add(anime);
+                }
+            }
+            results.setTV(tv);
+            results.setMovie(movie);
+
+            return results;
         }
     }
 

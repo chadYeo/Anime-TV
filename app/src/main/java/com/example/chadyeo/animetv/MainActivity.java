@@ -68,15 +68,11 @@ public class MainActivity extends AppCompatActivity
     String year;
     ArrayList<String> years = new ArrayList<>();
 
-    String query;
-
     int sort = 0;
     int asc = 1;
     int page =1;
     int currentSelectedTab = 0;
     boolean noInternet = false;
-    boolean atEnd = false;
-    boolean loaded = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,19 +183,28 @@ public class MainActivity extends AppCompatActivity
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         final SearchView searchView = (SearchView) menu.findItem(R.id.search_anime).getActionView();
+
+        if (null != searchManager) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        }
+        searchView.setIconifiedByDefault(true);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                Log.d(LOG_TAG, "query is: " + query);
+                queryLoadDataForList(query, 1);
                 searchView.clearFocus();
-                return false;
+                return true;
             }
+
             @Override
             public boolean onQueryTextChange(String newText) {
-                return false;
+                if (newText == null || newText.isEmpty()) {
+                    initLoadDataForList(season, year, true);
+                }
+                return true;
             }
         });
-
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -209,9 +214,6 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.search_anime) {
-            Intent searchIntent = new Intent(this, SearchActivity.class);
-            searchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(searchIntent);
             Toast.makeText(this, "TESTING", Toast.LENGTH_SHORT).show();
             return true;
         } else if (id == R.id.filter_anime) {
@@ -299,7 +301,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    //Todo: to merge with
     public void initLoadDataForSeasonList(String season, String year) {
         getSupportActionBar().setTitle(season + " " + year);
         getSupportActionBar().setSubtitle(SeasonUtil.getSubtitle(season));
@@ -312,7 +313,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    //Todo: to merge with
     public void reloadDataForSeasonListSorted() {
         if (getSupportLoaderManager().getLoader(4) == null) {
             getSupportLoaderManager().initLoader(4, null, new SortList(this)).forceLoad();
@@ -320,6 +320,14 @@ public class MainActivity extends AppCompatActivity
         } else {
             getSupportLoaderManager().restartLoader(4, null, new SortList(this)).forceLoad();
             Log.d(LOG_TAG, "reloadDataForSeasonListSorted Re-Initiated");
+        }
+    }
+
+    public void queryLoadDataForList(String query, int page){
+        if(getSupportLoaderManager().getLoader(5) == null) {
+            getSupportLoaderManager().initLoader(5, null, new QueryLoad(this, query, page));
+        } else {
+            getSupportLoaderManager().restartLoader(5, null, new QueryLoad(this, query, page));
         }
     }
 
@@ -533,56 +541,27 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public void onLoadFinished(@NonNull Loader<AnimeList> loader, AnimeList data) {
-
-            LinearLayout view = (LinearLayout) findViewById(R.id.search_list);
-            View progress = findViewById(R.id.progress_bar);
-            TextView connect = (TextView) findViewById(R.id.connect_text);
-            TextView retry = (TextView) findViewById(R.id.retry_text);
-            TextView noResults = (TextView) findViewById(R.id.no_results_text);
-
-            if (data == null && !isNetworkAvailable(context)) {
+            if (data == null) {
                 noInternet = true;
-                if (progress != null) {
-                    progress.setVisibility(View.GONE);
-                }
-                view.setVisibility(View.GONE);
-                connect.setVisibility(View.VISIBLE);
-                retry.setVisibility(View.VISIBLE);
                 Log.d(LOG_TAG, "There is no data onLoadFinished");
-            } else if (data == null && page == 1) {
-                if (progress != null) {
-                    progress.setVisibility(View.GONE);
-                }
-                view.setVisibility(View.GONE);
-                noResults.setVisibility(View.VISIBLE);
-            } else if (data == null) {
-                atEnd = true;
-                if (progress != null) {
-                    progress.setVisibility(View.GONE);
-                }
             } else {
                 Log.d(LOG_TAG, "InitLoad Initiated in MainActivity");
                 if (noInternet) {
                     noInternet = false;
-                    connect.setVisibility(View.GONE);
-                    retry.setVisibility(View.GONE);
-                    view.setVisibility(View.VISIBLE);
                 }
-                if (view.getVisibility() == View.GONE) {
-                    view.setVisibility(View.VISIBLE);
-                }
-
                 ListContent.setList(data);
-
-                if (progress != null) {
-                    progress.setVisibility(View.GONE);
+                Log.d(LOG_TAG, "AnimeList Data is: " + data);
+                if (adapter.getRegisteredFragment(0) != null) {
+                    AllAnimeFragment all = (AllAnimeFragment) adapter.getRegisteredFragment(0);
+                    all.updateList();
                 }
-
-                SearchAnimeFragment fragment = (SearchAnimeFragment) getSupportFragmentManager().findFragmentByTag("search");
-                if (page == 1) {
-                    fragment.updateList();
-                } else {
-                    fragment.reloadList();
+                if (adapter.getRegisteredFragment(1) != null) {
+                    MovieAnimeFragment movie = (MovieAnimeFragment) adapter.getRegisteredFragment(1);
+                    movie.updateList();
+                }
+                if (adapter.getRegisteredFragment(2) != null) {
+                    TVAnimeFragment tv = (TVAnimeFragment) adapter.getRegisteredFragment(2);
+                    tv.updateList();
                 }
             }
         }

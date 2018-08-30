@@ -27,7 +27,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chadyeo.animetv.adapters.SeasonPagerStateAdapter;
@@ -59,6 +61,7 @@ public class MainActivity extends AppCompatActivity
     ViewPager viewPager;
     TabLayout tabLayout;
     SeasonPagerStateAdapter adapter;
+    Menu menu;
 
     String season;
     String year;
@@ -203,6 +206,8 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        this.menu = menu;
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -214,7 +219,6 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(this, "TESTING", Toast.LENGTH_SHORT).show();
             return true;
         } else if (id == R.id.filter_anime) {
-
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             LayoutInflater inflater = getLayoutInflater();
             builder.setTitle(getString(R.string.sort_dialog_title));
@@ -245,6 +249,18 @@ public class MainActivity extends AppCompatActivity
             yearSpinner.setAdapter(yearAdapter);
 
             yearSpinner.setSelection(years.indexOf(year));
+
+            SearchView searchView = (SearchView) menu.findItem(R.id.search_anime).getActionView();
+            if (!searchView.getQuery().toString().isEmpty() || !searchView.getQuery().toString().equals("")) {
+                TextView seasonLabel = (TextView) dialogView.findViewById(R.id.dialog_season_sort_label);
+                TextView yearLabel = (TextView) dialogView.findViewById(R.id.dialog_year_sort_label);
+                LinearLayout linearLayoutDividerLine = (LinearLayout) dialogView.findViewById(R.id.dialog_dividerLine);
+                seasonLabel.setVisibility(View.GONE);
+                seasonSpinner.setVisibility(View.GONE);
+                linearLayoutDividerLine.setVisibility(View.GONE);
+                yearLabel.setVisibility(View.GONE);
+                yearSpinner.setVisibility(View.GONE);
+            }
 
             Spinner sortSpinner = (Spinner) dialogView.findViewById(R.id.sort_spinner);
             ArrayAdapter<CharSequence> sortAdapter =

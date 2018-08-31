@@ -52,7 +52,7 @@
                 android:layout_margin="8dp"
                 card_view:cardBackgroundColor="@android:color/white"
                 card_view:cardCornerRadius="4dp"
-                card_view:cardElevation="4dp"
+                card_view:cardElevation="8dp"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:id="@+id/cardView2">
@@ -71,9 +71,9 @@
                             android:id="@+id/anime_page_image"
                             android:layout_width="113dp"
                             android:layout_height="161.5dp"
-                            android:layout_marginLeft="20dp"
+                            android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
-                            android:layout_marginTop="20dp"
+                            android:layout_marginTop="10dp"
                             android:layout_marginBottom="20dp" />
 
                         <LinearLayout
@@ -90,8 +90,8 @@
                                 android:fontFamily="sans-serif"
                                 android:textColor="#000000"
                                 android:textSize="20sp"
-                                android:layout_marginTop="20dp"
-                                android:layout_marginRight="20dp" />
+                                android:layout_marginTop="10dp"
+                                android:layout_marginRight="10dp" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -99,7 +99,8 @@
                                 android:layout_marginTop="10dp"
                                 android:layout_marginBottom="4dp"
                                 android:orientation="horizontal"
-                                android:layout_marginLeft="10dp">
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp">
 
                                 <TextView
                                     android:layout_width="0dp"
@@ -126,6 +127,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="4dp"
                                 android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
                                 android:orientation="horizontal">
 
                                 <TextView
@@ -153,6 +155,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="4dp"
                                 android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
                                 android:orientation="horizontal">
 
                                 <TextView
@@ -180,6 +183,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="4dp"
                                 android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
                                 android:orientation="horizontal">
 
                                 <TextView
@@ -207,6 +211,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="4dp"
                                 android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
                                 android:orientation="horizontal">
 
                                 <TextView
@@ -237,8 +242,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
                         android:fontFamily="sans-serif"
                         android:textColor="#000000"
                         android:textSize="15sp"
@@ -252,9 +257,9 @@
                         android:textColor="#595959"
                         android:textSize="15sp"
                         android:layout_marginTop="4dp"
-                        android:layout_marginBottom="15dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"/>
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"/>
 
                 </LinearLayout>
 
@@ -266,7 +271,7 @@
                 android:layout_height="wrap_content"
                 card_view:cardBackgroundColor="@android:color/white"
                 card_view:cardCornerRadius="4dp"
-                card_view:cardElevation="4dp"
+                card_view:cardElevation="8dp"
                 android:layout_margin="8dp"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"

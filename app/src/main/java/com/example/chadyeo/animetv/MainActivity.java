@@ -582,16 +582,6 @@ public class MainActivity extends AppCompatActivity
         public void onLoaderReset(@NonNull Loader<AnimeList> loader) {
 
         }
-
-        public boolean isNetworkAvailable(Context context) {
-            try {
-                ConnectivityManager cm = (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
-                NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-                return (networkInfo != null && networkInfo.isConnected());
-            } catch (Exception e) {
-                return false;
-            }
-        }
     }
 
     private class SelectSortDialogListener implements DialogInterface.OnClickListener {

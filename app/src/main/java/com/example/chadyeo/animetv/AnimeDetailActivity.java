@@ -182,25 +182,6 @@ public class AnimeDetailActivity extends AppCompatActivity implements YouTubePla
                         .placeholder(R.color.cardview_dark_background)
                         .into(image);
 
-                //Synonyms
-                TextView synonyms = (TextView) findViewById(R.id.anime_synonyms_page);
-                ArrayList<String> filtered = new ArrayList<>();
-                for (String s : data.getSynonyms()) {
-                    if (s != null && s.length() != 0 && !s.equals(" ")) filtered.add(s);
-                }
-                if (filtered.size() > 0) {
-                    String result = "";
-                    int c = 0;
-                    for (String s : filtered) {
-                        if (c < filtered.size() - 1) result += (s + ", ");
-                        else result += s;
-                        c++;
-                    }
-                    synonyms.setText(result);
-                } else {
-                    synonyms.setVisibility(GONE);
-                }
-
                 //Type
                 TextView type = (TextView) findViewById(R.id.anime_type_page);
                 if(data.getType() != null)type.setText(data.getType());

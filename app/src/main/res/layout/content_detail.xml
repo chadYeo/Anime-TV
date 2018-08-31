@@ -97,6 +97,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
+                                android:layout_marginBottom="4dp"
                                 android:orientation="horizontal"
                                 android:layout_marginLeft="10dp">
 
@@ -123,6 +124,7 @@
                                 android:id="@+id/episodes_layout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginBottom="4dp"
                                 android:layout_marginLeft="10dp"
                                 android:orientation="horizontal">
 
@@ -149,6 +151,7 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginBottom="4dp"
                                 android:layout_marginLeft="10dp"
                                 android:orientation="horizontal">
 
@@ -175,6 +178,7 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginBottom="4dp"
                                 android:layout_marginLeft="10dp"
                                 android:orientation="horizontal">
 
@@ -201,6 +205,7 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginBottom="4dp"
                                 android:layout_marginLeft="10dp"
                                 android:orientation="horizontal">
 
@@ -230,13 +235,23 @@
                     </LinearLayout>
 
                     <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:fontFamily="sans-serif"
+                        android:textColor="#000000"
+                        android:textSize="15sp"
+                        android:text="Description: " />
+
+                    <TextView
                         android:id="@+id/anime_description_page"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif"
                         android:textColor="#595959"
                         android:textSize="15sp"
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="4dp"
                         android:layout_marginBottom="15dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"/>
@@ -266,7 +281,6 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="15dp"
                         android:id="@+id/source_premiere_layout"
                         android:orientation="horizontal">
                         <LinearLayout
@@ -293,7 +307,7 @@
                                 android:textSize="15sp"
                                 android:gravity="center"
                                 android:layout_marginTop="3dp"
-                                android:layout_marginBottom="8dp"/>
+                                android:layout_marginBottom="10dp"/>
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="0dp"
@@ -319,7 +333,7 @@
                                 android:textSize="15sp"
                                 android:gravity="center"
                                 android:layout_marginTop="3dp"
-                                android:layout_marginBottom="8dp"/>
+                                android:layout_marginBottom="10dp"/>
                         </LinearLayout>
                     </LinearLayout>
                 </RelativeLayout>

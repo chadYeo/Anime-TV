@@ -218,7 +218,6 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.search_anime) {
-            Toast.makeText(this, "TESTING", Toast.LENGTH_SHORT).show();
             return true;
         } else if (id == R.id.filter_anime) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -555,6 +554,7 @@ public class MainActivity extends AppCompatActivity
         public void onLoadFinished(@NonNull Loader<AnimeList> loader, AnimeList data) {
             if (data == null) {
                 noInternet = true;
+                Toast.makeText(getApplicationContext(), "No Result Found: " + query, Toast.LENGTH_LONG).show();
                 Log.d(LOG_TAG, "There is no data onLoadFinished");
             } else {
                 Log.d(LOG_TAG, "InitLoad Initiated in MainActivity");

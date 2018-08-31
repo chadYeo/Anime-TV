@@ -4,39 +4,43 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
-import android.os.CountDownTimer;
-import android.os.Handler;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.chadyeo.animetv.api.Anime;
 import com.example.chadyeo.animetv.api.Studio;
 import com.example.chadyeo.animetv.loaders.AnimeDetailLoader;
 import com.example.chadyeo.animetv.utils.SeasonUtil;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
-public class AnimeDetailActivity extends AppCompatActivity {
+import static android.view.View.GONE;
+
+public class AnimeDetailActivity extends AppCompatActivity implements YouTubePlayer.OnInitializedListener {
 
     int episodeNum;
     int dataId;
     long millis;
     boolean noInternet;
-    String animeId;
+
+    private YouTubePlayerSupportFragment youTubePlayerSupportFragment;
+    private YouTubePlayer activePlayer;
+    private String videoId;
+    String KEY_DEVELOPER = "AIzaSyDDB5WWAfp5u_usqYguNVIMCEhjLegYb28";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +50,7 @@ public class AnimeDetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String id = intent.getStringExtra("ID");
-        animeId = id;
+        videoId = intent.getStringExtra("YOUTUBE_ID");
 
         loadAnimePage(id);
     }
@@ -75,6 +79,25 @@ public class AnimeDetailActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored) {
+        activePlayer = youTubePlayer;
+        activePlayer.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT);
+        if (!wasRestored) {
+            activePlayer.cueVideo(videoId);
+        }
+    }
+
+    @Override
+    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult error) {
+        if (error.isUserRecoverableError()) {
+            Log.e(AnimeDetailActivity.class.getSimpleName(), error.toString());
+        } else {
+            String errorMsg = error.toString();
+            Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -86,10 +109,22 @@ public class AnimeDetailActivity extends AppCompatActivity {
     }
 
     private void loadAnimePage(String id) {
+
         if (getSupportLoaderManager().getLoader(2) == null) {
             getSupportLoaderManager().initLoader(2, null, new PageLoad(this, id));
         } else {
             getSupportLoaderManager().restartLoader(2, null, new PageLoad(this, id));
+        }
+    }
+
+    public void setYoutubePlayer() {
+        if (videoId.isEmpty() || videoId.equals("") || videoId.equals(null)) {
+            TextView noYoutubeId_textView = (TextView) findViewById(R.id.noYoutubeId_textView);
+            noYoutubeId_textView.setVisibility(View.VISIBLE);
+        } else {
+            youTubePlayerSupportFragment =
+                    (YouTubePlayerSupportFragment) getSupportFragmentManager().findFragmentById(R.id.youtubePlayerView);
+            youTubePlayerSupportFragment.initialize(KEY_DEVELOPER, this);
         }
     }
 
@@ -114,21 +149,25 @@ public class AnimeDetailActivity extends AppCompatActivity {
             final View progress = findViewById(R.id.anime_page_loading);
             if (data == null) {
                 noInternet = true;
-                progress.setVisibility(View.GONE);
-                findViewById(R.id.page).setVisibility(View.GONE);
+                progress.setVisibility(GONE);
+                findViewById(R.id.page).setVisibility(GONE);
                 findViewById(R.id.page_connect_text).setVisibility(View.VISIBLE);
                 findViewById(R.id.page_retry_text).setVisibility(View.VISIBLE);
             } else {
                 if(noInternet){
                     noInternet = false;
                     findViewById(R.id.page).setVisibility(View.VISIBLE);
-                    findViewById(R.id.page_connect_text).setVisibility(View.GONE);
-                    findViewById(R.id.page_retry_text).setVisibility(View.GONE);
+                    findViewById(R.id.page_connect_text).setVisibility(GONE);
+                    findViewById(R.id.page_retry_text).setVisibility(GONE);
                 }
                 getSupportActionBar().setTitle(data.getTitle_romaji());
 
                 TextView title = (TextView) findViewById(R.id.anime_name_page);
-                title.setText(data.getTitle_romaji());
+                //title.setText(data.getTitle_romaji());
+                title.setText(data.getYoutube_id());
+                videoId = title.getText().toString();
+
+                Log.e("YOUTUBE ID IS",  String.valueOf(data.getYoutube_id()));
 
                 //Anime image thumbnail
                 ImageView image = (ImageView) findViewById(R.id.anime_page_image);
@@ -157,7 +196,7 @@ public class AnimeDetailActivity extends AppCompatActivity {
                     }
                     synonyms.setText(result);
                 } else {
-                    synonyms.setVisibility(View.GONE);
+                    synonyms.setVisibility(GONE);
                 }
 
                 //Type
@@ -264,11 +303,13 @@ public class AnimeDetailActivity extends AppCompatActivity {
                                 @Override
                                 public void onAnimationEnd(Animator animation) {
                                     super.onAnimationEnd(animation);
-                                    progress.setVisibility(View.GONE);
+                                    progress.setVisibility(GONE);
                                 }
                             });
                 }
                 findViewById(R.id.page).setVisibility(View.VISIBLE);
+
+                setYoutubePlayer();
             }
         }
 

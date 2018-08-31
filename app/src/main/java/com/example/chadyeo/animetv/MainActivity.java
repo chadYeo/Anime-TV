@@ -351,6 +351,7 @@ public class MainActivity extends AppCompatActivity
     public void onAllAnimeFragmentInteraction(Anime item) {
         Intent intent = new Intent(this, AnimeDetailActivity.class);
         intent.putExtra("ID", String.valueOf(item.getId()));
+        intent.putExtra("YOUTUBE_ID", String.valueOf(item.getYoutube_id()));
         startActivity(intent);
     }
 
@@ -358,6 +359,7 @@ public class MainActivity extends AppCompatActivity
     public void onMovieAnimeFragmentInteraction(Anime item) {
         Intent intent = new Intent(this, AnimeDetailActivity.class);
         intent.putExtra("ID", String.valueOf(item.getId()));
+        intent.putExtra("YOUTUBE_ID", String.valueOf(item.getYoutube_id()));
         startActivity(intent);
     }
 
@@ -365,6 +367,7 @@ public class MainActivity extends AppCompatActivity
     public void onTVAnimeFragmentInteraction(Anime item) {
         Intent intent = new Intent(this, AnimeDetailActivity.class);
         intent.putExtra("ID", String.valueOf(item.getId()));
+        intent.putExtra("YOUTUBE_ID", String.valueOf(item.getYoutube_id()));
         startActivity(intent);
     }
 

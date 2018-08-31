@@ -118,7 +118,7 @@ public class AnimeDetailActivity extends AppCompatActivity implements YouTubePla
     }
 
     public void setYoutubePlayer() {
-        if (videoId.isEmpty() || videoId.equals("") || videoId.equals(null)) {
+        if (videoId.isEmpty() || videoId.equals("null")) {
             TextView noYoutubeId_textView = (TextView) findViewById(R.id.noYoutubeId_textView);
             noYoutubeId_textView.setVisibility(View.VISIBLE);
         } else {
@@ -162,10 +162,12 @@ public class AnimeDetailActivity extends AppCompatActivity implements YouTubePla
                 }
                 getSupportActionBar().setTitle(data.getTitle_romaji());
 
+                //Anime Title
                 TextView title = (TextView) findViewById(R.id.anime_name_page);
-                //title.setText(data.getTitle_romaji());
-                title.setText(data.getYoutube_id());
-                videoId = title.getText().toString();
+                title.setText(data.getTitle_romaji());
+
+                //youTube ID
+                videoId = String.valueOf(data.getYoutube_id());
 
                 Log.e("YOUTUBE ID IS",  String.valueOf(data.getYoutube_id()));
 

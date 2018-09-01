@@ -6,13 +6,12 @@
 
 AniList API documentation is located here (https://anilist.gitbook.io/anilist-apiv2-docs/).</p>
   
-  <h3>This App:</h3>
+  <h3>This App Features:</h3>
     <ul>
-      <li>Used MediaPlayer/Exoplayer to display videos.</li>
-      <li>Handled error cases in Android.</li>
-      <li>Added a widget to this app experience.</li>
-      <li>Leveraged a third-party library in this app.</li>
-      <li>Used Fragments to create a responsive design that works on phones and tablets.</li>
+      <li>Search for hundreds of anime.</li>
+      <li>Anime info in detail.</li>
+      <li>Season lists (sorting).</li>
+      <li>Used YouTube Android Player to display anime preview.</li>
     </ul>
   
   <h3>Source:</h3>

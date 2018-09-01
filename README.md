@@ -6,7 +6,7 @@
 
 AniList API documentation is located here (https://anilist.gitbook.io/anilist-apiv2-docs/).</p>
 
-![Alt Text](https://photos.google.com/photo/AF1QipPDLTfdc_CWRl41xXPozRyF-SY9_SsBVN4-VuUb)
+!<a href="https://imgflip.com/gif/2h029f"><img src="https://i.imgflip.com/2h029f.gif" title="made at imgflip.com"/></a>
   
   <h3>This App Features:</h3>
     <ul>

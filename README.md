@@ -5,6 +5,8 @@
   <p>This is an Android Anime App that allows user to search hundres of anime and information tracked through Anilist (https://anilist.co/). I created an app that will allow a user to search, see the list of seasonal anime, sort by average score & popularity, and watch preview. 
 
 AniList API documentation is located here (https://anilist.gitbook.io/anilist-apiv2-docs/).</p>
+
+![Alt Text](https://photos.google.com/photo/AF1QipPDLTfdc_CWRl41xXPozRyF-SY9_SsBVN4-VuUb)
   
   <h3>This App Features:</h3>
     <ul>

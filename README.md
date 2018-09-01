@@ -1,28 +1,10 @@
-"# Anime-TV" 
-
-
-Implementation:
-
-
-Apollo GraphQL Client for Android (https://github.com/apollographql/apollo-android) - Apollo-Android is a GraphQL compliant client that generates Java models from standard GraphQL queries. These models give you a typesafe API to work with GraphQL servers. Apollo will help you keep your GraphQL query statements together, organized, and easy to access from Java. 
-
-
-
-
-
-# Baking App: Udacity (Android Devloper Nanodegree)
+# Anime TV App: Udacity (Android Devloper Nanodegree)
 
 <body>
   <h3>Project Summary</h3>
-  <p>This is an Android Baking App that will allow Udacity’s resident baker-in-chief, Miriam, to share her recipes with the world. 
-  I created an app that will allow a user to select a recipe and see video-guided steps for how to complete it.
+  <p>This is an Android Anime App that allows user to search hundres of anime and information tracked through Anilist (https://anilist.co/). I created an app that will allow a user to search, see the list of seasonal anime, sort by average score & popularity, and watch preview. 
 
-The recipe listing is located here (http://go.udacity.com/android-baking-app-json).
-
-The JSON file contains the recipes' instructions, ingredients, videos and images for this app. 
-Don’t assume that all steps of the recipe have a video. Some may have a video, an image, or no visual media at all.
-
-One of the skills I demonstrated in this project is how to handle unexpected input in my data -- professional developers often cannot expect polished JSON data when building an app.</p>
+AniList API documentation is located here (https://anilist.gitbook.io/anilist-apiv2-docs/).</p>
   
   <h3>This App:</h3>
     <ul>

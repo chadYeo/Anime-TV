@@ -56,7 +56,7 @@
                         android:gravity="center_horizontal"/>
 
                     <TextView
-                        android:id="@+id/anime_episodes_textView"
+                        android:id="@+id/anime_avgScore_textView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"

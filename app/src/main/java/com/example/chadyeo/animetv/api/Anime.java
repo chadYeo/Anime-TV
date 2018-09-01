@@ -6,9 +6,6 @@ import java.util.ArrayList;
 
 public class Anime implements Serializable {
 
-    // Client ID: cynicalpillow-w9hsv
-    // Client Secret: C22DO04rTcSy6P2xvLNNZB0
-
     private int id;
 
     private String title_english;

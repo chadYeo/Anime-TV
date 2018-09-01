@@ -1,15 +1,9 @@
 package com.example.chadyeo.animetv.utils;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 public class SeasonUtil {
 
-    private static String[] months = {"January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"};
     private static String[] s = {"Winter", "Spring", "Summer", "Fall"};
-    private static ArrayList<String> seasons = new ArrayList<>(Arrays.asList(s));
 
     private SeasonUtil() {
     }
@@ -37,14 +31,6 @@ public class SeasonUtil {
             return "June - August";
         } else {
             return "September - November";
-        }
-    }
-
-    public static String getMonth(int id) {
-        if (id-1 < 12) {
-            return months[(id-1)];
-        } else {
-            return "error";
         }
     }
 

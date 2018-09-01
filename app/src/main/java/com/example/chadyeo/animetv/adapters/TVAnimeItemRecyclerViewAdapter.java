@@ -134,7 +134,7 @@ public class TVAnimeItemRecyclerViewAdapter
             anime_item_cardView = (CardView) view.findViewById(R.id.anime_item_cardView);
             anime_item_imageView = (ImageView) view.findViewById(R.id.anime_item_imageView);
             anime_title_textView = (TextView) view.findViewById(R.id.anime_title_textView);
-            anime_episodes_textView = (TextView) view.findViewById(R.id.anime_episodes_textView);
+            anime_episodes_textView = (TextView) view.findViewById(R.id.anime_avgScore_textView);
             anime_type_textView = (TextView) view.findViewById(R.id.anime_type_textView);
 
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) anime_item_cardView.getLayoutParams();

@@ -13,7 +13,6 @@ import com.example.chadyeo.animetv.utils.ListOptions;
 public class SeasonPagerStateAdapter extends SmartFragmentStatePagerAdapter {
 
     private static int NUM_ITEMS = 3;
-    private static boolean[] scrolling = new boolean[3];
 
     public SeasonPagerStateAdapter(FragmentManager fm) {
         super(fm);

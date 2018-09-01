@@ -43,17 +43,9 @@ public class AllAnimeRecyclerViewAdapter
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.anime_title_textView.setText(holder.mItem.getTitle_romaji());
-        holder.anime_episodes_textView.setText(String.valueOf(holder.mItem.getTotal_episodes()));
+        holder.anime_avgScore_textView.setText(String.valueOf(holder.mItem.getTotal_episodes()));
         holder.anime_type_textView.setText(holder.mItem.getType());
-
-
-        if (holder.mItem.getTotal_episodes() > 1) {
-            holder.anime_episodes_textView.setText(holder.mItem.getTotal_episodes() + " eps");
-        } else if (holder.mItem.getTotal_episodes() == 1){
-            holder.anime_episodes_textView.setText(holder.mItem.getTotal_episodes() + " ep");
-        } else {
-            holder.anime_episodes_textView.setText("? eps");
-        }
+        holder.anime_avgScore_textView.setText(String.valueOf(holder.mItem.getAverage_score()) + " / 100");
 
         String url = holder.mItem.getImage_url_lge();
         if (url == null) {
@@ -123,7 +115,7 @@ public class AllAnimeRecyclerViewAdapter
         public CardView anime_item_cardView;
         public ImageView anime_item_imageView;
         public TextView anime_title_textView;
-        public TextView anime_episodes_textView;
+        public TextView anime_avgScore_textView;
         public TextView anime_type_textView;
 
         public ViewHolder(View view) {
@@ -132,7 +124,7 @@ public class AllAnimeRecyclerViewAdapter
             anime_item_cardView = (CardView) view.findViewById(R.id.anime_item_cardView);
             anime_item_imageView = (ImageView) view.findViewById(R.id.anime_item_imageView);
             anime_title_textView = (TextView) view.findViewById(R.id.anime_title_textView);
-            anime_episodes_textView = (TextView) view.findViewById(R.id.anime_episodes_textView);
+            anime_avgScore_textView = (TextView) view.findViewById(R.id.anime_avgScore_textView);
             anime_type_textView = (TextView) view.findViewById(R.id.anime_type_textView);
 
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) anime_item_cardView.getLayoutParams();

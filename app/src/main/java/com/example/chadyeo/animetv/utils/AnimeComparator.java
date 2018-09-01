@@ -20,8 +20,6 @@ class AnimeComparator implements Comparator<Anime> {
 
     private int type;
     private int sort;
-    private final String LOWEST = "lowest";
-    private final String HIGHEST = "highest";
 
     public AnimeComparator(int type, int sort) {
         this.type = type;

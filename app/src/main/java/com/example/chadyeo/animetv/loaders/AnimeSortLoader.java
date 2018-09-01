@@ -32,7 +32,6 @@ public class AnimeSortLoader extends AsyncTaskLoader<AnimeList> {
         if (isReset()) {
             return;
         }
-        AnimeList oldData = mData;
         mData = data;
         if (isStarted()) {
             super.deliverResult(data);

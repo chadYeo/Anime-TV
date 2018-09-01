@@ -218,30 +218,6 @@ public class AnimeListBuilder {
         return null;
     }
 
-    public static AnimeList reloadSeasonList(String season, int sort, int asc) {
-        ArrayList<Anime> all = getSeasonList(season, sort, asc);
-        if (all == null) {
-            return null;
-        }
-        AnimeList result = new AnimeList();
-        result.setAll(all);
-
-        ArrayList<Anime> movie = new ArrayList<>();
-        ArrayList<Anime> tv = new ArrayList<>();
-        for (Anime anime : all) {
-            if (anime.getType().toLowerCase().equals("movie")) {
-                movie.add(anime);
-            } else if (anime.getType().toLowerCase().equals("tv")) {
-                tv.add(anime);
-            }
-        }
-        result.setMovie(movie);
-        result.setTV(tv);
-        result.setSeason(season);
-
-        return result;
-    }
-
     public static AnimeList sortAnimeList(int sort, int ad, AnimeList animeList) {
         ArrayList<Anime> all = new ArrayList<>();
         ArrayList<Anime> movie = new ArrayList<>();

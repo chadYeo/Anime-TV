@@ -35,7 +35,6 @@ public class AnimeSearchLoader extends AsyncTaskLoader<AnimeList> {
 
     @Override
     public void deliverResult(AnimeList data) {
-        AnimeList oldData = mAnimeList;
         mAnimeList = data;
         if (isStarted()) {
             super.deliverResult(data);

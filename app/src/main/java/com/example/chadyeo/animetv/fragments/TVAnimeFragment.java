@@ -10,10 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.chadyeo.animetv.R;
-import com.example.chadyeo.animetv.adapters.MovieAnimeItemRecyclerViewAdapter;
 import com.example.chadyeo.animetv.adapters.TVAnimeItemRecyclerViewAdapter;
 import com.example.chadyeo.animetv.api.Anime;
 import com.example.chadyeo.animetv.utils.ListContent;

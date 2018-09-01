@@ -18,8 +18,11 @@ AniList API documentation is located here (https://anilist.gitbook.io/anilist-ap
   <h3>Source:</h3>
     <ul>
       <li>Android RecyclerView (https://github.com/googlesamples/android-RecyclerView): RecyclerView can display large datasets that can be scrolled efficiently by recycling a limited number of views.</li>
-  <li>ExoPlayer (https://github.com/google/ExoPlayer): ExoPlayer is an application level media player for Android. It provides an alternative to Android’s MediaPlayer API for playing audio and video both locally and over the Internet.</li>
-  <li>Retrofit (https://github.com/square/retrofit): Type-safe HTTP client for Android and Java by Square, Inc.</li>
+  <li> YouTube Android Player API (https://github.com/youtube/yt-android-player): Implemented Youtube Android Player so that user can watch the preview in this app.</li>
+  <li> Google Firebase (https://github.com/firebase/quickstart-android)</li>
+  <li> Retrofit (https://github.com/square/retrofit): Type-safe HTTP client for Android and Java.</li>
+  <li> OkHttp (An HTTP+HTTP/2 client for Android and Java applications): An HTTP & HTTP/2 client for Android and Java applications.</li>
+  <li> Okio (https://github.com/square/okio): Okio is a library that complements java.io and java.nio to make it much easier to access, store, and process your data.</li>
   <li>Gson (https://github.com/google/gson): Gson is a Java library that can be used to convert Java Objects into their JSON representation. </li>
     </ul>
 </body>

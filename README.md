@@ -6,8 +6,7 @@
 
 AniList API documentation is located here (https://anilist.gitbook.io/anilist-apiv2-docs/).</p>
 
-![Alt Text](https://media.giphy.com/media/1wpOLvickLbbBZhf8T/giphy.gif)
-<img src="https://media.giphy.com/media/1wpOLvickLbbBZhf8T/giphy.gif" width="40" height="40" />
+<img src="https://media.giphy.com/media/1wpOLvickLbbBZhf8T/giphy.gif" />
 
   <h3>This App Features:</h3>
     <ul>

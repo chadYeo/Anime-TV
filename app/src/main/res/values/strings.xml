@@ -51,6 +51,6 @@
     <string name="year">Year</string>
     <string name="sort_by">Sort by</string>
     <string name="order_by">Order by</string>
-    <string name="anime_image_view_contentDescrip">Anime Image View</string>
+    <string name="anime_page_image_view">Anime Image View</string>
 
 </resources>

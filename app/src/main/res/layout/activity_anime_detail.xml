@@ -28,7 +28,7 @@
             android:textColor="@android:color/white"
             android:textStyle="bold"
             android:visibility="gone"
-            android:text="Video doesn't exists" />
+            android:text="@string/video_noInfo_text" />
     </RelativeLayout>
 
     <include

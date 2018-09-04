@@ -15,6 +15,8 @@
     <string name="list_sort">LIST_SORT</string>
     <string name="order_sort">ORDER_SORT</string>
 
+    <string name="scroll_position">SCROLL_POSITION</string>
+
     <string-array name="season_array">
         <item>Winter</item>
         <item>Spring</item>
@@ -33,9 +35,22 @@
         <item>Descending</item>
     </string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Layout Strings -->
     <string name="loading_error">Error: Couldn\'t Load the Page</string>
-    <string name="preArrow_season">Previous Season</string>
-    <string name="nextArrow_season">Next Season</string>
+    <string name="retry">Retry</string>
+    <string name="episodes">Episodes</string>
+    <string name="duration">Duration</string>
+    <string name="studios">Studios</string>
+    <string name="genres">Genres</string>
+    <string name="description">Description:</string>
+    <string name="source">Source</string>
+    <string name="premiered">Premiered</string>
+    <string name="type">Type</string>
+    <string name="video_noInfo_text">Video doesn\'t exists</string>
+    <string name="season">Season</string>
+    <string name="year">Year</string>
+    <string name="sort_by">Sort by</string>
+    <string name="order_by">Order by</string>
+    <string name="anime_image_view_contentDescrip">Anime Image View</string>
+
 </resources>

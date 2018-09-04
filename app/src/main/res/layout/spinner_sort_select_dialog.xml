@@ -24,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:text="Season"
+                android:text="@string/season"
                 android:textSize="16sp"/>
 
             <Spinner
@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:text="Year"
+                android:text="@string/year"
                 android:textSize="16sp"/>
 
             <Spinner
@@ -82,7 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:text="Sort by"
+            android:text="@string/sort_by"
             android:textSize="16sp"/>
 
         <Spinner
@@ -106,7 +106,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:text="Order by"
+            android:text="@string/order_by"
             android:textSize="16sp"/>
 
         <Spinner

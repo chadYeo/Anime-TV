@@ -18,7 +18,7 @@
         android:id="@+id/page_connect_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Unable to connect to server"
+        android:text="@string/loading_error"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:visibility="gone"/>
@@ -27,7 +27,7 @@
         android:id="@+id/page_retry_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Retry"
+        android:text="@string/retry"
         android:layout_below="@id/page_connect_text"
         android:textColor="@color/colorAccent"
         android:layout_centerHorizontal="true"
@@ -69,6 +69,7 @@
 
                         <ImageView
                             android:id="@+id/anime_page_image"
+                            android:contentDescription="@string/anime_page_image_view"
                             android:layout_width="113dp"
                             android:layout_height="161.5dp"
                             android:layout_marginLeft="10dp"
@@ -108,7 +109,7 @@
                                     android:layout_weight="0.4"
                                     android:fontFamily="sans-serif"
                                     android:textColor="#000000"
-                                    android:text="Type"
+                                    android:text="@string/type"
                                     android:textSize="15sp" />
 
                                 <TextView
@@ -136,7 +137,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.4"
                                     android:fontFamily="sans-serif"
-                                    android:text="Episodes"
+                                    android:text="@string/episodes"
                                     android:textColor="#000000"
                                     android:textSize="15sp" />
 
@@ -166,7 +167,7 @@
                                     android:fontFamily="sans-serif"
                                     android:textColor="#000000"
                                     android:textSize="15sp"
-                                    android:text="Duration" />
+                                    android:text="@string/duration" />
 
                                 <TextView
                                     android:id="@+id/anime_duration_page"
@@ -194,7 +195,7 @@
                                     android:fontFamily="sans-serif"
                                     android:textColor="#000000"
                                     android:textSize="15sp"
-                                    android:text="Studios" />
+                                    android:text="@string/studios" />
 
                                 <TextView
                                     android:id="@+id/anime_studios_page"
@@ -222,7 +223,7 @@
                                     android:fontFamily="sans-serif"
                                     android:textColor="#000000"
                                     android:textSize="15sp"
-                                    android:text="Genres" />
+                                    android:text="@string/genres" />
 
                                 <TextView
                                     android:id="@+id/anime_genres_page"
@@ -247,7 +248,7 @@
                         android:fontFamily="sans-serif"
                         android:textColor="#000000"
                         android:textSize="15sp"
-                        android:text="Description: " />
+                        android:text="@string/description" />
 
                     <TextView
                         android:id="@+id/anime_description_page"
@@ -300,7 +301,7 @@
                                 android:fontFamily="sans-serif"
                                 android:textColor="#737373"
                                 android:textSize="12sp"
-                                android:text="Source"
+                                android:text="@string/source"
                                 android:gravity="center"
                                 android:layout_marginTop="10dp" />
                             <TextView
@@ -326,7 +327,7 @@
                                 android:fontFamily="sans-serif"
                                 android:textColor="#737373"
                                 android:textSize="12sp"
-                                android:text="Premiered"
+                                android:text="@string/premiered"
                                 android:gravity="center"
                                 android:layout_marginTop="10dp" />
                             <TextView

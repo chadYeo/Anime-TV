@@ -9,6 +9,18 @@ android {
             storeFile file('C:/Users/chad.yeo/Documents/nanodegreekeystore.jks')
             storePassword 'nanodegree'
         }
+        freeConfig {
+            keyAlias 'Capstone'
+            keyPassword 'nanodegree'
+            storeFile file('C:/Users/chad.yeo/Documents/nanodegreekeystore.jks')
+            storePassword 'nanodegree'
+        }
+        paidConfig {
+            keyAlias 'Capstone'
+            keyPassword 'nanodegree'
+            storeFile file('C:/Users/chad.yeo/Documents/nanodegreekeystore.jks')
+            storePassword 'nanodegree'
+        }
     }
     compileSdkVersion 26
     defaultConfig {
@@ -30,9 +42,11 @@ android {
     productFlavors {
         paid {
             applicationId 'com.example.chadyeo.animetv'
+            signingConfig signingConfigs.paidConfig
         }
         free {
             applicationId 'com.example.chadyeo.animetv'
+            signingConfig signingConfigs.freeConfig
         }
     }
 }

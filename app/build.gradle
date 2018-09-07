@@ -2,6 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services' //Google Firebase
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'Capstone'
+            keyPassword 'nanodegree'
+            storeFile file('C:/Users/chad.yeo/Documents/nanodegreekeystore.jks')
+            storePassword 'nanodegree'
+        }
+    }
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.example.chadyeo.animetv"
@@ -17,9 +25,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
     flavorDimensions "default"
-
     productFlavors {
         paid {
             applicationId 'com.example.chadyeo.animetv'
@@ -56,7 +62,5 @@ dependencies {
     // store, and process your data. It started as a component of OkHttp, the capable HTTP client included in Android.
     compile 'com.squareup.okio:okio:1.13.0'
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
-
     compile 'com.google.firebase:firebase-core:12.0.1'
-
 }

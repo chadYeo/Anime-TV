@@ -22,6 +22,8 @@ import com.example.chadyeo.animetv.api.Anime;
 import com.example.chadyeo.animetv.api.Studio;
 import com.example.chadyeo.animetv.loaders.AnimeDetailLoader;
 import com.example.chadyeo.animetv.utils.SeasonUtil;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
@@ -31,6 +33,8 @@ import java.util.ArrayList;
 import static android.view.View.GONE;
 
 public class AnimeDetailActivity extends AppCompatActivity implements YouTubePlayer.OnInitializedListener {
+
+    private AdView mAdView;
 
     int episodeNum;
     int dataId;
@@ -47,6 +51,10 @@ public class AnimeDetailActivity extends AppCompatActivity implements YouTubePla
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_anime_detail);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mAdView = (AdView) findViewById(R.id.adView_detailActivity);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         Intent intent = getIntent();
         String id = intent.getStringExtra("ID");

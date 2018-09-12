@@ -29,10 +29,10 @@ android {
     flavorDimensions "default"
     productFlavors {
         free {
-
+            applicationId "com.example.chadyeo.animetv.free"
         }
         paid {
-
+            applicationId "com.example.chadyeo.animetv.paid"
         }
     }
 }

@@ -1,0 +1,143 @@
+{
+  "project_info": {
+    "project_number": "438354619666",
+    "firebase_url": "https://anime-tv-d429b.firebaseio.com",
+    "project_id": "anime-tv-d429b",
+    "storage_bucket": "anime-tv-d429b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:438354619666:android:edb266a58b070481",
+        "android_client_info": {
+          "package_name": "com.example.chadyeo.animetv"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "438354619666-kti0n41r2dr5rr37pc6oposqdlpqr2or.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.chadyeo.animetv",
+            "certificate_hash": "e3b8e83d9c457e62db427b97d7024aca302f62cf"
+          }
+        },
+        {
+          "client_id": "438354619666-1k5r8c8ao3ngrrm8glmg1abng8vikqlj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcJaN4aYfQD-brtMzn--Ct1YskR6s8hzc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "438354619666-1k5r8c8ao3ngrrm8glmg1abng8vikqlj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:438354619666:android:92bfefc96a1139e0",
+        "android_client_info": {
+          "package_name": "com.example.chadyeo.animetv.free"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "438354619666-uu2ostb0pujjhu28ro8lormurns3snb1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.chadyeo.animetv.free",
+            "certificate_hash": "e3b8e83d9c457e62db427b97d7024aca302f62cf"
+          }
+        },
+        {
+          "client_id": "438354619666-1k5r8c8ao3ngrrm8glmg1abng8vikqlj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcJaN4aYfQD-brtMzn--Ct1YskR6s8hzc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "438354619666-1k5r8c8ao3ngrrm8glmg1abng8vikqlj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:438354619666:android:449384ee2c1726b3",
+        "android_client_info": {
+          "package_name": "com.example.chadyeo.animetv.paid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "438354619666-q4a65lkpqh7kff9n6qqi0kr7tv8jvp4o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.chadyeo.animetv.paid",
+            "certificate_hash": "e3b8e83d9c457e62db427b97d7024aca302f62cf"
+          }
+        },
+        {
+          "client_id": "438354619666-1k5r8c8ao3ngrrm8glmg1abng8vikqlj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcJaN4aYfQD-brtMzn--Ct1YskR6s8hzc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "438354619666-1k5r8c8ao3ngrrm8glmg1abng8vikqlj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

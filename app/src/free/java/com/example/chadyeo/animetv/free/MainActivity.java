@@ -1,4 +1,4 @@
-package com.example.chadyeo.animetv;
+package com.example.chadyeo.animetv.free;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -30,6 +30,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.chadyeo.animetv.R;
 import com.example.chadyeo.animetv.adapters.SeasonPagerStateAdapter;
 import com.example.chadyeo.animetv.api.Anime;
 import com.example.chadyeo.animetv.api.AnimeList;
@@ -46,6 +47,7 @@ import com.example.chadyeo.animetv.utils.ListOptions;
 import com.example.chadyeo.animetv.utils.SeasonUtil;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 import java.util.ArrayList;
 import java.util.Calendar;

@@ -52,9 +52,9 @@ public class AnimeDetailActivity extends AppCompatActivity implements YouTubePla
         setContentView(R.layout.activity_anime_detail);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mAdView = (AdView) findViewById(R.id.adView_detailActivity);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+        //mAdView = (AdView) findViewById(R.id.adView_detailActivity);
+        //AdRequest adRequest = new AdRequest.Builder().build();
+        //mAdView.loadAd(adRequest);
 
         Intent intent = getIntent();
         String id = intent.getStringExtra("ID");

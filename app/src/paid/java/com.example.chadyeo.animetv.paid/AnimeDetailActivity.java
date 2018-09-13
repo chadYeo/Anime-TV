@@ -1,3 +1,5 @@
+package com.example.chadyeo.animetv.paid;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
@@ -32,7 +34,6 @@ import java.util.ArrayList;
 import static android.view.View.GONE;
 
 public class AnimeDetailActivity extends AppCompatActivity implements YouTubePlayer.OnInitializedListener {
-
 
     int episodeNum;
     int dataId;

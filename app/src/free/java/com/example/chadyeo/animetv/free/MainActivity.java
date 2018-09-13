@@ -45,9 +45,9 @@ import com.example.chadyeo.animetv.utils.ColumnUtil;
 import com.example.chadyeo.animetv.utils.ListContent;
 import com.example.chadyeo.animetv.utils.ListOptions;
 import com.example.chadyeo.animetv.utils.SeasonUtil;
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -88,6 +88,8 @@ public class MainActivity extends AppCompatActivity
         mAdView = (AdView) findViewById(R.id.adView_mainActivity);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
+
+        Toast.makeText(this, "FREEE TESTING", Toast.LENGTH_LONG).show();
 
         SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
         sort = sharedPreferences.getInt(getString(R.string.list_sort), 0);

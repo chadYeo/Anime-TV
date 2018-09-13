@@ -1,3 +1,5 @@
+package com.example.chadyeo.animetv.paid;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.SearchManager;
@@ -28,7 +30,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.chadyeo.animetv.AnimeDetailActivity;
 import com.example.chadyeo.animetv.R;
 import com.example.chadyeo.animetv.adapters.SeasonPagerStateAdapter;
 import com.example.chadyeo.animetv.api.Anime;
@@ -44,6 +45,8 @@ import com.example.chadyeo.animetv.utils.ColumnUtil;
 import com.example.chadyeo.animetv.utils.ListContent;
 import com.example.chadyeo.animetv.utils.ListOptions;
 import com.example.chadyeo.animetv.utils.SeasonUtil;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -52,6 +55,7 @@ public class MainActivity extends AppCompatActivity
         implements AllAnimeFragment.OnAllAnimeFragmentInteractionListener,
         MovieAnimeFragment.OnMovieAnimeFragmentInteractionListener,
         TVAnimeFragment.OnTVAnimeFragmentInteractionListener {
+
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static HttpClient client;
@@ -76,9 +80,10 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Toast.makeText(this, "PAIIIDDD TESTING", Toast.LENGTH_LONG).show();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
         sort = sharedPreferences.getInt(getString(R.string.list_sort), 0);

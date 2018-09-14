@@ -20,7 +20,7 @@ https://media.giphy.com/media/1wpOLvickLbbBZhf8T/giphy.gif
     <ul>
       <li>Android RecyclerView (https://github.com/googlesamples/android-RecyclerView): RecyclerView can display large datasets that can be scrolled efficiently by recycling a limited number of views.</li>
   <li> YouTube Android Player API (https://github.com/youtube/yt-android-player): Implemented Youtube Android Player so that user can watch the preview in this app.</li>
-  <li> Google Firebase (https://github.com/firebase/quickstart-android)</li>
+  <li> Google Firebase (https://github.com/firebase/quickstart-android): AdMob & GeoFire</li>
   <li> Retrofit (https://github.com/square/retrofit): Type-safe HTTP client for Android and Java.</li>
   <li> OkHttp (An HTTP+HTTP/2 client for Android and Java applications): An HTTP & HTTP/2 client for Android and Java applications.</li>
   <li> Okio (https://github.com/square/okio): Okio is a library that complements java.io and java.nio to make it much easier to access, store, and process your data.</li>

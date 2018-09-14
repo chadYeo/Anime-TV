@@ -83,9 +83,9 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //mAdView = (AdView) findViewById(R.id.adView_mainActivity);
-        //AdRequest adRequest = new AdRequest.Builder().build();
-        //mAdView.loadAd(adRequest);
+        mAdView = (AdView) findViewById(R.id.adView_mainActivity);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
         sort = sharedPreferences.getInt(getString(R.string.list_sort), 0);

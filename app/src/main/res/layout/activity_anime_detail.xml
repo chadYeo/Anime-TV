@@ -31,6 +31,16 @@
             android:text="@string/video_noInfo_text" />
     </RelativeLayout>
 
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView_detailActivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_ad_unit_id" />
+
     <include
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

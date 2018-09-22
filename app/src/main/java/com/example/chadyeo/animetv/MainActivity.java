@@ -46,6 +46,7 @@ import com.example.chadyeo.animetv.utils.ListOptions;
 import com.example.chadyeo.animetv.utils.SeasonUtil;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 import java.util.Calendar;

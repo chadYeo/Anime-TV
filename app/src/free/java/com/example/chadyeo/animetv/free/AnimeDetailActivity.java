@@ -28,6 +28,7 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 
@@ -36,6 +37,7 @@ import static android.view.View.GONE;
 public class AnimeDetailActivity extends AppCompatActivity implements YouTubePlayer.OnInitializedListener {
 
     private AdView mAdView;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     int episodeNum;
     int dataId;
@@ -62,6 +64,8 @@ public class AnimeDetailActivity extends AppCompatActivity implements YouTubePla
         videoId = intent.getStringExtra("YOUTUBE_ID");
 
         loadAnimePage(id);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
     }
 
     @Override
@@ -285,6 +289,14 @@ public class AnimeDetailActivity extends AppCompatActivity implements YouTubePla
                     String season = String.valueOf(data.getStart_date_fuzzy()).length() >= 6 ? SeasonUtil.checkMonth(Integer.parseInt(String.valueOf(data.getStart_date_fuzzy()).substring(4, 6))-1) : "?";
                     premiered.setText(season + " " + year);
                 }
+
+
+                //Firebase Analytics
+                Bundle bundle = new Bundle();
+                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, String.valueOf(title));
+
+                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
                 //Animate progress bar out and display the data
                 if (progress != null) {

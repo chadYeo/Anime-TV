@@ -1,6 +1,7 @@
 package com.example.chadyeo.animetv.adapters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -17,11 +18,13 @@ import com.example.chadyeo.animetv.R;
 import com.example.chadyeo.animetv.api.Anime;
 import com.example.chadyeo.animetv.api.AnimeList;
 import com.example.chadyeo.animetv.fragments.AllAnimeFragment;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 
 public class AllAnimeRecyclerViewAdapter
         extends RecyclerView.Adapter<AllAnimeRecyclerViewAdapter.ViewHolder> {
+
 
     private ArrayList<Anime> mValues = new ArrayList<>();
     private AllAnimeFragment.OnAllAnimeFragmentInteractionListener mListener;

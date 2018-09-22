@@ -6,7 +6,7 @@ android {
         config {
             keyAlias 'Capstone'
             keyPassword 'nanodegree'
-            storeFile file('C:/Users/chad.yeo/Documents/nanodegreekeystore.jks')
+            storeFile file('/Users/chadyeo/Desktop')
             storePassword 'nanodegree'
         }
     }
